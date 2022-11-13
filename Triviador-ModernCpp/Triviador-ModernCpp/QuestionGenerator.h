@@ -25,13 +25,13 @@ class QuestionGenerator
 {
 public:
 	QuestionGenerator();
-	std::vector<Question> GenerateQuestions(int numberOfQuestions);
-	std::vector<Question> GetQuestionsFromOnlineDatabase(uint8_t numOfQuestions = 50);
+	std::vector<Question> GenerateQuestions(int numberOfQuestions = 100);
+	
 private:
 	const std::string m_baseOnlineDatabaseUrl = "https://opentdb.com/";
 	std::string m_token;
 	std::string GenerateToken();
-	std::string GetJsonFromOnlineDatabase();
+	std::vector<Question> GetQuestionsFromOnlineDatabase(uint8_t numOfQuestions = 50);
 	
 	
 	

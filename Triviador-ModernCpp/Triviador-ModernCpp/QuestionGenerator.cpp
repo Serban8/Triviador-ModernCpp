@@ -2,7 +2,29 @@
 
 QuestionGenerator::QuestionGenerator()
 {
-	GenerateToken();
+	m_token = GenerateToken();
+}
+
+std::vector<Question> QuestionGenerator::GenerateQuestions(int numberOfQuestions)
+{
+	std::vector<Question> questions;
+	int numOfQuestionsToInsert = numberOfQuestions;
+
+	//generate the question in batches of 50 - since that is the max the online db can return for one request
+	while (questions.size() < numberOfQuestions) {
+		if (numOfQuestionsToInsert >= 50) {
+			std::vector<Question> tmpQ = GetQuestionsFromOnlineDatabase();
+			questions.insert(std::end(questions), std::begin(tmpQ), std::end(tmpQ));
+			numOfQuestionsToInsert -= 50;
+		}
+		else {
+			std::vector<Question> tmpQ = GetQuestionsFromOnlineDatabase(numOfQuestionsToInsert);
+			questions.insert(std::end(questions), std::begin(tmpQ), std::end(tmpQ));
+			numOfQuestionsToInsert = 0;
+		}
+	
+	}
+	return questions;
 }
 
 std::string QuestionGenerator::GenerateToken()
@@ -20,7 +42,6 @@ std::string QuestionGenerator::GenerateToken()
 		throw std::runtime_error(tokenResponse["response_message"]);
 	}
 
-	m_token = tokenResponse["token"];
 	//std::cout << tokenResponse["token"];
 	return std::string(tokenResponse["token"]);
 }
