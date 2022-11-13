@@ -132,7 +132,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbstractQuestion.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuestionDatabase.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="YearQuestion.cpp" />
@@ -140,8 +142,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractQuestion.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="QuestionDatabase.h" />
     <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="YearQuestion.h" />
