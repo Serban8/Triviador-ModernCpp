@@ -1,7 +1,6 @@
 #pragma once
-#include<iostream>
-#include<vector>
-#include<string>
+#include <vector>
+#include <string>
 
 class Player
 {
@@ -34,7 +33,5 @@ private:
 
 	std::string m_username;
 	std::string m_password;
-	
 
 };
-

@@ -33,7 +33,4 @@ private:
 	std::string GenerateToken();
 	std::vector<MultipleChoiceQuestion> GetQuestionsFromOnlineDatabase(uint8_t numOfQuestions = 50);
 
-
-
 };
-

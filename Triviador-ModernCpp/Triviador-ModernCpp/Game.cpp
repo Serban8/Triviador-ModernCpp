@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(int id, std::string dateAndTime, std::vector<Player> players, std::vector<AbstractQuestion*> questions):
+Game::Game(int id, std::string dateAndTime, std::vector<Player> players, std::vector<AbstractQuestion*> questions) :
 	m_id(id),
 	m_dateAndTime(dateAndTime),
 	m_players(players),

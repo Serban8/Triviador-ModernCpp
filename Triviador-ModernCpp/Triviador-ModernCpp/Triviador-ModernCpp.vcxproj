@@ -135,8 +135,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerDatabase.cpp" />
-    <ClCompile Include="QuestionDatabase.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="YearQuestion.cpp" />
     <ClCompile Include="Triviador-ModernCpp.cpp" />

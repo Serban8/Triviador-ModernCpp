@@ -1,8 +1,8 @@
 #pragma once
-#include<iostream>
-#include<vector>
-#include"AbstractQuestion.h"
-#include"Player.h"
+#include <iostream>
+#include <vector>
+#include "AbstractQuestion.h"
+#include "Player.h"
 
 class Game
 {
@@ -29,7 +29,7 @@ private:
 	std::string m_dateAndTime;
 	std::vector<Player> m_players;
 	std::vector<AbstractQuestion*> m_questions;
-	
+
 	//Map m_map;
 	//
 

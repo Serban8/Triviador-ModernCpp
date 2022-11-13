@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <array>
-#include<iostream>
 
 class AbstractQuestion {
 
@@ -28,4 +27,3 @@ protected:
 	std::string m_correctAnswer;
 
 };
-
