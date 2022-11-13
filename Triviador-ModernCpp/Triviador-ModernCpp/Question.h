@@ -23,6 +23,7 @@
         }
 
         //getters
+        int GetId() const;
         std::string GetQuestion() const;
         std::string GetCategory() const;
         Type GetType() const;

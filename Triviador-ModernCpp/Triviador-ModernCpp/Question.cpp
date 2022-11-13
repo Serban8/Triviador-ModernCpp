@@ -1,5 +1,10 @@
 #include "Question.h"
 
+int Question::GetId() const
+{
+    return m_id;
+}
+
 std::string Question::GetQuestion() const
 {
     return m_question;
