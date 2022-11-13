@@ -27,6 +27,9 @@
     <ClCompile Include="QuestionDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="YearQuestion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="AbstractQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AbstractQuestion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YearQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
