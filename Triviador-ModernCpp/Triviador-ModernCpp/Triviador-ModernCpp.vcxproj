@@ -131,14 +131,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Question.cpp" />
+    <ClCompile Include="AbstractQuestion.cpp" />
+    <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="QuestionDatabase.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="Triviador-ModernCpp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractQuestion.h" />
     <ClInclude Include="json.hpp" />
-    <ClInclude Include="Question.h" />
+    <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="QuestionDatabase.h" />
     <ClInclude Include="QuestionGenerator.h" />
   </ItemGroup>

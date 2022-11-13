@@ -1,10 +1,10 @@
 #pragma once
 #include<iostream>
-#include "Question.h"
+#include "MultipleChoiceQuestion.h"
 struct QuestionDatabase
 {
 	QuestionDatabase() {}
-	QuestionDatabase(Question q) :
+	QuestionDatabase(MultipleChoiceQuestion q) :
 		m_id(q.GetId()),
 		m_question(q.GetQuestion()),
 		m_category(q.GetCategory()),
@@ -14,7 +14,7 @@ struct QuestionDatabase
 		m_incorrectAnswer2(q.GetIncorrectAnswers()[1]),
 		m_incorrectAnswer3(q.GetIncorrectAnswers()[2])
 	{
-		
+
 	}
 	int m_id;
 	std::string m_question;

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sqlite_orm/sqlite_orm.h>
-#include "Question.h"
+#include "MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
 
@@ -22,7 +22,7 @@ void databaseTest()
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
 	QuestionGenerator qGen;
-	std::vector<Question> vect = qGen.GenerateQuestions();
+	std::vector<MultipleChoiceQuestion> vect = qGen.GenerateQuestions();
 	std::vector<QuestionDatabase> vectDB;
 	for (const auto& q : vect)
 	{

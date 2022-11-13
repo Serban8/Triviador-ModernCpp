@@ -18,7 +18,7 @@
     <ClCompile Include="Triviador-ModernCpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Question.cpp">
+    <ClCompile Include="MultipleChoiceQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QuestionGenerator.cpp">
@@ -27,18 +27,24 @@
     <ClCompile Include="QuestionDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AbstractQuestion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Question.h">
+    <ClInclude Include="MultipleChoiceQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QuestionGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QuestionDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

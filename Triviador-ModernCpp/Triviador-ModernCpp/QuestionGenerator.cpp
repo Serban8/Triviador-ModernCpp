@@ -5,24 +5,24 @@ QuestionGenerator::QuestionGenerator()
 	m_token = GenerateToken();
 }
 
-std::vector<Question> QuestionGenerator::GenerateQuestions(int numberOfQuestions)
+std::vector<MultipleChoiceQuestion> QuestionGenerator::GenerateQuestions(int numberOfQuestions)
 {
-	std::vector<Question> questions;
+	std::vector<MultipleChoiceQuestion> questions;
 	int numOfQuestionsToInsert = numberOfQuestions;
 
 	//generate the question in batches of 50 - since that is the max the online db can return for one request
 	while (questions.size() < numberOfQuestions) {
 		if (numOfQuestionsToInsert >= 50) {
-			std::vector<Question> tmpQ = GetQuestionsFromOnlineDatabase();
+			std::vector<MultipleChoiceQuestion> tmpQ = GetQuestionsFromOnlineDatabase();
 			questions.insert(std::end(questions), std::begin(tmpQ), std::end(tmpQ));
 			numOfQuestionsToInsert -= 50;
 		}
 		else {
-			std::vector<Question> tmpQ = GetQuestionsFromOnlineDatabase(numOfQuestionsToInsert);
+			std::vector<MultipleChoiceQuestion> tmpQ = GetQuestionsFromOnlineDatabase(numOfQuestionsToInsert);
 			questions.insert(std::end(questions), std::begin(tmpQ), std::end(tmpQ));
 			numOfQuestionsToInsert = 0;
 		}
-	
+
 	}
 	return questions;
 }
@@ -34,7 +34,7 @@ std::string QuestionGenerator::GenerateToken()
 	const std::string tokenRequestUrl = m_baseOnlineDatabaseUrl + tokenGeneratePath;
 
 	cpr::Response r = cpr::Get(cpr::Url{ tokenRequestUrl });
-	
+
 	//parse the response
 	json tokenResponse = json::parse(r.text);
 	uint8_t responseCode = tokenResponse.at("response_code").get<uint8_t>();
@@ -46,16 +46,16 @@ std::string QuestionGenerator::GenerateToken()
 	return std::string(tokenResponse["token"]);
 }
 
-std::vector<Question> QuestionGenerator::GetQuestionsFromOnlineDatabase(uint8_t numOfQuestions)
+std::vector<MultipleChoiceQuestion> QuestionGenerator::GetQuestionsFromOnlineDatabase(uint8_t numOfQuestions)
 {
 	//input validation
 	if (numOfQuestions > 50) {
 		throw std::runtime_error("Cannot generate more than 50 questions at a time");
 	}
-	std::vector<Question> generatedQuestions;
+	std::vector<MultipleChoiceQuestion> generatedQuestions;
 
 	//construct the url and get the json file with the questions
-	const std::string questionGeneratePath = "api.php?amount=" + std::to_string(numOfQuestions) +  "&type=multiple&token=" + m_token;
+	const std::string questionGeneratePath = "api.php?amount=" + std::to_string(numOfQuestions) + "&type=multiple&token=" + m_token;
 	const std::string questionRequestUrl = m_baseOnlineDatabaseUrl + questionGeneratePath;
 	cpr::Response r = cpr::Get(cpr::Url{ questionRequestUrl });
 
@@ -78,11 +78,10 @@ std::vector<Question> QuestionGenerator::GetQuestionsFromOnlineDatabase(uint8_t 
 		std::array<std::string, 3> incorrectAnswersArr = { incorrectAnswers[0], incorrectAnswers[1], incorrectAnswers[2] };
 
 		generatedQuestions.push_back(
-			Question(-1, 
-				question["question"], 
-				question["category"], 
-				Question::Type::MultipleChoice, 
-				question["correct_answer"], 
+			MultipleChoiceQuestion(-1,
+				question["question"],
+				question["category"],
+				question["correct_answer"],
 				incorrectAnswers));
 	}
 
