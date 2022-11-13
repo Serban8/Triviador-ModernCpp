@@ -8,6 +8,7 @@
 
 void databaseTest()
 {
+	//creating the database
 	using namespace sqlite_orm;
 	auto storage = make_storage("TRIV", make_table("MultipleChoiceQuestions",
 		make_column("id", &QuestionDatabase::m_id, autoincrement(), primary_key()),
@@ -28,57 +29,15 @@ void databaseTest()
 
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
-	QuestionGenerator qGen;
-	std::vector<MultipleChoiceQuestion> vect = qGen.GenerateQuestions();
-	std::vector<QuestionDatabase> vectDB;
-	for (const auto& q : vect)
-	{
-		vectDB.push_back(QuestionDatabase(q));
-	}
-	for (const auto& q : vectDB)
-	{
-		storage.insert(q);
-	}
+	//inserting questions in the database
+	QuestionDatabase::insertQuestions(storage);
+	//printing the contents
 	auto allQuestions = storage.get_all<QuestionDatabase>();
 	std::cout << "allQuestions (" << allQuestions.size() << "):" << std::endl;
 	for (auto& q : allQuestions)
 	{
 		std::cout << storage.dump(q) << std::endl;
 	}
-
-	std::cout << "\n";
-	std::cout << "\n";
-	std::cout << "\n";
-	std::cout << "\n";
-	std::cout << "\n";
-	std::cout << "\n";
-
-	YearQuestion yq(-1, "What year is it today?", "news", "2022");
-	std::vector<YearQuestion> vect1;
-	vect1.push_back(yq);
-	YearQuestion yq1(-1, "What was the year Max Verstappen won his first WDC?", "Sports", "2021");
-	vect1.push_back(yq1);
-	YearQuestion yq2(-1, "When did Michael Schumacher win is last WDC?", "Sports", "2004");
-	vect1.push_back(yq2);
-
-	std::vector<QuestionDatabase> vectDB1;
-	for (const auto& q : vect1)
-	{
-		vectDB1.push_back(QuestionDatabase(q));
-	}
-	for (const auto& q : vectDB1)
-	{
-		storage.insert(q);
-	}
-	std::string s = "Year";
-	auto allQuestions1 = storage.get_all<QuestionDatabase>(where(s == c(&QuestionDatabase::m_type)));
-	std::cout << "allQuestions (" << allQuestions1.size() << "):" << std::endl;
-	for (auto& q : allQuestions1)
-	{
-		std::cout << storage.dump(q) << std::endl;
-	}
-
-
 }
 
 int main()
@@ -127,6 +86,5 @@ int main()
 
 	//testing database adding of questions
 	databaseTest();
-	//databaseTestYear();
 	return 0;
 }
