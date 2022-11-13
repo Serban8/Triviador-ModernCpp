@@ -16,7 +16,18 @@ int main()
 
 	//QuestionGenerator test
 	QuestionGenerator qGen;
-	qGen.GenerateToken();
+	std::vector<Question> vect = qGen.GetQuestionsFromOnlineDatabase();
+
+	for (const Question& q : vect) {
+		std::cout <<std::endl<< "NEXT QUESTIONNNN" << std::endl;
+		std::cout << q.GetCategory() << std::endl <<
+			q.GetCorrectAnswer() << std::endl <<
+			q.GetIncorrectAnswers()[0] << std::endl <<
+			q.GetIncorrectAnswers()[1] << std::endl <<
+			q.GetIncorrectAnswers()[2] << std::endl <<
+			q.GetQuestion() << std::endl <<
+			static_cast<int>(q.GetType()) << std::endl;
+	}
 
 	return 0;
 }
