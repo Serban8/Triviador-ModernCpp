@@ -2,13 +2,12 @@
 #include<iostream>
 #include<vector>
 #include<string>
-#include"Game.h"
 
 class Player
 {
 public:
 
-	Player(int id, int points, int wins, int losses, std::string username, std::string password, std::vector<Game> gamesPlayed);
+	Player(int id, int points, int wins, int losses, std::string username, std::string password);
 
 	//getters
 	int GetId();
@@ -16,7 +15,7 @@ public:
 	int GetNumberOfWins();
 	int GetNumberOfLosses();
 	std::string GetUsername();
-	std::vector<Game> GetGamesPlayed();
+	std::string GetPassword();
 
 	//setters
 	void SetId(int id);
@@ -25,7 +24,6 @@ public:
 	void SetNumberOfLosses(int losses);
 	void SetUsername(std::string username);
 	void SetPassword(std::string password);
-	void SetGamesPlayed(std::vector<Game> games);
 
 private:
 
@@ -37,7 +35,6 @@ private:
 	std::string m_username;
 	std::string m_password;
 	
-	std::vector<Game> m_gamesPlayed;
 
 };
 

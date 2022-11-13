@@ -1,14 +1,14 @@
 #include "Player.h"
 
-Player::Player(int id, int points, int wins, int losses, std::string username, std::string password, std::vector<Game> gamesPlayed) :
+Player::Player(int id, int points, int wins, int losses, std::string username, std::string password) :
     m_id(id),
     m_points(points),
     m_numberOfWins(wins),
     m_numberOfLosses(losses),
     m_username(username),
-    m_password(password),
-    m_gamesPlayed(gamesPlayed)
+    m_password(password)
 {
+//empty
 }
 
 int Player::GetId()
@@ -36,10 +36,11 @@ std::string Player::GetUsername()
     return m_username;
 }
 
-std::vector<Game> Player::GetGamesPlayed()
+std::string Player::GetPassword()
 {
-    return m_gamesPlayed;
+    return m_password;
 }
+
 
 void Player::SetId(int id)
 {
@@ -69,9 +70,4 @@ void Player::SetUsername(std::string username)
 void Player::SetPassword(std::string password)
 {
     m_password = password;
-}
-
-void Player::SetGamesPlayed(std::vector<Game> games)
-{
-    m_gamesPlayed = games;
 }

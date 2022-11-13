@@ -3,9 +3,10 @@
 #include "MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
+#include"PlayerDatabase.h"
 #include"YearQuestion.h"
-
-
+#include"Game.h"
+#include"Player.h"
 void databaseTest()
 {
 	//creating the database
@@ -19,13 +20,11 @@ void databaseTest()
 		make_column("incorrectAnswer1", &QuestionDatabase::m_incorrectAnswer1),
 		make_column("incorrectAnswer2", &QuestionDatabase::m_incorrectAnswer2),
 		make_column("incorrectAnswer3", &QuestionDatabase::m_incorrectAnswer3)),
-		make_table("YearQuestions",
-			make_column("id", &QuestionDatabase::m_id, autoincrement(), primary_key()),
-			make_column("question", &QuestionDatabase::m_question),
-			make_column("category", &QuestionDatabase::m_category),
-			make_column("type", &QuestionDatabase::m_type),
-			make_column("correctAnswer", &QuestionDatabase::m_correctAnswer))
-	);
+		make_table("Players",
+			make_column("id",&PlayerDatabase::m_id , autoincrement(), primary_key()),
+			make_column("username",&PlayerDatabase::m_username),
+			make_column("password", &PlayerDatabase::m_password)
+	));
 
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
@@ -37,6 +36,14 @@ void databaseTest()
 	for (auto& q : allQuestions)
 	{
 		std::cout << storage.dump(q) << std::endl;
+	}
+	//inserting players into database
+	PlayerDatabase::insertPlayer(storage, Player(0, 10, 12, 13, "Marceel", "1234"));
+	PlayerDatabase::insertPlayer(storage, Player(-1, 10, 122, 133, "Mircea", "1234"));
+	auto allPlayers = storage.get_all<PlayerDatabase>();
+	for (auto& p : allPlayers)
+	{
+		std::cout << storage.dump(p) << std::endl;
 	}
 }
 

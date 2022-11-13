@@ -135,6 +135,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerDatabase.cpp" />
     <ClCompile Include="QuestionDatabase.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="YearQuestion.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerDatabase.h" />
     <ClInclude Include="QuestionDatabase.h" />
     <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="YearQuestion.h" />
