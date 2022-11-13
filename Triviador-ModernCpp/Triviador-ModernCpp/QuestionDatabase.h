@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include "MultipleChoiceQuestion.h"
+#include"YearQuestion.h"
 struct QuestionDatabase
 {
 	QuestionDatabase() {}
@@ -16,6 +17,13 @@ struct QuestionDatabase
 	{
 
 	}
+	QuestionDatabase(YearQuestion yq) :
+		m_id(yq.GetId()),
+		m_question(yq.GetQuestion()),
+		m_category(yq.GetCategory()),
+		m_type("Year"),
+		m_correctAnswer(yq.GetCorrectAnswer())
+	{ }
 	int m_id;
 	std::string m_question;
 	std::string m_category;
