@@ -4,7 +4,7 @@
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
 #include "PlayerDatabase.h"
-#include "YearQuestion.h"
+#include "NumberQuestion.h"
 #include "Game.h"
 #include "Player.h"
 
@@ -60,9 +60,9 @@ int main()
 	//	q.GetQuestion() << std::endl <<
 	//	static_cast<int>(q.GetType()) << std::endl;
 
-	//QuestionGenerator GetQuestionsFromOnlineDatabase method test
+	//QuestionGenerator GetMultipleChoiceQuestions method test
 	//QuestionGenerator qGen;
-	//std::vector<Question> vect = qGen.GetQuestionsFromOnlineDatabase(); //make method GetQuestionsFromOnlineDatabase public if you want to test
+	//std::vector<Question> vect = qGen.GetMultipleChoiceQuestions(); //make method GetMultipleChoiceQuestions public if you want to test
 
 	//for (const Question& q : vect) {
 	//	std::cout <<std::endl<< "NEXT QUESTIONNNN" << std::endl;
@@ -75,9 +75,9 @@ int main()
 	//		static_cast<int>(q.GetType()) << std::endl;
 	//}
 
-	//QuestionGenerator GenerateQuestions method test
+	//QuestionGenerator GenerateMultipleChoiceQuestions method test
 	/*QuestionGenerator qGen;
-	std::vector<Question> vect = qGen.GenerateQuestions(123);
+	std::vector<Question> vect = qGen.GenerateMultipleChoiceQuestions(123);
 
 	std::cout << "Num of questions: " << vect.size() << std::endl;
 
@@ -94,5 +94,9 @@ int main()
 
 	//testing database adding of questions
 	databaseTest();
+
+	QuestionGenerator qg;
+
+	qg.GenerateNumberAnswerQuestions();
 	return 0;
 }

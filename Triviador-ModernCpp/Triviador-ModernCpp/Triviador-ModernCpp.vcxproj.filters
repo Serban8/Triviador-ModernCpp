@@ -24,7 +24,7 @@
     <ClCompile Include="QuestionGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="YearQuestion.cpp">
+    <ClCompile Include="NumberQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AbstractQuestion.cpp">
@@ -53,7 +53,7 @@
     <ClInclude Include="AbstractQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="YearQuestion.h">
+    <ClInclude Include="NumberQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">

@@ -5,6 +5,7 @@
 #include <cpr/cpr.h>
 
 #include "MultipleChoiceQuestion.h"
+#include "NumberQuestion.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -25,12 +26,15 @@ class QuestionGenerator
 {
 public:
 	QuestionGenerator();
-	std::vector<MultipleChoiceQuestion> GenerateQuestions(int numberOfQuestions = 100);
+	std::vector<MultipleChoiceQuestion> GenerateMultipleChoiceQuestions(int numberOfQuestions = 100);
+	std::vector<NumberQuestion> GenerateNumberAnswerQuestions(int numberOfQuestions = 100);
 
 private:
-	const std::string m_baseOnlineDatabaseUrl = "https://opentdb.com/";
+	const std::string m_baseMultipleChoiceQuestionDatabaseUrl = "https://opentdb.com/";
+	const std::string m_baseNumberAnswerQuestionDatabaseUrl = "https://the-trivia-api.com/";
 	std::string m_token;
 	std::string GenerateToken();
-	std::vector<MultipleChoiceQuestion> GetQuestionsFromOnlineDatabase(uint8_t numOfQuestions = 50);
+	std::vector<MultipleChoiceQuestion> GetMultipleChoiceQuestions(uint8_t numOfQuestions = 50);
+	std::vector<NumberQuestion> GetNumberAnswerQuestions(uint8_t numOfQuestions = 30);
 
 };

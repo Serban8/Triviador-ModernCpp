@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "MultipleChoiceQuestion.h"
-#include "YearQuestion.h"
+#include "NumberQuestion.h"
 #include "QuestionGenerator.h"
 
 struct QuestionDatabase
@@ -20,7 +20,7 @@ struct QuestionDatabase
 	{
 
 	}
-	QuestionDatabase(YearQuestion yq) :
+	QuestionDatabase(NumberQuestion yq) :
 		m_id(yq.GetId()),
 		m_question(yq.GetQuestion()),
 		m_category(yq.GetCategory()),
@@ -45,14 +45,14 @@ namespace database {
 		template<class T> void static insertQuestions(T& storage)
 		{
 			QuestionGenerator qGen;
-			std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateQuestions();
-			std::vector<YearQuestion> yearQuestions;
+			std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
+			std::vector<NumberQuestion> yearQuestions;
 			//manually added questions for testing
-			YearQuestion yq(-1, "What year is it today?", "news", "2022");
+			NumberQuestion yq(-1, "What year is it today?", "news", "2022");
 			yearQuestions.push_back(yq);
-			YearQuestion yq1(-1, "What was the year Max Verstappen won his first WDC?", "Sports", "2021");
+			NumberQuestion yq1(-1, "What was the year Max Verstappen won his first WDC?", "Sports", "2021");
 			yearQuestions.push_back(yq1);
-			YearQuestion yq2(-1, "When did Michael Schumacher win is last WDC?", "Sports", "2004");
+			NumberQuestion yq2(-1, "When did Michael Schumacher win is last WDC?", "Sports", "2004");
 			yearQuestions.push_back(yq2);
 			//
 

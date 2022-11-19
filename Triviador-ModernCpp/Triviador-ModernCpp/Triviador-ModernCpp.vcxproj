@@ -136,7 +136,7 @@
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
-    <ClCompile Include="YearQuestion.cpp" />
+    <ClCompile Include="NumberQuestion.cpp" />
     <ClCompile Include="Triviador-ModernCpp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +148,7 @@
     <ClInclude Include="PlayerDatabase.h" />
     <ClInclude Include="QuestionDatabase.h" />
     <ClInclude Include="QuestionGenerator.h" />
-    <ClInclude Include="YearQuestion.h" />
+    <ClInclude Include="NumberQuestion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
