@@ -7,6 +7,13 @@ class AbstractQuestion {
 public:
 
 	//getters
+	AbstractQuestion(int id, std::string question, std::string category) :
+		m_id(id),
+		m_question(question),
+		m_category(category)
+	{
+		//empty
+	}
 	AbstractQuestion(int id, std::string question, std::string category, std::string correctAnswer) :
 		m_id(id),
 		m_question(question),

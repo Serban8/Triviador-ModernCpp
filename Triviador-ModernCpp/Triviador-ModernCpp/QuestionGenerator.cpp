@@ -27,16 +27,16 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GenerateMultipleChoiceQue
 	return questions;
 }
 
-std::vector<NumberQuestion> QuestionGenerator::GenerateNumberAnswerQuestions(int numberOfQuestions)
-{
-	//we can get a maximum of 30 questions from this online database.
-	if (numberOfQuestions < 30) {
-		return GetNumberAnswerQuestions(numberOfQuestions);
-	}
-	else {
-		return GetNumberAnswerQuestions();
-	}
-}
+//std::vector<NumberQuestion> QuestionGenerator::GenerateNumberAnswerQuestions(int numberOfQuestions)
+//{
+//	//we can get a maximum of 30 questions from this online database.
+//	if (numberOfQuestions < 30) {
+//		return GetNumberAnswerQuestions(numberOfQuestions);
+//	}
+//	else {
+//		return GetNumberAnswerQuestions();
+//	}
+//}
 
 std::string QuestionGenerator::GenerateToken()
 {
@@ -98,38 +98,38 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GetMultipleChoiceQuestion
 
 	return generatedQuestions;
 }
-
-std::vector<NumberQuestion> QuestionGenerator::GetNumberAnswerQuestions(uint8_t numOfQuestions)
-{
-
-	//TODO: input validation based on max number of questions with that tag that exist in the database
-	if (numOfQuestions > 30) {
-		throw std::runtime_error("Cannot generate more than 30 questions");
-	}
-	std::vector<NumberQuestion> generatedQuestions;
-
-	//construct the url and get the json file with the questions
-	const std::string questionGeneratePath = "api/questions?limit=" + std::to_string(numOfQuestions) + "&tags=numbers";
-	const std::string questionRequestUrl = m_baseNumberAnswerQuestionDatabaseUrl + questionGeneratePath;
-	cpr::Response r = cpr::Get(cpr::Url{ questionRequestUrl });
-
-	json questions = json::parse(r.text);
-
-	for (auto& it : questions.items()) {
-		json question = it.value();
-		json incorrectAnswers = question["incorrectAnswers"];
-
-		std::array<std::string, 3> incorrectAnswersArr = { incorrectAnswers[0], incorrectAnswers[1], incorrectAnswers[2] };
-
-		//TODO: create object numberQuestion and add it to the vector
-		//warning: check for answers like "Two" "Eight" ...
-		std::cout << question["category"] << "\n" << question["question"] << "\n" << "Correct ans: " << question["correctAnswer"] << "\nIncorrect ans: ";
-		for (const auto& elem : incorrectAnswersArr) {
-			std::cout << elem << " ";
-		}
-
-		std::cout << "\n\n\n";
-	}
-
-	return generatedQuestions;
-}
+//
+//std::vector<NumberQuestion> QuestionGenerator::GetNumberAnswerQuestions(uint8_t numOfQuestions)
+//{
+//
+//	//TODO: input validation based on max number of questions with that tag that exist in the database
+//	if (numOfQuestions > 30) {
+//		throw std::runtime_error("Cannot generate more than 30 questions");
+//	}
+//	std::vector<NumberQuestion> generatedQuestions;
+//
+//	//construct the url and get the json file with the questions
+//	const std::string questionGeneratePath = "api/questions?limit=" + std::to_string(numOfQuestions) + "&tags=numbers";
+//	const std::string questionRequestUrl = m_baseNumberAnswerQuestionDatabaseUrl + questionGeneratePath;
+//	cpr::Response r = cpr::Get(cpr::Url{ questionRequestUrl });
+//
+//	json questions = json::parse(r.text);
+//
+//	for (auto& it : questions.items()) {
+//		json question = it.value();
+//		json incorrectAnswers = question["incorrectAnswers"];
+//
+//		std::array<std::string, 3> incorrectAnswersArr = { incorrectAnswers[0], incorrectAnswers[1], incorrectAnswers[2] };
+//
+//		//TODO: create object numberQuestion and add it to the vector
+//		//warning: check for answers like "Two" "Eight" ...
+//		std::cout << question["category"] << "\n" << question["question"] << "\n" << "Correct ans: " << question["correctAnswer"] << "\nIncorrect ans: ";
+//		for (const auto& elem : incorrectAnswersArr) {
+//			std::cout << elem << " ";
+//		}
+//
+//		std::cout << "\n\n\n";
+//	}
+//
+//	return generatedQuestions;
+//}

@@ -124,6 +124,9 @@ int main()
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
-	gameTest();
+	//gameTest();
+	std::array<std::string, 3> numericIncorrectAnswers = { "2000","2001","2002" };
+	NumberQuestion<int> nq(-1, "What was the year Max Verstappen won his first WDC ? ", "Sports", "2021", numericIncorrectAnswers);
+	std::cout << std::endl << nq.GetCorrectAnswer() << " " << nq.GetQuestion();
 	return 0;
 }
