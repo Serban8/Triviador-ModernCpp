@@ -9,7 +9,6 @@ struct QuestionDatabase
 
 	QuestionDatabase() {}
 	QuestionDatabase(MultipleChoiceQuestion q) :
-		m_id(q.GetId()),
 		m_question(q.GetQuestion()),
 		m_category(q.GetCategory()),
 		m_type("MultipleChoice"),
@@ -22,7 +21,6 @@ struct QuestionDatabase
 	}
 	//used int for testing we will need to use std::variant
 	QuestionDatabase(NumberQuestion<int> yq) :
-		m_id(yq.GetId()),
 		m_question(yq.GetQuestion()),
 		m_category(yq.GetCategory()),
 		m_type("Year")
@@ -46,15 +44,7 @@ namespace database {
 		{
 			QuestionGenerator qGen;
 			std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
-			//std::vector<NumberQuestion> yearQuestions;
-			////manually added questions for testing
-			//NumberQuestion yq(-1, "What year is it today?", "news", "2022");
-			//yearQuestions.push_back(yq);
-			//NumberQuestion yq1(-1, "What was the year Max Verstappen won his first WDC?", "Sports", "2021");
-			//yearQuestions.push_back(yq1);
-			//NumberQuestion yq2(-1, "When did Michael Schumacher win is last WDC?", "Sports", "2004");
-			//yearQuestions.push_back(yq2);
-			////
+			//std::vector<NumberQuestion> numberQuestions = qGen.GenerateNumberQuestions();
 
 			std::vector<QuestionDatabase> vectDB;
 			//adding multiple choice questions
@@ -66,8 +56,8 @@ namespace database {
 			{
 				storage.insert(q);
 			}
-			//adding year questions
-			/*for (const auto& q : yearQuestions)
+			//adding number questions
+			/*for (const auto& q : numberQuestions)
 			{
 				vectDB.push_back(QuestionDatabase(q));
 			}

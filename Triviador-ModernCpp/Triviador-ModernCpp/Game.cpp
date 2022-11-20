@@ -12,21 +12,21 @@ Game::Game(std::vector<Player> players) :
 	//m_numberQuestions = qg.GenerateNumberQuestions(50);
 	switch (players.size()) {
 	case 2:
-		m_map.resize(3);
+		m_map.reserve(3);
 		for (auto& line : m_map) {
-			line.resize(3);
+			line.reserve(3);
 		}
 		break;
 	case 3:
-		m_map.resize(5);
+		m_map.reserve(5);
 		for (auto& line : m_map) {
-			line.resize(3);
+			line.reserve(3);
 		}
 		break;
 	case 4:
-		m_map.resize(6);
+		m_map.reserve(6);
 		for (auto& line : m_map) {
-			line.resize(4);
+			line.reserve(4);
 		}
 		break;
 	default:

@@ -74,6 +74,13 @@ void gameTest() {
 
 }
 
+void questionTest()
+{
+	std::array<std::string, 3> numericIncorrectAnswers = { "2000","2001","2002" };
+	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", "2021", numericIncorrectAnswers);
+	std::cout << std::endl << nq.GetCorrectAnswer() << " " << nq.GetQuestion();
+}
+
 int main()
 {
 	//Question test
@@ -125,8 +132,6 @@ int main()
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	//gameTest();
-	std::array<std::string, 3> numericIncorrectAnswers = { "2000","2001","2002" };
-	NumberQuestion<int> nq(-1, "What was the year Max Verstappen won his first WDC ? ", "Sports", "2021", numericIncorrectAnswers);
-	std::cout << std::endl << nq.GetCorrectAnswer() << " " << nq.GetQuestion();
+	questionTest();
 	return 0;
 }

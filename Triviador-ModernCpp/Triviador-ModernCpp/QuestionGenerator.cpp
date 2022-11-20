@@ -89,7 +89,7 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GetMultipleChoiceQuestion
 		std::array<std::string, 3> incorrectAnswersArr = { incorrectAnswers[0], incorrectAnswers[1], incorrectAnswers[2] };
 
 		generatedQuestions.push_back(
-			MultipleChoiceQuestion(-1,
+			MultipleChoiceQuestion(
 				question["question"],
 				question["category"],
 				question["correct_answer"],

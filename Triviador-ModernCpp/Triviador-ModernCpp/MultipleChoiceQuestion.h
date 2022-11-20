@@ -6,18 +6,21 @@
 class MultipleChoiceQuestion : public AbstractQuestion {
 
 public:
-	MultipleChoiceQuestion(int id, std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
-		AbstractQuestion(id, question, category, correctAnswer),
+	MultipleChoiceQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
+		AbstractQuestion(question, category),
+		m_correctAnswer(correctAnswer),
 		m_incorrectAnswers(incorrectAnswers)
 	{
 		//empty
 	}
 
 	//getters
+	std::string GetCorrectAnswer() const;
 	std::array<std::string, 3> GetIncorrectAnswers() const;
 
 private:
-
+	std::string m_correctAnswer;
 	std::array<std::string, 3> m_incorrectAnswers;
 
 };
+

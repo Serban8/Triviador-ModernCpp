@@ -7,8 +7,8 @@ class NumberQuestion : public AbstractQuestion
 {
 public:
 
-	NumberQuestion(int id, std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
-		AbstractQuestion(id, question, category)
+	NumberQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
+		AbstractQuestion(question, category)
 	{
 		std::stringstream correctAns(correctAnswer);
 		std::stringstream incorrectAns1(incorrectAnswers[0]);
@@ -21,8 +21,8 @@ public:
 	}
 
 	//getters
-	std::array<N, 3> GetIncorrectAnswers();
-	N GetCorrectAnswer();
+	std::array<N, 3> GetIncorrectAnswers() const;
+	N GetCorrectAnswer() const;
 private:
 
 	N m_correctAnswer;
@@ -30,12 +30,12 @@ private:
 
 };
 template<typename N>
-N NumberQuestion<N>::GetCorrectAnswer()
+N NumberQuestion<N>::GetCorrectAnswer() const
 {
 	return m_correctAnswer;
 }
 template<typename N>
-std::array<N, 3> NumberQuestion<N>::GetIncorrectAnswers()
+std::array<N, 3> NumberQuestion<N>::GetIncorrectAnswers() const
 {
 	return m_incorrectAnswers;
 }
