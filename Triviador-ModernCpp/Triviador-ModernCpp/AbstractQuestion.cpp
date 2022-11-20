@@ -9,3 +9,8 @@ std::string AbstractQuestion::GetCategory() const
 {
 	return m_category;
 }
+
+void AbstractQuestion::PrintQuestion() const
+{
+	std::cout << m_question << std::endl;
+}

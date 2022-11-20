@@ -16,9 +16,9 @@ public:
 	Player(std::string username);
 
 	//getters
-	int GetPoints();
-	std::string GetUsername();
-	bool IsActive();
+	int GetPoints() const;
+	std::string GetUsername() const;
+	bool IsActive() const;
 
 	//setters
 	void SetPoints(int points);

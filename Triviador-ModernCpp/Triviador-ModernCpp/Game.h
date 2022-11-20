@@ -19,6 +19,11 @@ public:
 
 	//methods
 	void AddInactivePlayer(Player player);
+	void PlayGame();
+
+private:
+
+	void ChoosingBases();
 
 private:
 

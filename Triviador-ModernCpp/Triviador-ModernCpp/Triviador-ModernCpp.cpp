@@ -68,13 +68,14 @@ void gameTest() {
 		aq.push_back(static_cast<AbstractQuestion*>(&question));
 	}
 
-	for (auto& question : aq) {
+	/*for (auto& question : aq) {
 
 		std::cout << question->GetQuestion()<<"\n";
-	}
+	}*/
 	Player p("marcel");
 	std::vector<Player> player = { p,p };
 	Game topG(player);
+	topG.PlayGame();
 }
 
 void questionTest()

@@ -18,7 +18,7 @@ Game::Game(std::vector<Player> players) :
 	m_numberQuestions.push_back(nq);
 	m_numberQuestions.push_back(nq2);
 	m_numberQuestions.push_back(nq3);
-	for (auto& q : m_numberQuestions)
+	/*for (auto& q : m_numberQuestions)
 	{
 		if (std::holds_alternative<NumberQuestion<int>>(q))
 		{
@@ -32,7 +32,7 @@ Game::Game(std::vector<Player> players) :
 			std::cout << x2.GetQuestion() << " " << x2.GetCorrectAnswer() << std::endl;
 		}
 		
-	}
+	}*/
 }
 
 
@@ -50,4 +50,32 @@ void Game::AddInactivePlayer(Player player)
 	}
 
 	m_inactivePlayers.push_back(player);
+}
+
+void Game::PlayGame()
+{
+	for (const auto &player : m_activePlayers)
+	{
+		std::cout << "Welcome, " << player.GetUsername()<<", it's in the game!" << std::endl;
+	}
+	ChoosingBases();
+}
+
+void Game::ChoosingBases()
+{
+	std::cout << m_map<<std::endl;
+	std::cout << "Question: \n\n";
+	auto q = m_numberQuestions.back();
+	m_numberQuestions.pop_back();
+
+	//printing the question:
+	if (std::holds_alternative<NumberQuestion<int>>(q))
+	{
+		auto qInt = std::get<NumberQuestion<int>>(q);
+		qInt.PrintQuestion();
+	}
+	else {
+		auto qFloat = std::get<NumberQuestion<float>>(q);
+		qFloat.PrintQuestion();
+	}
 }

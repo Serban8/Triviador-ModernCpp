@@ -7,6 +7,8 @@ class NumberQuestion : public AbstractQuestion
 {
 public:
 
+	NumberQuestion() {}
+
 	NumberQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
 		AbstractQuestion(question, category)
 	{
@@ -23,6 +25,7 @@ public:
 	//getters
 	std::array<N, 3> GetIncorrectAnswers() const;
 	N GetCorrectAnswer() const;
+	
 private:
 
 	N m_correctAnswer;

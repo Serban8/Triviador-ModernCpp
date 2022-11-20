@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <array>
+#include <iostream>
 
 class AbstractQuestion {
 
@@ -13,8 +14,10 @@ public:
 	}
 
 	//getters
-	std::string GetQuestion() const;
-	std::string GetCategory() const;
+	virtual std::string GetQuestion() const;
+	virtual std::string GetCategory() const;
+
+	virtual void PrintQuestion() const;
 
 protected:
 	std::string m_question;

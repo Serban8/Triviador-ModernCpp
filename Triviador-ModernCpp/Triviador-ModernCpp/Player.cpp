@@ -5,17 +5,17 @@ Player::Player(std::string username):
 {
 }
 
-int Player::GetPoints()
+int Player::GetPoints() const
 {
 	return m_points;
 }
 
-std::string Player::GetUsername()
+std::string Player::GetUsername() const
 {
 	return m_username;
 }
 
-bool Player::IsActive()
+bool Player::IsActive() const
 {
 	return m_isActive;
 }
