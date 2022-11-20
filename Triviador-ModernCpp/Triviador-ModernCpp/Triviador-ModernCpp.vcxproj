@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="AbstractQuestion.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="AbstractQuestion.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerDatabase.h" />

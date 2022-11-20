@@ -4,7 +4,7 @@
 #include "MultipleChoiceQuestion.h"
 #include "NumberQuestion.h"
 #include "Player.h"
-#include "Region.h"
+#include "Map.h"
 
 class Game
 {
@@ -24,7 +24,7 @@ private:
 	std::vector<Player> m_inactivePlayers;
 	//std::vector<NumberQuestion> m_numberQuestions;
 	std::vector<MultipleChoiceQuestion> m_multipleChoiceQuestions;
-	std::vector<std::vector<Region>> m_map;
+	Map m_map;
 
 };
 

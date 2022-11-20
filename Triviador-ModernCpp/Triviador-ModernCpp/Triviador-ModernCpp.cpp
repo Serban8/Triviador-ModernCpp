@@ -7,6 +7,7 @@
 #include "NumberQuestion.h"
 #include "Game.h"
 #include "Player.h"
+#include "Map.h"
 
 void databaseTest()
 {
@@ -71,7 +72,9 @@ void gameTest() {
 
 		std::cout << question->GetQuestion()<<"\n";
 	}
-
+	Player p("marcel");
+	std::vector<Player> player = { p,p };
+	Game topG(player);
 }
 
 void questionTest()
@@ -81,6 +84,13 @@ void questionTest()
 	std::cout << std::endl << nq.GetCorrectAnswer() << " " << nq.GetQuestion();
 }
 
+void mapTest()
+{
+	Map m1(2);
+	Map m2(3);
+	Map m3(4);
+	//Map m6(6);
+}
 int main()
 {
 	//Question test
@@ -131,7 +141,8 @@ int main()
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
-	//gameTest();
-	questionTest();
+	gameTest();
+	//questionTest();
+	mapTest();
 	return 0;
 }

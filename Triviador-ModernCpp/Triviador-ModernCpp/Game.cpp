@@ -2,36 +2,14 @@
 #include "QuestionGenerator.h"
 
 Game::Game(std::vector<Player> players) :
-	m_activePlayers(players)
-	
+	m_activePlayers(players),
+	m_map(Map(players.size()))
 {
 	//getting questions directly from online database;
 	//in future we need to change this to get them from our local database;
 	QuestionGenerator qg;
 	m_multipleChoiceQuestions = qg.GenerateMultipleChoiceQuestions(50);
 	//m_numberQuestions = qg.GenerateNumberQuestions(50);
-	switch (players.size()) {
-	case 2:
-		m_map.reserve(3);
-		for (auto& line : m_map) {
-			line.reserve(3);
-		}
-		break;
-	case 3:
-		m_map.reserve(5);
-		for (auto& line : m_map) {
-			line.reserve(3);
-		}
-		break;
-	case 4:
-		m_map.reserve(6);
-		for (auto& line : m_map) {
-			line.reserve(4);
-		}
-		break;
-	default:
-		throw std::runtime_error("Number of players has to be between 2 and 4.");
-	}
 }
 
 
