@@ -54,6 +54,26 @@ void playerTest() {
 	p.useAdvantage(Player::Advatage::FiftyFifty);
 }
 
+void gameTest() {
+
+	
+	QuestionGenerator qg;
+	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
+	
+	std::vector<AbstractQuestion*> aq;
+
+	for (auto& question : mq) {
+
+		aq.push_back(static_cast<AbstractQuestion*>(&question));
+	}
+
+	for (auto& question : aq) {
+
+		std::cout << question->GetQuestion()<<"\n";
+	}
+
+}
+
 int main()
 {
 	//Question test
@@ -99,10 +119,11 @@ int main()
 	}*/
 
 	//testing database adding of questions
-	databaseTest();
+	//databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
-	playerTest();
+	//playerTest();
+	gameTest();
 	return 0;
 }

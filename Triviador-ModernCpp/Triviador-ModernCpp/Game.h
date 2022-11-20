@@ -8,26 +8,25 @@ class Game
 {
 public:
 
-	Game(int id, std::string dateAndTime, std::vector<Player> players, std::vector<AbstractQuestion*> questions);
+	Game(std::vector<Player> players, std::vector<AbstractQuestion*> questions);
 
 	//getters
-	int GetId();
-	std::string GetDateAndTime();
 	std::vector<Player> GetPlayers();
 	std::vector<AbstractQuestion*> GetQuestions();
 
 	//setters
-	void SetId(int id);
-	void SetDateAndTime(std::string date);
-	void SetPlayers(std::vector<Player> players);
 	void SetQuestions(std::vector<AbstractQuestion*> questions);
+
+	//methods
+	void AddInactivePlayer(Player player);
 
 private:
 
 	int m_id;
 
 	std::string m_dateAndTime;
-	std::vector<Player> m_players;
+	std::vector<Player> m_activePlayers;
+	std::vector<Player> m_inactivePlayers;
 	std::vector<AbstractQuestion*> m_questions;
 
 	//Map m_map;

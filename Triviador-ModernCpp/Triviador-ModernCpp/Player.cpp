@@ -34,3 +34,8 @@ void Player::useAdvantage(Advatage advantage)
 {
 	m_advantages.at(static_cast<uint8_t>(advantage)).second = true;
 }
+
+bool operator==(const Player& p1, const Player& p2)
+{
+	return p1.m_username == p2.m_username;
+}

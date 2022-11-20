@@ -26,6 +26,8 @@ public:
 	//methods
 	void useAdvantage(Advatage advantage);
 
+	friend bool operator==(const Player& p1, const Player& p2);
+
 private:
 	int m_points = 0;
 	bool m_isActive = true;
