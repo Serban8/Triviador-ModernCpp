@@ -1,37 +1,42 @@
 #pragma once
-#include <vector>
 #include <string>
+#include <array>
 
 class Player
 {
 public:
+	enum class Advatage :uint8_t {
+		FiftyFifty,
+		ChooseAnswer,
+		SuggestAnswer
+	};
 
-	Player(int id, int points, int wins, int losses, std::string username, std::string password);
+public:
+	Player(std::string username);
 
 	//getters
-	int GetId();
 	int GetPoints();
-	int GetNumberOfWins();
-	int GetNumberOfLosses();
 	std::string GetUsername();
-	std::string GetPassword();
+	bool IsActive();
 
 	//setters
-	void SetId(int id);
 	void SetPoints(int points);
-	void SetNumberOfWins(int wins);
-	void SetNumberOfLosses(int losses);
-	void SetUsername(std::string username);
-	void SetPassword(std::string password);
+	void SetActive(bool isActive);
+
+	//methods
+	void useAdvantage(Advatage advantage);
 
 private:
-
-	int m_id;
-	int m_points;
-	int m_numberOfWins;
-	int m_numberOfLosses;
-
+	int m_points = 0;
+	bool m_isActive = true;
 	std::string m_username;
-	std::string m_password;
+
+	//array of advantages - pair with advantage and status: used = true, not used = false
+	std::array<std::pair<Advatage, bool>, 3> m_advantages =
+	{ {
+		{Advatage::FiftyFifty, false},
+		{Advatage::ChooseAnswer, false},
+		{Advatage::SuggestAnswer, false}
+	} };
 
 };

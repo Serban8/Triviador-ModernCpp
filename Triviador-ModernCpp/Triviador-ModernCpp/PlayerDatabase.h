@@ -7,9 +7,7 @@ struct PlayerDatabase
 	PlayerDatabase() {}
 
 	PlayerDatabase(Player p) :
-		m_id(p.GetId()),
-		m_username(p.GetUsername()),
-		m_password(p.GetPassword())
+		m_username(p.GetUsername())
 	{
 		//empty
 	}
@@ -17,7 +15,7 @@ struct PlayerDatabase
 	int m_id;
 
 	std::string m_username;
-	std::string m_password;
+	std::string m_password = "tmpass123";
 
 	//TODO: create table GamesPlayers to solve many to many relationship between player table and game table.
 

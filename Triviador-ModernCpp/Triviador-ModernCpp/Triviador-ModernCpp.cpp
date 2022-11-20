@@ -39,13 +39,19 @@ void databaseTest()
 		std::cout << storage.dump(q) << std::endl;
 	}
 	//inserting players into database
-	database::player::insertPlayer(storage, Player(0, 100, 12, 13, "Marceel", "1234"));
-	database::player::insertPlayer(storage, Player(-1, 1000, 1122, 1133, "Mircea", "parola123"));
+	database::player::insertPlayer(storage, Player("Marceel"));
+	database::player::insertPlayer(storage, Player("Mircea"));
 	auto allPlayers = storage.get_all<PlayerDatabase>();
 	for (auto& p : allPlayers)
 	{
 		std::cout << storage.dump(p) << std::endl;
 	}
+}
+
+void playerTest() {
+	Player p("marcel");
+	//use debugger
+	p.useAdvantage(Player::Advatage::FiftyFifty);
 }
 
 int main()
@@ -95,8 +101,8 @@ int main()
 	//testing database adding of questions
 	databaseTest();
 
-	QuestionGenerator qg;
-
-	qg.GenerateNumberAnswerQuestions();
+	//QuestionGenerator qg;
+	//qg.GenerateNumberAnswerQuestions();
+	playerTest();
 	return 0;
 }
