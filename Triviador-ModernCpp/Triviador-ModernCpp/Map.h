@@ -11,6 +11,8 @@ public:
 	Map(const uint8_t &numberOfPlayers);
 
 	Region& operator[](const Position& pos);
+	const Region& operator[](const Position& pos) const;
+	friend std::ostream& operator<<(std::ostream& os,const Map &map);
 
 private:
 	int m_height;

@@ -90,6 +90,7 @@ void mapTest()
 	Map m2(3);
 	Map m3(4);
 	//Map m6(6);
+	std::cout << m3;
 }
 int main()
 {

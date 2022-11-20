@@ -12,6 +12,7 @@ public:
 	};
 
 public:
+	Player(){}
 	Player(std::string username);
 
 	//getters

@@ -22,17 +22,17 @@ void Region::SetOwner(Player owner)
 	m_owner = owner;
 }
 
-int Region::GetScore()
+int Region::GetScore() const
 {
 	return m_score;
 }
 
-Player Region::GetOwner()
+Player Region::GetOwner() const 
 {
 	return m_owner;
 }
 
-Region::Type Region::GetType()
+Region::Type Region::GetType() const
 {
 	return m_type;
 }

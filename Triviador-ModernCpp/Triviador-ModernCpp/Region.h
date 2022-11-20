@@ -13,6 +13,7 @@ public:
 
 public:
 	//constructor
+	Region() {}
 	Region(Player owner, Type type = Type::Territory, int score = 100);
 
 	//setters
@@ -20,9 +21,9 @@ public:
 	void SetOwner(Player owner);
 
 	//getters
-	int GetScore();
-	Player GetOwner();
-	Type GetType();
+	int GetScore() const;
+	Player GetOwner() const;
+	Type GetType() const;
 
 	//methods
 	//
