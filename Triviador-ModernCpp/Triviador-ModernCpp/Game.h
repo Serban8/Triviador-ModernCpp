@@ -23,6 +23,7 @@ public:
 
 private:
 
+	void DetermineWinners();
 	void ChoosingBases();
 
 private:

@@ -73,7 +73,10 @@ void gameTest() {
 		std::cout << question->GetQuestion()<<"\n";
 	}*/
 	Player p("marcel");
-	std::vector<Player> player = { p,p };
+	p.SetPoints(120);
+	Player p2("Augustin");
+	p2.SetPoints(70);
+	std::vector<Player> player = { p,p2 };
 	Game topG(player);
 	topG.PlayGame();
 }

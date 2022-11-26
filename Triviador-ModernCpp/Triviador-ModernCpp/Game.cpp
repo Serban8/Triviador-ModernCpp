@@ -58,7 +58,33 @@ void Game::PlayGame()
 	{
 		std::cout << "Welcome, " << player.GetUsername()<<", it's in the game!" << std::endl;
 	}
+
 	ChoosingBases();
+	DetermineWinners();
+}
+
+void Game::DetermineWinners()
+{
+	std::vector<std::pair<std::string, int>> m_pointsVector;
+
+	for (const auto& player : m_activePlayers) {
+		std::pair<std::string, int> x;
+		x = std::make_pair(player.GetUsername(), player.GetPoints());
+		m_pointsVector.push_back(x);
+	}
+
+	std::sort(m_pointsVector.begin(), m_pointsVector.end()/*, std::greater<int>()*/);
+
+	//for (int i = 0; i < m_pointsVector.size(); i++) {
+	//	std::cout << i + 1 << " : " << m_pointsVector[i].first << " " << m_pointsVector[i].second << "\n";
+	//}
+	//std::cout << "\n";
+
+	for (int i = m_pointsVector.size() - 1; i >= 0; i--) {
+		std::cout << i + 1 << " : " << m_pointsVector[i].first << " " << m_pointsVector[i].second << "\n";
+
+	}
+
 }
 
 void Game::ChoosingBases()
