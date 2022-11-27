@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <sqlite_orm/sqlite_orm.h>
+#include <sqlite_orm/sqlite_orm.h>
 #include "MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
@@ -8,46 +8,88 @@
 #include "Game.h"
 #include "Player.h"
 #include "Map.h"
+#include "GameDatabase.h"
+#include"GameQuestionDatabase.h"
+#include"PlayerGameDatabase.h"
 
-//void databaseTest()
-//{
-//	//creating the database
-//	using namespace sqlite_orm;
-//	auto storage = make_storage("TRIV", make_table("MultipleChoiceQuestions",
-//		make_column("id", &QuestionDatabase::m_id, autoincrement(), primary_key()),
-//		make_column("question", &QuestionDatabase::m_question),
-//		make_column("category", &QuestionDatabase::m_category),
-//		make_column("type", &QuestionDatabase::m_type),
-//		make_column("correctAnswer", &QuestionDatabase::m_correctAnswer),
-//		make_column("incorrectAnswer1", &QuestionDatabase::m_incorrectAnswer1),
-//		make_column("incorrectAnswer2", &QuestionDatabase::m_incorrectAnswer2),
-//		make_column("incorrectAnswer3", &QuestionDatabase::m_incorrectAnswer3)),
-//		make_table("Players",
-//			make_column("id", &PlayerDatabase::m_id, autoincrement(), primary_key()),
-//			make_column("username", &PlayerDatabase::m_username),
-//			make_column("password", &PlayerDatabase::m_password)
-//		));
-//
-//	storage.sync_schema();
-//	storage.remove_all<QuestionDatabase>();
-//	//inserting questions in the database
-//	database::question::insertQuestions(storage);
-//	//printing the contents
-//	auto allQuestions = storage.get_all<QuestionDatabase>();
-//	std::cout << "allQuestions (" << allQuestions.size() << "):" << std::endl;
-//	for (auto& q : allQuestions)
-//	{
-//		std::cout << storage.dump(q) << std::endl;
-//	}
-//	//inserting players into database
-//	database::player::insertPlayer(storage, Player("Marceel"));
-//	database::player::insertPlayer(storage, Player("Mircea"));
-//	auto allPlayers = storage.get_all<PlayerDatabase>();
-//	for (auto& p : allPlayers)
-//	{
-//		std::cout << storage.dump(p) << std::endl;
-//	}
-//}
+inline auto createStorage(const std::string& filename)
+{
+	using namespace sqlite_orm;
+	return make_storage(
+		filename,
+		make_table("Players",
+			make_column("username", &PlayerDatabase::m_username, primary_key()),//or player, need to see
+			make_column("password", &PlayerDatabase::m_password)
+			//instead of an column we will make a query to get no. of  games played
+		),
+		make_table("Questions",
+			make_column("id", &QuestionDatabase::m_id, autoincrement(), primary_key()),
+			make_column("question", &QuestionDatabase::m_question),
+			make_column("category", &QuestionDatabase::m_category),
+			make_column("type", &QuestionDatabase::m_type),
+			make_column("correctAnswer", &QuestionDatabase::m_correctAnswer),
+			make_column("incorrectAnswer1", &QuestionDatabase::m_incorrectAnswer1),
+			make_column("incorrectAnswer2", &QuestionDatabase::m_incorrectAnswer2),
+			make_column("incorrectAnswer3", &QuestionDatabase::m_incorrectAnswer3)
+		),
+		make_table("Game",
+			make_column("id", &GameDatabase::m_id, autoincrement(), primary_key()),
+			make_column("winner", &GameDatabase::m_winner),
+			make_column("rounds", &GameDatabase::m_rounds),
+			make_column("date", &GameDatabase::m_date),
+			foreign_key(&GameDatabase::m_winner).references(&PlayerDatabase::m_username)
+		),
+		make_table("GameQuestion",
+			make_column("gameId", &GameQuestionDatabase::m_gameId),
+			make_column("questionId", &GameQuestionDatabase::m_questionId),
+			primary_key(&GameQuestionDatabase::m_gameId, &GameQuestionDatabase::m_questionId),
+			foreign_key(&GameQuestionDatabase::m_gameId).references(&GameDatabase::m_id),
+			foreign_key(&GameQuestionDatabase::m_questionId).references(&QuestionDatabase::m_id)
+		),
+		make_table("PlayerGames",
+			make_column("game", &PlayerGameDatabase::m_gameId),
+			make_column("username", &PlayerGameDatabase::m_playerId),
+			primary_key(&PlayerGameDatabase::m_gameId, &PlayerGameDatabase::m_playerId),
+			foreign_key(&PlayerGameDatabase::m_gameId).references(&GameDatabase::m_id),
+			foreign_key(&PlayerGameDatabase::m_playerId).references(&PlayerDatabase::m_username)
+		)
+	);
+}
+
+void databaseTest()
+{
+	//creating the database
+	using namespace sqlite_orm;
+	auto storage = createStorage("TRIV");
+	storage.sync_schema();
+	storage.remove_all<QuestionDatabase>();
+	//inserting questions in the database
+	database::question::insertQuestions(storage);
+	//printing the contents
+	auto allQuestions = storage.get_all<QuestionDatabase>();
+	std::cout << "allQuestions (" << allQuestions.size() << "):" << std::endl;
+	for (auto& q : allQuestions)
+	{
+		std::cout << storage.dump(q) << std::endl;
+	}
+	//inserting players into database
+	database::player::insertPlayer(storage, Player("Marcssl"));
+	database::player::insertPlayer(storage, Player("Mirkea"));
+	auto allPlayers = storage.get_all<PlayerDatabase>();
+	for (auto& p : allPlayers)
+	{
+		std::cout << storage.dump(p) << std::endl;
+	}
+	database::game::insertGame(storage, "Mircea", 5);
+	database::game::insertGame(storage, "Marceel", 6);
+	database::game::insertGame(storage, "Mircea", 4);
+	auto allGames = storage.get_all<GameDatabase>();
+	for (auto& p : allGames)
+	{
+		std::cout << storage.dump(p) << std::endl;
+	}
+	storage.sync_schema();
+}
 
 void playerTest() {
 	Player p("marcel");
@@ -114,55 +156,14 @@ void mapTest()
 }
 int main()
 {
-	//Question test
-	//Question q(0, "How cool are dogs?", "General_culture", Question::Type::MultipleChoice, "Extremely cool", std::array<std::string, 3>{"Not cool", "Cool", "Pretty cool"});
-	//std::cout << q.GetCategory() << std::endl <<
-	//	q.GetCorrectAnswer() << std::endl <<
-	//	q.GetIncorrectAnswers()[0] << std::endl <<
-	//	q.GetIncorrectAnswers()[1] << std::endl <<
-	//	q.GetIncorrectAnswers()[2] << std::endl <<
-	//	q.GetQuestion() << std::endl <<
-	//	static_cast<int>(q.GetType()) << std::endl;
-
-	//QuestionGenerator GetMultipleChoiceQuestions method test
-	//QuestionGenerator qGen;
-	//std::vector<Question> vect = qGen.GetMultipleChoiceQuestions(); //make method GetMultipleChoiceQuestions public if you want to test
-
-	//for (const Question& q : vect) {
-	//	std::cout <<std::endl<< "NEXT QUESTIONNNN" << std::endl;
-	//	std::cout << q.GetCategory() << std::endl <<
-	//		q.GetCorrectAnswer() << std::endl <<
-	//		q.GetIncorrectAnswers()[0] << std::endl <<
-	//		q.GetIncorrectAnswers()[1] << std::endl <<
-	//		q.GetIncorrectAnswers()[2] << std::endl <<
-	//		q.GetQuestion() << std::endl <<
-	//		static_cast<int>(q.GetType()) << std::endl;
-	//}
-
-	//QuestionGenerator GenerateMultipleChoiceQuestions method test
-	/*QuestionGenerator qGen;
-	std::vector<Question> vect = qGen.GenerateMultipleChoiceQuestions(123);
-
-	std::cout << "Num of questions: " << vect.size() << std::endl;
-
-	for (const Question& q : vect) {
-		std::cout <<std::endl<< "NEXT QUESTIONNNN" << std::endl;
-		std::cout << q.GetCategory() << std::endl <<
-			q.GetCorrectAnswer() << std::endl <<
-			q.GetIncorrectAnswers()[0] << std::endl <<
-			q.GetIncorrectAnswers()[1] << std::endl <<
-			q.GetIncorrectAnswers()[2] << std::endl <<
-			q.GetQuestion() << std::endl <<
-			static_cast<int>(q.GetType()) << std::endl;
-	}*/
 
 	//testing database adding of questions
-	//databaseTest();
+	databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
-	gameTest();
+	//gameTest();
 	//questionTest();
 	//mapTest();
 	return 0;
