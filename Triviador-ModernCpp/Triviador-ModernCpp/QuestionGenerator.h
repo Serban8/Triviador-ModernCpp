@@ -3,6 +3,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cpr/cpr.h>
+#include <variant>
 
 #include "MultipleChoiceQuestion.h"
 #include "NumberQuestion.h"
