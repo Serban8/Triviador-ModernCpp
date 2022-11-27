@@ -24,9 +24,6 @@
     <ClCompile Include="QuestionGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NumberQuestion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AbstractQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,6 +72,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameQuestionDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGameDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
