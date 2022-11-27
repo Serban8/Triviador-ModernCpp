@@ -27,16 +27,16 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GenerateMultipleChoiceQue
 	return questions;
 }
 
-//std::vector<NumberQuestion> QuestionGenerator::GenerateNumberAnswerQuestions(int numberOfQuestions)
-//{
-//	//we can get a maximum of 30 questions from this online database.
-//	if (numberOfQuestions < 30) {
-//		return GetNumberAnswerQuestions(numberOfQuestions);
-//	}
-//	else {
-//		return GetNumberAnswerQuestions();
-//	}
-//}
+std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> QuestionGenerator::GenerateNumberAnswerQuestions(int numberOfQuestions)
+{
+	//we can get a maximum of 30 questions from this online database.
+	if (numberOfQuestions < 30) {
+		return GetNumberAnswerQuestions(numberOfQuestions);
+	}
+	else {
+		return GetNumberAnswerQuestions();
+	}
+}
 
 std::string QuestionGenerator::GenerateToken()
 {
@@ -98,38 +98,120 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GetMultipleChoiceQuestion
 
 	return generatedQuestions;
 }
-//
-//std::vector<NumberQuestion> QuestionGenerator::GetNumberAnswerQuestions(uint8_t numOfQuestions)
-//{
-//
-//	//TODO: input validation based on max number of questions with that tag that exist in the database
-//	if (numOfQuestions > 30) {
-//		throw std::runtime_error("Cannot generate more than 30 questions");
-//	}
-//	std::vector<NumberQuestion> generatedQuestions;
-//
-//	//construct the url and get the json file with the questions
-//	const std::string questionGeneratePath = "api/questions?limit=" + std::to_string(numOfQuestions) + "&tags=numbers";
-//	const std::string questionRequestUrl = m_baseNumberAnswerQuestionDatabaseUrl + questionGeneratePath;
-//	cpr::Response r = cpr::Get(cpr::Url{ questionRequestUrl });
-//
-//	json questions = json::parse(r.text);
-//
-//	for (auto& it : questions.items()) {
-//		json question = it.value();
-//		json incorrectAnswers = question["incorrectAnswers"];
-//
-//		std::array<std::string, 3> incorrectAnswersArr = { incorrectAnswers[0], incorrectAnswers[1], incorrectAnswers[2] };
-//
-//		//TODO: create object numberQuestion and add it to the vector
-//		//warning: check for answers like "Two" "Eight" ...
-//		std::cout << question["category"] << "\n" << question["question"] << "\n" << "Correct ans: " << question["correctAnswer"] << "\nIncorrect ans: ";
-//		for (const auto& elem : incorrectAnswersArr) {
-//			std::cout << elem << " ";
-//		}
-//
-//		std::cout << "\n\n\n";
-//	}
-//
-//	return generatedQuestions;
-//}
+
+std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> QuestionGenerator::GetNumberAnswerQuestions(uint8_t numOfQuestions)
+{
+	if (numOfQuestions > 30) {
+		throw std::runtime_error("Cannot generate more than 30 questions");
+	}
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> generatedQuestions;
+
+	//construct the url and get the json file with the questions
+	const std::string questionGeneratePath = "api/questions?limit=" + std::to_string(numOfQuestions) + "&tags=numbers";
+	const std::string questionRequestUrl = m_baseNumberAnswerQuestionDatabaseUrl + questionGeneratePath;
+	cpr::Response r = cpr::Get(cpr::Url{ questionRequestUrl });
+
+	json questions = json::parse(r.text);
+
+	for (auto& it : questions.items()) {
+		json question = it.value();
+
+		std::string correctAns = question["correctAnswer"];
+		std::array<std::string, 3> incorrectAnswers = { question["incorrectAnswers"][0], question["incorrectAnswers"][1], question["incorrectAnswers"][2] };
+		//determine if answer is float, int or neither
+		try {
+			bool isValid = true;
+			//try with int
+			NumberQuestion<int> QInt = GenerateIntQuestion(question["question"], question["category"], correctAns, incorrectAnswers, isValid);
+			if (!isValid) {
+				//try with float if int didnt work
+				NumberQuestion<float> QFloat = GenerateFloatQuestion(question["question"], question["category"], correctAns, incorrectAnswers, isValid);
+				if (isValid) {
+					generatedQuestions.push_back(QFloat);
+				}
+			}
+			else {
+				generatedQuestions.push_back(QInt);
+			}
+		}
+		catch (std::invalid_argument const& ex) //catches stoi or stof exception - catches exception when answer does not have an int/float
+		{
+			continue;
+		}
+		catch (std::out_of_range const& ex) //catches stoi or stof exception
+		{
+			std::cout << "std::out_of_range::what(): " << ex.what() << '\n';
+		}
+	}
+
+	return generatedQuestions;
+}
+
+NumberQuestion<int> QuestionGenerator::GenerateIntQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid)
+{
+	isValid = true;
+	size_t pos;
+	const int correctAnsInt = std::stoi(correctAnswer, &pos);
+	if (pos != correctAnswer.size()) {
+		isValid = false;
+	}
+	if (isValid) {
+		std::array<int, 3> incorrectAnswersInt;
+		uint8_t index = 0;
+		for (const std::string& incorrectAns : incorrectAnswers) {
+			const int incorrectAnsInt = std::stoi(incorrectAns, &pos);
+			if (pos != incorrectAns.size()) {
+				isValid = false;
+				break;
+			}
+			else {
+				incorrectAnswersInt[index++] = incorrectAnsInt;
+			}
+		}
+		if (isValid) {
+			return NumberQuestion<int>(
+				question,
+				category,
+				correctAnsInt,
+				incorrectAnswersInt
+				);
+		}
+	}
+	//if invalid question isValid is set to false and function returns empty question 
+	return NumberQuestion<int>();
+}
+
+
+NumberQuestion<float> QuestionGenerator::GenerateFloatQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid)
+{
+	size_t pos;
+	isValid = true;
+	const float correctAnsFloat = std::stof(correctAnswer, &pos);
+	if (pos != correctAnswer.size()) {
+		isValid = false;
+	}
+	if (isValid) {
+		std::array<float, 3> incorrectAnswersFloat;
+		uint8_t index = 0;
+		for (const auto& incorrectAns : incorrectAnswers) {
+			const float incorrectAnsFloat = std::stof(incorrectAns, &pos);
+			if (pos != incorrectAns.size()) {
+				isValid = false;
+				break;
+			}
+			else {
+				incorrectAnswersFloat[index++] = incorrectAnsFloat;
+			}
+		}
+		if (isValid) {
+			return NumberQuestion<float>(
+				question,
+				category,
+				correctAnsFloat,
+				incorrectAnswersFloat
+				);
+		}
+	}
+	//if invalid question isValid is set to false and function returns empty question 
+	return NumberQuestion<float>();
+}

@@ -6,6 +6,7 @@
 class AbstractQuestion {
 
 public:
+	AbstractQuestion() {}
 	AbstractQuestion(std::string question, std::string category) :
 		m_question(question),
 		m_category(category)
