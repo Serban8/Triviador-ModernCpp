@@ -14,3 +14,9 @@ void AbstractQuestion::PrintQuestion() const
 {
 	std::cout << m_question << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& out, const AbstractQuestion& question)
+{
+	out << question.m_question << std::endl;
+	return out;
+}

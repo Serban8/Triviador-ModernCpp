@@ -24,7 +24,7 @@ Game::Game(std::vector<Player> players) :
 		if (std::holds_alternative<NumberQuestion<int>>(q))
 		{
 			auto x = std::get<NumberQuestion<int>>(q);
-			std::cout << x.GetQuestion() <<" "<< x.GetCorrectAnswer() << std::endl;
+			std::cout << x.GetQuestion() << " " << x.GetCorrectAnswer() << std::endl;
 
 		}
 		else
@@ -32,7 +32,7 @@ Game::Game(std::vector<Player> players) :
 			auto x2 = std::get<NumberQuestion<float>>(q);
 			std::cout << x2.GetQuestion() << " " << x2.GetCorrectAnswer() << std::endl;
 		}
-		
+
 	}
 }
 
@@ -55,17 +55,63 @@ void Game::AddInactivePlayer(Player player)
 
 void Game::PlayGame()
 {
-	for (const auto &player : m_activePlayers)
+	for (const auto& player : m_activePlayers)
 	{
-		std::cout << "Welcome, " << player.GetUsername()<<", it's in the game!" << std::endl;
+		std::cout << "Welcome, " << player.GetUsername() << ", it's in the game!" << std::endl;
 	}
 	ChoosingBases();
 }
 
+template<typename T>
+std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> players)
+{
+	T answer;
+	std::vector<std::pair<Player, T>> answers;
+	std::cout << "Please enter your answers:" << std::endl;
+	for (auto& p : players)
+	{
+		std::cout << p.GetUsername() << ": ";
+		std::cin >> answer;
+		answers.push_back({ p, answer });
+	}
+	return answers;
+}
+
+template<typename T>
+std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T correctAnswer)
+{
+	std::vector<Player> sortedPlayers;
+	using playerAndAnswer = std::pair<Player, T>;
+	std::vector<playerAndAnswer> answers = GetNumberAnswers<T>(players);
+	std::sort(
+		begin(answers),
+		end(answers),
+		[correctAnswer](const playerAndAnswer& p1, const playerAndAnswer& p2) {
+			auto& [player1, answer1] = p1;
+			auto& [player2, answer2] = p2;
+			return (std::abs(correctAnswer - answer1)) < (std::abs(correctAnswer - answer2));
+		});
+	//testing
+	std::cout << correctAnswer << std::endl;
+	//
+	for (const auto& a : answers)
+	{
+		auto& [player, answer] = a;
+		sortedPlayers.push_back(player);
+		//testing
+		std::cout << player.GetUsername() << " " << answer << std::endl;
+		//
+	}
+	return sortedPlayers;
+}
+
 void Game::ChoosingBases()
 {
-	std::cout << m_map<<std::endl;
+	std::cout << m_map << std::endl;
 	std::cout << "Question: \n\n";
+	std::vector<int> answers;
+	auto q1 = m_numberQuestions.back();
+	m_numberQuestions.pop_back();
 	auto q = m_numberQuestions.back();
 	m_numberQuestions.pop_back();
 
@@ -73,10 +119,14 @@ void Game::ChoosingBases()
 	if (std::holds_alternative<NumberQuestion<int>>(q))
 	{
 		auto qInt = std::get<NumberQuestion<int>>(q);
-		qInt.PrintQuestion();
+		//qInt.PrintQuestion();
+		std::cout << qInt;
+		SortPlayersByAnswers(m_activePlayers, qInt.GetCorrectAnswer());
 	}
 	else {
 		auto qFloat = std::get<NumberQuestion<float>>(q);
-		qFloat.PrintQuestion();
+		//qFloat.PrintQuestion();
+		std::cout << qFloat;
+		SortPlayersByAnswers(m_activePlayers, qFloat.GetCorrectAnswer());
 	}
 }

@@ -57,7 +57,7 @@ void playerTest() {
 
 void gameTest() {
 
-	
+
 	QuestionGenerator qg;
 	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
 	
@@ -72,8 +72,11 @@ void gameTest() {
 
 		std::cout << question->GetQuestion()<<"\n";
 	}*/
-	Player p("marcel");
-	std::vector<Player> player = { p,p };
+	Player p1("marcel");
+	Player p2("gigel");
+	Player p3("costel");
+	Player p4("cosmeenel");
+	std::vector<Player> player = { p1,p2,p3,p4 };
 	Game topG(player);
 	topG.PlayGame();
 }
@@ -160,7 +163,7 @@ int main()
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	gameTest();
-	questionTest();
+	//questionTest();
 	//mapTest();
 	return 0;
 }

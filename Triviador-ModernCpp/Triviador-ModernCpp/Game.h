@@ -22,9 +22,11 @@ public:
 	void PlayGame();
 
 private:
-
+	template<typename T>
+	std::vector<std::pair<Player, T>> GetNumberAnswers(std::vector<Player> players);
+	template<typename T>
+	std::vector<Player> SortPlayersByAnswers(std::vector<Player> players, T correctAnswer);
 	void ChoosingBases();
-
 private:
 
 	std::vector<Player> m_activePlayers;
@@ -34,4 +36,6 @@ private:
 	Map m_map;
 
 };
+
+
 

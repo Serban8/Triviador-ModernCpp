@@ -1,5 +1,11 @@
 #include "Region.h"
 
+Region::Region()
+{
+	m_type = Type::Territory; 
+	m_score = 100;
+}
+
 Region::Region(Player owner, Type type, int score) :
 	m_owner(owner),
 	m_type(type)
