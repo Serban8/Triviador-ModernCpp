@@ -20,7 +20,8 @@ public:
 	//methods
 	void AddInactivePlayer(Player player);
 	void PlayGame();
-	template<typename T> std::vector<T> getAnswers(std::vector<Player> players);
+	template<typename T> 
+	std::vector<T> getAnswers(std::vector<Player> players);
 private:
 
 	void ChoosingBases();
@@ -35,7 +36,8 @@ private:
 
 };
 
-template<typename T> std::vector<T> Game::getAnswers(std::vector<Player> players)
+template<typename T> 
+std::vector<T> Game::getAnswers(std::vector<Player> players)
 {
 	T answer;
 	std::vector<T> answers;

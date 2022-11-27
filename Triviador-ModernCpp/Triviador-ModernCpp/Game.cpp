@@ -74,9 +74,7 @@ void Game::ChoosingBases()
 	m_numberQuestions.pop_back();
 	auto q = m_numberQuestions.back();
 	m_numberQuestions.pop_back();
-	//op afisare intrebare
-	//add functions to get answers from players
-	//functie care sorteaza jucatorii in functie de cat de aproape au fost de rasp corect
+	
 	//printing the question:
 	if (std::holds_alternative<NumberQuestion<int>>(q))
 	{

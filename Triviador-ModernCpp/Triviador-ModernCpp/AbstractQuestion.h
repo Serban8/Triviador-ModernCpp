@@ -17,8 +17,8 @@ public:
 	//getters
 	virtual std::string GetQuestion() const;
 	virtual std::string GetCategory() const;
-	friend  std::ostream& operator<<(std::ostream& out, const AbstractQuestion& question);
 	//operator afisare
+	friend  std::ostream& operator<<(std::ostream& out, const AbstractQuestion& question);
 	virtual void PrintQuestion() const;
 
 protected:
