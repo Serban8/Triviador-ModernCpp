@@ -62,8 +62,20 @@ void Game::PlayGame()
 	ChoosingBases();
 }
 
-
-
+template<typename T>
+std::vector<T> Game::GetNumberAnswers(std::vector<Player> players)
+{
+	T answer;
+	std::vector<T> answers;
+	std::cout << "Please enter your answers:" << std::endl;
+	for (auto& p : players)
+	{
+		std::cout << p.GetUsername() << ": ";
+		std::cin >> answer;
+		answers.push_back(answer);
+	}
+	return answers;
+}
 
 void Game::ChoosingBases()
 {
@@ -82,7 +94,7 @@ void Game::ChoosingBases()
 		auto qInt = std::get<NumberQuestion<int>>(q);
 		//qInt.PrintQuestion();
 		std::cout << qInt;
-		answers = getAnswers<int>(m_activePlayers);
+		answers = GetNumberAnswers<int>(m_activePlayers);
 		std::cout << answers[0] << " " << answers[1];
 	}
 	else {
@@ -90,7 +102,7 @@ void Game::ChoosingBases()
 		auto qFloat = std::get<NumberQuestion<float>>(q);
 		//qFloat.PrintQuestion();
 		std::cout << qFloat;
-		answers = getAnswers<float>(m_activePlayers);
+		answers = GetNumberAnswers<float>(m_activePlayers);
 		std::cout << answers[0] << " " << answers[1];
 	}
 }

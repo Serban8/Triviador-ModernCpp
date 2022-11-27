@@ -20,12 +20,11 @@ public:
 	//methods
 	void AddInactivePlayer(Player player);
 	void PlayGame();
-	template<typename T> 
-	std::vector<T> getAnswers(std::vector<Player> players);
+
 private:
-
+	template<typename T>
+	std::vector<T> GetNumberAnswers(std::vector<Player> players);
 	void ChoosingBases();
-
 private:
 
 	std::vector<Player> m_activePlayers;
@@ -36,18 +35,5 @@ private:
 
 };
 
-template<typename T> 
-std::vector<T> Game::getAnswers(std::vector<Player> players)
-{
-	T answer;
-	std::vector<T> answers;
-	std::cout << "Please enter your answers:" << std::endl;
-	for (auto& p : players)
-	{
-		std::cout << p.GetUsername() << ": ";
-		std::cin >> answer;
-		answers.push_back(answer);
-	}
-	return answers;
-}
+
 
