@@ -28,6 +28,11 @@ void Region::SetOwner(Player owner)
 	m_owner = owner;
 }
 
+void Region::SetType(Type type)
+{
+	m_type = type;
+}
+
 int Region::GetScore() const
 {
 	return m_score;

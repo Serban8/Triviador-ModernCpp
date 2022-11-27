@@ -13,6 +13,8 @@ public:
 	Region& operator[](const Position& pos);
 	const Region& operator[](const Position& pos) const;
 	friend std::ostream& operator<<(std::ostream& os,const Map &map);
+	int GetHeight();
+	int GetWidth();
 
 private:
 	int m_height;
