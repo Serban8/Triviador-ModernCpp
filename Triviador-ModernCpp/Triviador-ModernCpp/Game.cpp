@@ -199,7 +199,7 @@ void Game::DistributeTerritories()
 std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 {
 	std::vector<Player> sortedPlayers;
-	//ask a question and gather the top players
+	//ask a question and return the top players
 	auto q = m_numberQuestions.back();
 	m_numberQuestions.pop_back();
 	//printing the question:
