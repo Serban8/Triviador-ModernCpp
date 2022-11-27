@@ -9,31 +9,23 @@ Game::Game(std::vector<Player> players) :
 	//in future we need to change this to get them from our local database;
 	QuestionGenerator qg;
 	m_multipleChoiceQuestions = qg.GenerateMultipleChoiceQuestions(50);
-	//for testing purposes 
-	std::array<int, 3> numericIncorrectAnswers = { 2000,2001,2002 };
-	std::array<float, 3> numericIncorrectAnswers2 = { 2.12, 1.05, 3.15 };
-	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", 2021, numericIncorrectAnswers);
-	NumberQuestion<int> nq2("When did Romania join the UE ? ", "Politics", 2007, numericIncorrectAnswers);
-	NumberQuestion<float> nq3("What is the value of PI ? ", "Math", 3.14, numericIncorrectAnswers2);
+	m_numberQuestions = qg.GenerateNumberAnswerQuestions();
 
-	m_numberQuestions.push_back(nq);
-	m_numberQuestions.push_back(nq2);
-	m_numberQuestions.push_back(nq3);
-	for (auto& q : m_numberQuestions)
-	{
-		if (std::holds_alternative<NumberQuestion<int>>(q))
-		{
-			auto x = std::get<NumberQuestion<int>>(q);
-			std::cout << x.GetQuestion() << " " << x.GetCorrectAnswer() << std::endl;
+	//for testing purposes
+	//for (auto& q : m_numberQuestions)
+	//{
+	//	if (std::holds_alternative<NumberQuestion<int>>(q))
+	//	{
+	//		auto x = std::get<NumberQuestion<int>>(q);
+	//		std::cout << x.GetQuestion() << " " << x.GetCorrectAnswer() << std::endl;
 
-		}
-		else
-		{
-			auto x2 = std::get<NumberQuestion<float>>(q);
-			std::cout << x2.GetQuestion() << " " << x2.GetCorrectAnswer() << std::endl;
-		}
-
-	}
+	//	}
+	//	else
+	//	{
+	//		auto x2 = std::get<NumberQuestion<float>>(q);
+	//		std::cout << x2.GetQuestion() << " " << x2.GetCorrectAnswer() << std::endl;
+	//	}
+	//}
 }
 
 
@@ -60,8 +52,10 @@ void Game::PlayGame()
 		std::cout << "Welcome, " << player.GetUsername() << ", it's in the game!" << std::endl;
 	}
 	ChoosingBases();
+	DistributeTerritories();
 }
 
+//todo: also return how fast was the response
 template<typename T>
 std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> players)
 {
@@ -77,6 +71,7 @@ std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> pla
 	return answers;
 }
 
+//todo: sort by taking into account the response time if difference is the same
 template<typename T>
 std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T correctAnswer)
 {
@@ -92,7 +87,8 @@ std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T co
 			return (std::abs(correctAnswer - answer1)) < (std::abs(correctAnswer - answer2));
 		});
 	//testing
-	std::cout << correctAnswer << std::endl;
+	std::cout << "\nCorrect answer was: " << correctAnswer << std::endl;
+	std::cout << "LEADERBOARD:\n";
 	//
 	for (const auto& a : answers)
 	{
@@ -107,37 +103,21 @@ std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T co
 
 void Game::ChoosingBases()
 {
+	std::cout << "\nChoosing bases:\n\n";
 	std::cout << m_map << std::endl;
-	std::cout << "Question: \n\n";
-	std::vector<Player> sortedPlayers;
-	auto q = m_numberQuestions.back();
-	m_numberQuestions.pop_back();
 
 	//printing the question:
-	if (std::holds_alternative<NumberQuestion<int>>(q))
-	{
-		auto qInt = std::get<NumberQuestion<int>>(q);
-		//qInt.PrintQuestion();
-		std::cout << qInt;
-		sortedPlayers = SortPlayersByAnswers(m_activePlayers, qInt.GetCorrectAnswer());
-	}
-	else {
-		auto qFloat = std::get<NumberQuestion<float>>(q);
-		//qFloat.PrintQuestion();
-		std::cout << qFloat;
-		sortedPlayers = SortPlayersByAnswers(m_activePlayers, qFloat.GetCorrectAnswer());
-	}
-	std::cout << "Please, choose the position of your base" << std::endl;
+	std::vector<Player> sortedPlayers = AskNumberQuestion(m_activePlayers);
 	for (const auto& p : sortedPlayers)
 	{
+		std::cout << "Please, " << p.GetUsername() << ", choose the position of your base: " << std::endl << "> ";
 		int line, col;
-		std::cout << p.GetUsername() << ": ";
 		std::cin >> line >> col;
 		--line;
 		--col;
 		while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
 		{
-			std::cout << "Invalid choice, please choose another position" << std::endl;
+			std::cout << "Invalid choice, please choose another position\n< ";
 			std::cin >> line >> col;
 			--line;
 			--col;
@@ -147,4 +127,94 @@ void Game::ChoosingBases()
 		m_map[{line, col}].SetType(Region::Type::Base);
 	}
 	std::cout << m_map << std::endl;
+}
+
+void Game::DistributeTerritories()
+{
+	const uint8_t topPlayerNumberOfChoices = m_activePlayers.size() - 1;
+	uint8_t territoriesLeft = (m_map.GetHeight() * m_map.GetWidth()) - m_activePlayers.size();
+
+	std::cout << "Choosing Territories: \n";
+	while (territoriesLeft != 0) {
+		//print the map
+		std::cout << m_map << std::endl;
+
+		//ask the question and determine the leaderboard
+		std::vector<Player> sortedPlayers = AskNumberQuestion(m_activePlayers);
+
+		//the last player does not choose any territory
+		sortedPlayers.pop_back();
+
+		//selecting the territories
+		if (territoriesLeft >= (topPlayerNumberOfChoices * (topPlayerNumberOfChoices + 1) / 2)) {
+			uint8_t numOfChoices = topPlayerNumberOfChoices;
+			for (const auto& player : sortedPlayers) {
+				uint8_t numOfChoicesLeft = numOfChoices;
+				--numOfChoices;
+				while (numOfChoicesLeft != 0) {
+					//asking for territory
+					std::cout << "Please, " << player.GetUsername() << ", choose the position of a territory you want: " << std::endl << "> ";
+					int line, col;
+					std::cin >> line >> col;
+					--line;
+					--col;
+					while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
+					{
+						std::cout << "Invalid choice, please choose another position\n< ";
+						std::cin >> line >> col;
+						--line; --col;
+					}
+					m_map[{line, col}].SetOwner(player); //region is territory and has score set to 100 by default
+					--numOfChoicesLeft;
+					--territoriesLeft;
+				}
+			}
+		}
+		else {
+			//if there are not enough territories left for a full round, we distribute them one by one in the order of the leaderboard
+			for (size_t i = 0; i < sortedPlayers.size() && territoriesLeft > 0; ++i) {
+				const auto& player = sortedPlayers[i];
+				//asking for territory
+				std::cout << "Please, " << player.GetUsername() << " choose the position of a territory you want: " << std::endl;
+				int line, col;
+				std::cout << player.GetUsername() << ": ";
+				std::cin >> line >> col;
+				--line;
+				--col;
+				while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
+				{
+					std::cout << "Invalid choice, please choose another position" << std::endl;
+					std::cin >> line >> col;
+					--line; --col;
+				}
+				m_map[{line, col}].SetOwner(player); //region is territory and has score set to 100 by default
+				--territoriesLeft;
+			}
+		}
+	}
+	//testing
+	std::cout << m_map;
+}
+
+std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
+{
+	std::vector<Player> sortedPlayers;
+	//ask a question and gather the top players
+	auto q = m_numberQuestions.back();
+	m_numberQuestions.pop_back();
+	//printing the question:
+	std::cout << "Please answer this question: \n\n";
+	if (std::holds_alternative<NumberQuestion<int>>(q))
+	{
+		auto qInt = std::get<NumberQuestion<int>>(q);
+		std::cout << qInt;
+		sortedPlayers = SortPlayersByAnswers(players, qInt.GetCorrectAnswer());
+	}
+	else {
+		auto qFloat = std::get<NumberQuestion<float>>(q);
+		std::cout << qFloat;
+		sortedPlayers = SortPlayersByAnswers(players, qFloat.GetCorrectAnswer());
+	}
+
+	return sortedPlayers;
 }
