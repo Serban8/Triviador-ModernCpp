@@ -20,11 +20,14 @@ public:
 	//methods
 	void AddInactivePlayer(Player player);
 	void PlayGame();
+	std::vector<Player> DetermineWinners();
 
 private:
 	//the main steps of the game
 	void ChoosingBases();
 	void DistributeTerritories();
+	//
+	
 
 	//helpers
 	std::vector<Player> AskNumberQuestion(std::vector<Player> players); //asks the players given as parameter a guestion and returns them in a sorted vector (winner is first)

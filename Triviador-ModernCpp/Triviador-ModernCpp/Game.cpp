@@ -218,3 +218,29 @@ std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 
 	return sortedPlayers;
 }
+
+std::vector<Player> Game::DetermineWinners()
+{
+	std::vector<Player> winners;
+	std::vector<Player> losers = m_inactivePlayers; //for database update
+
+	if (m_activePlayers.size() == 1)
+		return m_activePlayers;
+
+	auto maxPoints = std::max_element(m_activePlayers.begin(), m_activePlayers.end());
+	Player playerMaxPoints;
+	
+	//check if there are more than one player with max score
+	do {
+		playerMaxPoints = *maxPoints;
+		winners.push_back(playerMaxPoints);
+		m_activePlayers.erase(maxPoints);
+		maxPoints = std::find_if(m_activePlayers.begin(), m_activePlayers.end(),
+			[&playerMaxPoints](const Player& p2) {
+				return playerMaxPoints.GetPoints() == p2.GetPoints();
+			});
+	} while (maxPoints != m_activePlayers.end());
+
+	losers.insert(losers.end(), m_activePlayers.begin(), m_activePlayers.end());
+	return winners;
+}

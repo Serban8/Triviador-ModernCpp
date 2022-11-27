@@ -125,9 +125,13 @@ void gameTest() {
 	Player p2("gigel");
 	Player p3("costel");
 	Player p4("cosmeenel");
+	p1.SetPoints(400);
+	p2.SetPoints(100);
+	p3.SetPoints(500);
+	p4.SetPoints(800);
 	std::vector<Player> player = { p1,p2,p3,p4 };
 	Game topG(player);
-	topG.PlayGame();
+	topG.DetermineWinners();
 }
 
 void questionTest()
@@ -165,12 +169,12 @@ int main()
 {
 
 	//testing database adding of questions
-	databaseTest();
+	//databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
-	//gameTest();
+	gameTest();
 	//questionTest();
 	//mapTest();
 	return 0;

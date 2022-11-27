@@ -39,3 +39,8 @@ bool operator==(const Player& p1, const Player& p2)
 {
 	return p1.m_username == p2.m_username;
 }
+
+bool operator<(const Player& p1, const Player& p2)
+{
+	return p1.GetPoints() < p2.GetPoints();
+}
