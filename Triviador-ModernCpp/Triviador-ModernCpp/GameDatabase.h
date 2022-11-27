@@ -16,16 +16,17 @@ struct GameDatabase
 		m_rounds(rounds)
 	{
 		//initialize time
-		//time_t now = time(0);
-		//tm* ltm = localtime_s(&now);
-		////add year
-		//m_date.append(std::to_string(1900 + ltm->tm_year));
-		//m_date.append("-");
-		////add month
-		//m_date.append(std::to_string(1 + ltm->tm_mon));
-		//m_date.append("-");
-		////add day
-		//m_date.append(std::to_string(ltm->tm_mday));
+		time_t now = time(0);
+		tm ltm; 
+		localtime_s(&ltm,&now);
+		//add year
+		m_date.append(std::to_string(1900 + ltm.tm_year));
+		m_date.append("-");
+		//add month
+		m_date.append(std::to_string(1 + ltm.tm_mon));
+		m_date.append("-");
+		//add day
+		m_date.append(std::to_string(ltm.tm_mday));
 	
 	}
 
