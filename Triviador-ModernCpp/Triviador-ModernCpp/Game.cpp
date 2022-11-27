@@ -109,9 +109,7 @@ void Game::ChoosingBases()
 {
 	std::cout << m_map << std::endl;
 	std::cout << "Question: \n\n";
-	std::vector<int> answers;
-	auto q1 = m_numberQuestions.back();
-	m_numberQuestions.pop_back();
+	std::vector<Player> sortedPlayers;
 	auto q = m_numberQuestions.back();
 	m_numberQuestions.pop_back();
 
@@ -121,12 +119,32 @@ void Game::ChoosingBases()
 		auto qInt = std::get<NumberQuestion<int>>(q);
 		//qInt.PrintQuestion();
 		std::cout << qInt;
-		SortPlayersByAnswers(m_activePlayers, qInt.GetCorrectAnswer());
+		sortedPlayers = SortPlayersByAnswers(m_activePlayers, qInt.GetCorrectAnswer());
 	}
 	else {
 		auto qFloat = std::get<NumberQuestion<float>>(q);
 		//qFloat.PrintQuestion();
 		std::cout << qFloat;
-		SortPlayersByAnswers(m_activePlayers, qFloat.GetCorrectAnswer());
+		sortedPlayers = SortPlayersByAnswers(m_activePlayers, qFloat.GetCorrectAnswer());
 	}
+	std::cout << "Please, choose the position of your base" << std::endl;
+	for (const auto& p : sortedPlayers)
+	{
+		int line, col;
+		std::cout << p.GetUsername() << ": ";
+		std::cin >> line >> col;
+		--line;
+		--col;
+		while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
+		{
+			std::cout << "Invalid choice, please choose another position" << std::endl;
+			std::cin >> line >> col;
+			--line;
+			--col;
+		}
+		m_map[{line, col}].SetOwner(p);
+		m_map[{line, col}].SetScore(300);
+		m_map[{line, col}].SetType(Region::Type::Base);
+	}
+	std::cout << m_map << std::endl;
 }

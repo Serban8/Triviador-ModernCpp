@@ -19,6 +19,7 @@ public:
 	//setters
 	void SetScore(int score);
 	void SetOwner(Player owner);
+	void SetType(Type type);
 
 	//getters
 	int GetScore() const;

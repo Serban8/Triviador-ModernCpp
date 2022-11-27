@@ -24,6 +24,16 @@ const Region& Map::operator[](const Position& pos) const
 	return m_regions[pos.first * m_width + pos.second];
 }
 
+int Map::GetHeight()
+{
+	return m_height;
+}
+
+int Map::GetWidth()
+{
+	return m_width;
+}
+
 std::ostream& operator<<(std::ostream& os, const Map& map)
 {
 	for (uint8_t i = 0; i < map.m_height; i++)
