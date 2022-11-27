@@ -23,7 +23,7 @@ public:
 
 private:
 
-	void DetermineWinners();
+	std::vector<Player> DetermineWinners() const;
 	void ChoosingBases();
 
 private:

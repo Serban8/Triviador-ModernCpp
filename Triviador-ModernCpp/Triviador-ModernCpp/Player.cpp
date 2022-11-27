@@ -1,6 +1,7 @@
 #include "Player.h"
+#include<iostream>
 
-Player::Player(std::string username):
+Player::Player(std::string username) :
 	m_username(username)
 {
 }
@@ -38,4 +39,16 @@ void Player::useAdvantage(Advatage advantage)
 bool operator==(const Player& p1, const Player& p2)
 {
 	return p1.m_username == p2.m_username;
+}
+
+bool operator<(const Player& p1, const Player& p2)
+{
+	return p1.GetPoints() < p2.GetPoints();
+}
+
+std::ostream& operator<<(std::ostream& os, const Player& player)
+{
+	os << player.GetUsername() << " " << player.GetPoints();
+
+	return os;
 }

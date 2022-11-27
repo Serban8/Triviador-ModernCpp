@@ -57,10 +57,10 @@ void playerTest() {
 
 void gameTest() {
 
-	
+
 	QuestionGenerator qg;
 	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
-	
+
 	std::vector<AbstractQuestion*> aq;
 
 	for (auto& question : mq) {
@@ -76,7 +76,9 @@ void gameTest() {
 	p.SetPoints(120);
 	Player p2("Augustin");
 	p2.SetPoints(70);
-	std::vector<Player> player = { p,p2 };
+	Player p3("Alex");
+	p3.SetPoints(120);
+	std::vector<Player> player = { p,p2,p3 };
 	Game topG(player);
 	topG.PlayGame();
 }
@@ -96,6 +98,22 @@ void mapTest()
 	//Map m6(6);
 	std::cout << m3;
 }
+
+void winnersTest() {
+
+	Player p("Marcel");
+	p.SetPoints(100);
+
+	Player p2("Ion");
+	p2.SetPoints(200);
+
+	std::vector<Player> player = { p, p2 };
+
+	Game g(player);
+	g.PlayGame();
+
+}
+
 int main()
 {
 	//Question test

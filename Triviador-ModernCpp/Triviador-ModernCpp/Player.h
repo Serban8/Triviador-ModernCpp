@@ -28,6 +28,8 @@ public:
 	void useAdvantage(Advatage advantage);
 
 	friend bool operator==(const Player& p1, const Player& p2);
+	friend bool operator<(const Player& p1, const Player& p2);
+	friend std::ostream& operator<<(std::ostream& os, const Player& player);
 
 private:
 	int m_points = 0;

@@ -1,3 +1,5 @@
+#include<algorithm>
+#include<cmath>
 #include "Game.h"
 #include "QuestionGenerator.h"
 
@@ -60,31 +62,62 @@ void Game::PlayGame()
 	}
 
 	ChoosingBases();
+
+	//eventually
 	DetermineWinners();
 }
 
-void Game::DetermineWinners()
+std::vector<Player> Game::DetermineWinners() const
 {
-	std::vector<std::pair<std::string, int>> m_pointsVector;
+	/*std::vector<std::pair<std::string, int>> m_pointsVector;*/
+	std::vector<Player> pointsVector;
+	std::vector<Player>::iterator maxPoints;
+	std::vector<Player> winners;
+	std::vector<Player> losers;
+
+	if (m_activePlayers.size() == 1)
+		return m_activePlayers;
+
+	//std::sort(m_pointsVector.begin(), m_pointsVector.end()/*, std::greater<int>()*/);
 
 	for (const auto& player : m_activePlayers) {
-		std::pair<std::string, int> x;
-		x = std::make_pair(player.GetUsername(), player.GetPoints());
-		m_pointsVector.push_back(x);
+		pointsVector.push_back(player);
 	}
 
-	std::sort(m_pointsVector.begin(), m_pointsVector.end()/*, std::greater<int>()*/);
+	maxPoints = std::max_element(pointsVector.begin(), pointsVector.end(), [](Player a, Player b) {
+		return a < b;
+		});
 
-	//for (int i = 0; i < m_pointsVector.size(); i++) {
-	//	std::cout << i + 1 << " : " << m_pointsVector[i].first << " " << m_pointsVector[i].second << "\n";
-	//}
-	//std::cout << "\n";
+	Player p = *maxPoints;
 
-	for (int i = m_pointsVector.size() - 1; i >= 0; i--) {
-		std::cout << i + 1 << " : " << m_pointsVector[i].first << " " << m_pointsVector[i].second << "\n";
+	winners.push_back(*maxPoints);
+	pointsVector.erase(maxPoints);
 
+	for (auto& player : pointsVector) {
+
+		maxPoints = std::max_element(pointsVector.begin(), pointsVector.end(), [](Player a, Player b) {
+			return a < b;
+			});
+
+		Player p2 = *maxPoints;
+
+		if (p2.GetPoints() == p.GetPoints()) {
+			winners.push_back(p2);
+			pointsVector.erase(maxPoints);
+		}
 	}
 
+	for (auto& player : pointsVector) {
+		losers.push_back(player);
+	}
+
+	/*std::cout << "max element : " << *maxPoints;*/
+
+	for (const auto& player : winners) {
+		std::cout << player << " \n ";
+	}
+
+	return winners;
 }
 
 void Game::ChoosingBases()
@@ -99,9 +132,11 @@ void Game::ChoosingBases()
 	{
 		auto qInt = std::get<NumberQuestion<int>>(q);
 		qInt.PrintQuestion();
+		std::cout<< " Answer : " << qInt.GetCorrectAnswer() << "\n\n";
 	}
 	else {
 		auto qFloat = std::get<NumberQuestion<float>>(q);
 		qFloat.PrintQuestion();
+		std::cout << "Answer : " << qFloat.GetCorrectAnswer() << "\n\n";
 	}
 }
