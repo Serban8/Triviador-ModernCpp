@@ -39,9 +39,22 @@ struct GameDatabase
 
 namespace database {
 	namespace game {
-		template <class T> void static insertGame(T& storage, std::string winner, int rounds){
+		template <class T> 
+		void static insertGame(T& storage, std::string winner, int rounds){
 			GameDatabase gameDB(winner,rounds);
 			storage.insert(gameDB);
+		}
+		template<class T>
+		std::vector<GameDatabase> static getAllGames(T& storage)
+		{
+			auto allGames = storage.get_all<GameDatabase>();
+			//for testing
+			for (auto& p : allGames)
+			{
+				std::cout << storage.dump(p) << std::endl;
+			}
+			//
+			return allGames;
 		}
 	}
 }

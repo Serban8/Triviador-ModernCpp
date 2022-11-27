@@ -40,7 +40,8 @@ struct QuestionDatabase
 
 namespace database {
 	namespace question {
-		template<class T> void static insertQuestions(T& storage)
+		template<class T> 
+		void static insertQuestions(T& storage)
 		{
 			QuestionGenerator qGen;
 			std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
@@ -65,6 +66,21 @@ namespace database {
 			{
 				storage.insert(q);
 			}*/
+		}
+
+		template <class T>
+		std::vector<QuestionDatabase> static getAllQuestions(T& storage)
+		{
+			//printing the contents
+			auto allQuestions = storage.get_all<QuestionDatabase>();
+			//for testing
+			std::cout << "allQuestions (" << allQuestions.size() << "):" << std::endl;
+			for (auto& q : allQuestions)
+			{
+				std::cout << storage.dump(q) << std::endl;
+			}
+			//
+			return allQuestions;
 		}
 	}
 }

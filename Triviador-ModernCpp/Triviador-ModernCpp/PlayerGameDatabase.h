@@ -20,10 +20,22 @@ struct PlayerGameDatabase{
 namespace database {
 	namespace playerGame {
 		template <class T>
-		void static insertPlayer(T& storage, GameDatabase game, PlayerDatabase player)
+		void static insertPlayerGame(T& storage, GameDatabase game, PlayerDatabase player)
 		{
 			PlayerGameDatabase playerGameDB(game, player);
 			storage.insert(playerGameDB);
+		}
+		template <class T>
+		std::vector<PlayerGameDatabase> static getAllPlayerGames(T& storage)
+		{
+			auto allPlayerGames = storage.get_all<PlayerGameDatabase>();
+			//for testing
+			for (auto& p : allPlayerGames)
+			{
+				std::cout << storage.dump(p) << std::endl;
+			}
+			//
+			return allPlayerGames;
 		}
 	}
 }
