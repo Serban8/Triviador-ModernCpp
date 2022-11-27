@@ -66,18 +66,28 @@ void databaseTest()
 	//inserting questions in the database
 	database::question::insertQuestions(storage);
 	database::question::getAllQuestions(storage);
+	/*database::question::getQuestion(storage,3102);
+	database::question::getQuestion(storage,3167);
+	database::question::getQuestion(storage,3169);
+	database::question::getQuestion(storage,3133);*/
 
 	//inserting players into database
 	database::player::insertPlayer(storage, Player("Flo"));
 	database::player::insertPlayer(storage, Player("Dany"));
 	database::player::insertPlayer(storage, Player("Jimmy"));
 	database::player::getAllPlayers(storage);
+	database::player::getPlayer(storage, "Flo");
+	database::player::getPlayer(storage, "Mirkea");
+
 
 	//insertin games into database
 	database::game::insertGame(storage, "Dany", 5);
 	database::game::insertGame(storage, "Jimmy", 6);
 	database::game::insertGame(storage, "Flo", 4);
-	database::game::getAllGames(storage);
+	//database::game::getAllGames(storage);
+	database::game::getGame(storage, 34);
+	database::game::getGame(storage, 2);
+	database::game::getGame(storage, 39);
 
 	//insert playerGames into database
 	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Flo")), PlayerDatabase(Player("Flo")));

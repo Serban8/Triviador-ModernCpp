@@ -42,7 +42,7 @@ namespace database {
 		template <class T> 
 		void static insertGame(T& storage, std::string winner, int rounds){
 			GameDatabase gameDB(winner,rounds);
-			storage.insert(gameDB);
+			storage.insert(gameDB);			
 		}
 		template<class T>
 		std::vector<GameDatabase> static getAllGames(T& storage)
@@ -55,6 +55,15 @@ namespace database {
 			}
 			//
 			return allGames;
+		}
+		template<class T>
+		GameDatabase static getGame(T& storage, int id)
+		{
+			auto games = storage.get<GameDatabase>(id);
+			//for testing
+				std::cout << storage.dump(games) << std::endl;
+			//
+			return games;
 		}
 	}
 }

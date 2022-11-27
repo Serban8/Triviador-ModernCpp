@@ -41,6 +41,15 @@ namespace database {
 			//
 			return allPlayers;
 		}
+		template<class T>
+		PlayerDatabase static getPlayer(T& storage, std::string username)
+		{
+			auto player = storage.get<PlayerDatabase>(username);
+			//for testing
+				std::cout << storage.dump(player) << std::endl;
+			//
+			return player;
+		}
 	}
 }
 
