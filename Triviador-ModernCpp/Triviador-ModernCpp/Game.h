@@ -20,7 +20,8 @@ public:
 	//methods
 	void AddInactivePlayer(Player player);
 	void PlayGame();
-
+	template<typename T> 
+	std::vector<T> getAnswers(std::vector<Player> players);
 private:
 
 	void ChoosingBases();
@@ -34,4 +35,19 @@ private:
 	Map m_map;
 
 };
+
+template<typename T> 
+std::vector<T> Game::getAnswers(std::vector<Player> players)
+{
+	T answer;
+	std::vector<T> answers;
+	std::cout << "Please enter your answers:" << std::endl;
+	for (auto& p : players)
+	{
+		std::cout << p.GetUsername() << ": ";
+		std::cin >> answer;
+		answers.push_back(answer);
+	}
+	return answers;
+}
 

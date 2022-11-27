@@ -62,21 +62,35 @@ void Game::PlayGame()
 	ChoosingBases();
 }
 
+
+
+
 void Game::ChoosingBases()
 {
 	std::cout << m_map<<std::endl;
 	std::cout << "Question: \n\n";
+	std::vector<int> answers;
+	auto q1 = m_numberQuestions.back();
+	m_numberQuestions.pop_back();
 	auto q = m_numberQuestions.back();
 	m_numberQuestions.pop_back();
-
+	
 	//printing the question:
 	if (std::holds_alternative<NumberQuestion<int>>(q))
 	{
+		std::vector<int> answers;
 		auto qInt = std::get<NumberQuestion<int>>(q);
-		qInt.PrintQuestion();
+		//qInt.PrintQuestion();
+		std::cout << qInt;
+		answers = getAnswers<int>(m_activePlayers);
+		std::cout << answers[0] << " " << answers[1];
 	}
 	else {
+		std::vector<float> answers;
 		auto qFloat = std::get<NumberQuestion<float>>(q);
-		qFloat.PrintQuestion();
+		//qFloat.PrintQuestion();
+		std::cout << qFloat;
+		answers = getAnswers<float>(m_activePlayers);
+		std::cout << answers[0] << " " << answers[1];
 	}
 }

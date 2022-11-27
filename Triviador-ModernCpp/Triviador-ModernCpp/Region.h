@@ -13,7 +13,7 @@ public:
 
 public:
 	//constructor
-	Region() {}
+	Region();
 	Region(Player owner, Type type = Type::Territory, int score = 100);
 
 	//setters

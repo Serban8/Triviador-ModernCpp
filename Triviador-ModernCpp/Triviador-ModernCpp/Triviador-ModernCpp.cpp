@@ -57,7 +57,7 @@ void playerTest() {
 
 void gameTest() {
 
-	
+
 	QuestionGenerator qg;
 	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
 	
@@ -160,7 +160,7 @@ int main()
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	gameTest();
-	questionTest();
+	//questionTest();
 	//mapTest();
 	return 0;
 }
