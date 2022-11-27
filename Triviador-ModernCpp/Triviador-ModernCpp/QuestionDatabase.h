@@ -82,5 +82,15 @@ namespace database {
 			//
 			return allQuestions;
 		}
+		template<class T>
+		QuestionDatabase static getQuestion(T& storage, int id)
+		{
+			//printing the contents
+			auto question = storage.get<QuestionDatabase>(id);
+			//for testing
+			std::cout << storage.dump(question) << std::endl;
+			//
+			return question;
+		}
 	}
 }
