@@ -27,7 +27,7 @@ class QuestionGenerator
 public:
 	QuestionGenerator();
 	std::vector<MultipleChoiceQuestion> GenerateMultipleChoiceQuestions(int numberOfQuestions = 100);
-	//std::vector<NumberQuestion> GenerateNumberAnswerQuestions(int numberOfQuestions = 100);
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> GenerateNumberAnswerQuestions(int numberOfQuestions = 100);
 
 private:
 	const std::string m_baseMultipleChoiceQuestionDatabaseUrl = "https://opentdb.com/";
@@ -35,6 +35,8 @@ private:
 	std::string m_token;
 	std::string GenerateToken();
 	std::vector<MultipleChoiceQuestion> GetMultipleChoiceQuestions(uint8_t numOfQuestions = 50);
-	//std::vector<NumberQuestion> GetNumberAnswerQuestions(uint8_t numOfQuestions = 30);
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> GetNumberAnswerQuestions(uint8_t numOfQuestions = 30);
+	NumberQuestion<int> GenerateIntQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid);
+	NumberQuestion<float> GenerateFloatQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 
 };

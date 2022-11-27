@@ -1,7 +1,7 @@
 #pragma once
 #include "AbstractQuestion.h"
-#include<iostream>
-#include<sstream>
+#include <iostream>
+
 template<class N>
 class NumberQuestion : public AbstractQuestion
 {
@@ -9,17 +9,9 @@ public:
 
 	NumberQuestion() {}
 
-	NumberQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
-		AbstractQuestion(question, category)
+	NumberQuestion(std::string question, std::string category, N correctAnswer, std::array<N, 3> incorrectAnswers) :
+		AbstractQuestion(question, category), m_correctAnswer(correctAnswer), m_incorrectAnswers(incorrectAnswers)
 	{
-		std::stringstream correctAns(correctAnswer);
-		std::stringstream incorrectAns1(incorrectAnswers[0]);
-		std::stringstream incorrectAns2(incorrectAnswers[1]);
-		std::stringstream incorrectAns3(incorrectAnswers[2]);
-		correctAns >> m_correctAnswer;
-		incorrectAns1 >> m_incorrectAnswers[0];
-		incorrectAns2 >> m_incorrectAnswers[1];
-		incorrectAns3 >> m_incorrectAnswers[2];
 	}
 
 	//getters
@@ -32,11 +24,13 @@ private:
 	std::array<N, 3> m_incorrectAnswers;
 
 };
+
 template<typename N>
 N NumberQuestion<N>::GetCorrectAnswer() const
 {
 	return m_correctAnswer;
 }
+
 template<typename N>
 std::array<N, 3> NumberQuestion<N>::GetIncorrectAnswers() const
 {

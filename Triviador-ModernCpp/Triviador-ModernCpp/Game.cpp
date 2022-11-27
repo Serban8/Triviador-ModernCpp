@@ -10,15 +10,16 @@ Game::Game(std::vector<Player> players) :
 	QuestionGenerator qg;
 	m_multipleChoiceQuestions = qg.GenerateMultipleChoiceQuestions(50);
 	//for testing purposes 
-	std::array<std::string, 3> numericIncorrectAnswers = { "2000","2001","2002" };
-	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", "2021", numericIncorrectAnswers);
-	NumberQuestion<int> nq2("When did Romania join the UE ? ", "Politics", "2007", numericIncorrectAnswers);
-	NumberQuestion<float> nq3("What is the value of PI ? ", "Math", "3.14", numericIncorrectAnswers);
+	std::array<int, 3> numericIncorrectAnswers = { 2000,2001,2002 };
+	std::array<float, 3> numericIncorrectAnswers2 = { 2.12, 1.05, 3.15 };
+	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", 2021, numericIncorrectAnswers);
+	NumberQuestion<int> nq2("When did Romania join the UE ? ", "Politics", 2007, numericIncorrectAnswers);
+	NumberQuestion<float> nq3("What is the value of PI ? ", "Math", 3.14, numericIncorrectAnswers2);
 
 	m_numberQuestions.push_back(nq);
 	m_numberQuestions.push_back(nq2);
 	m_numberQuestions.push_back(nq3);
-	/*for (auto& q : m_numberQuestions)
+	for (auto& q : m_numberQuestions)
 	{
 		if (std::holds_alternative<NumberQuestion<int>>(q))
 		{
@@ -32,7 +33,7 @@ Game::Game(std::vector<Player> players) :
 			std::cout << x2.GetQuestion() << " " << x2.GetCorrectAnswer() << std::endl;
 		}
 		
-	}*/
+	}
 }
 
 

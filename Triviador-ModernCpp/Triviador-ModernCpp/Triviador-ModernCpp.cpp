@@ -80,9 +80,25 @@ void gameTest() {
 
 void questionTest()
 {
-	std::array<std::string, 3> numericIncorrectAnswers = { "2000","2001","2002" };
-	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", "2021", numericIncorrectAnswers);
-	std::cout << std::endl << nq.GetCorrectAnswer() << " " << nq.GetQuestion();
+	QuestionGenerator qg;
+	auto questions = qg.GenerateNumberAnswerQuestions();
+
+	std::cout << "\n\n--------------\n\n";
+
+	for (auto q : questions) {
+		if (std::holds_alternative< NumberQuestion<int>>(q)) {
+			NumberQuestion<int> intQ = std::get<NumberQuestion<int>>(q);
+			std::cout << std::endl << intQ.GetCorrectAnswer() << " " << intQ.GetQuestion();
+		}
+		else {
+			NumberQuestion<float> floatQ = std::get<NumberQuestion<float>>(q);
+			std::cout << std::endl << floatQ.GetCorrectAnswer() << " " << floatQ.GetQuestion();
+		}
+	}
+
+	std::array<int, 3> numericIncorrectAnswers = { 2000, 2001, 2002 };
+	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", 2021, numericIncorrectAnswers);
+	std::cout << std::endl << nq.GetQuestion() << " " << nq.GetCorrectAnswer();
 }
 
 void mapTest()
@@ -144,7 +160,7 @@ int main()
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	gameTest();
-	//questionTest();
+	questionTest();
 	//mapTest();
 	return 0;
 }
