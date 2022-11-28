@@ -6,7 +6,7 @@ Game::Game(std::vector<Player> players) :
 	m_map(Map(players.size()))
 {
 	//getting questions directly from online database;
-	//in future we need to change this to get them from our local database;
+	//in future we need to change this to get them from our database;
 	QuestionGenerator qg;
 	m_multipleChoiceQuestions = qg.GenerateMultipleChoiceQuestions(50);
 	m_numberQuestions = qg.GenerateNumberAnswerQuestions();
@@ -29,7 +29,7 @@ Game::Game(std::vector<Player> players) :
 }
 
 
-std::vector<Player> Game::GetPlayers()
+std::vector<Player> Game::GetPlayers() const
 {
 	return m_activePlayers;
 }
@@ -49,7 +49,7 @@ void Game::PlayGame()
 {
 	for (const auto& player : m_activePlayers)
 	{
-		std::cout << "Welcome, " << player.GetUsername() << ", it's in the game!" << std::endl;
+		std::cout << "Welcome, " << player.GetUsername() << ". It's in the game." << std::endl;
 	}
 	ChoosingBases();
 	DistributeTerritories();
@@ -57,7 +57,7 @@ void Game::PlayGame()
 
 //todo: also return how fast was the response
 template<typename T>
-std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> players)
+std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> players) const
 {
 	T answer;
 	std::vector<std::pair<Player, T>> answers;
@@ -73,10 +73,11 @@ std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> pla
 
 //todo: sort by taking into account the response time if difference is the same
 template<typename T>
-std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T correctAnswer)
+std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T correctAnswer) const
 {
-	std::vector<Player> sortedPlayers;
 	using playerAndAnswer = std::pair<Player, T>;
+
+	std::vector<Player> sortedPlayers;
 	std::vector<playerAndAnswer> answers = GetNumberAnswers<T>(players);
 	std::sort(
 		begin(answers),
@@ -113,14 +114,14 @@ void Game::ChoosingBases()
 		std::cout << "Please, " << p.GetUsername() << ", choose the position of your base: " << std::endl << "> ";
 		int line, col;
 		std::cin >> line >> col;
-		--line;
-		--col;
+		--line; --col; //player input pos between (1, height) and (1, width)
+
+		//input validation
 		while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
 		{
 			std::cout << "Invalid choice, please choose another position\n< ";
 			std::cin >> line >> col;
-			--line;
-			--col;
+			--line; --col;
 		}
 		m_map[{line, col}].SetOwner(p);
 		m_map[{line, col}].SetScore(300);
@@ -132,6 +133,7 @@ void Game::ChoosingBases()
 void Game::DistributeTerritories()
 {
 	const uint8_t topPlayerNumberOfChoices = m_activePlayers.size() - 1;
+	//the territories left undistributed are all except the bases
 	uint8_t territoriesLeft = (m_map.GetHeight() * m_map.GetWidth()) - m_activePlayers.size();
 
 	std::cout << "Choosing Territories: \n";
@@ -147,6 +149,7 @@ void Game::DistributeTerritories()
 
 		//selecting the territories
 		if (territoriesLeft >= (topPlayerNumberOfChoices * (topPlayerNumberOfChoices + 1) / 2)) {
+			//gauss sum represents the number of territories distributed in a normal round
 			uint8_t numOfChoices = topPlayerNumberOfChoices;
 			for (const auto& player : sortedPlayers) {
 				uint8_t numOfChoicesLeft = numOfChoices;
@@ -156,11 +159,10 @@ void Game::DistributeTerritories()
 					std::cout << "Please, " << player.GetUsername() << ", choose the position of a territory you want: " << std::endl << "> ";
 					int line, col;
 					std::cin >> line >> col;
-					--line;
-					--col;
+					--line; --col;
 					while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
 					{
-						std::cout << "Invalid choice, please choose another position\n< ";
+						std::cout << "Invalid choice, please choose another position\n> ";
 						std::cin >> line >> col;
 						--line; --col;
 					}
@@ -179,8 +181,7 @@ void Game::DistributeTerritories()
 				int line, col;
 				std::cout << player.GetUsername() << ": ";
 				std::cin >> line >> col;
-				--line;
-				--col;
+				--line; --col;
 				while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
 				{
 					std::cout << "Invalid choice, please choose another position" << std::endl;
@@ -229,7 +230,7 @@ std::vector<Player> Game::DetermineWinners()
 
 	auto maxPoints = std::max_element(m_activePlayers.begin(), m_activePlayers.end());
 	Player playerMaxPoints;
-	
+
 	//check if there are more than one player with max score
 	do {
 		playerMaxPoints = *maxPoints;
