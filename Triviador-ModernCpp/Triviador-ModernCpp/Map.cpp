@@ -5,8 +5,6 @@ Map::Map(const uint8_t& numberOfPlayers)
 	if (m_defaultDimensions.find(numberOfPlayers) != m_defaultDimensions.end()) {
 		m_height = m_defaultDimensions[numberOfPlayers].first;
 		m_width = m_defaultDimensions[numberOfPlayers].second;
-		//for testing purposes
-		std::cout << m_height << " " << m_width << std::endl;
 		m_regions.resize(m_height * m_width);
 	}
 	else {
@@ -24,12 +22,12 @@ const Region& Map::operator[](const Position& pos) const
 	return m_regions[pos.first * m_width + pos.second];
 }
 
-int Map::GetHeight()
+int Map::GetHeight() const
 {
 	return m_height;
 }
 
-int Map::GetWidth()
+int Map::GetWidth() const
 {
 	return m_width;
 }
@@ -50,16 +48,16 @@ std::ostream& operator<<(std::ostream& os, const Map& map)
 		os << std::endl;
 		for (uint8_t j = 0; j < map.m_width; j++)
 		{
-			switch (map[{i,j}].GetType())
+			switch (map[{i, j}].GetType())
 			{
 			case Region::Type::Base:
-				os << "Base"<<" | ";
+				os << "Base" << " | ";
 				break;
 			case Region::Type::Territory:
-				os << "Territory"<< " | ";
+				os << "Territory" << " | ";
 				break;
 			default:
-				//throw std::runtime_error("Undefined type of region");
+				throw std::runtime_error("Undefined type of region");
 				break;
 			}
 		}

@@ -2,28 +2,32 @@
 #include "Region.h"
 #include <unordered_map>
 #include <iostream>
+
 class Map
 {
 public:
 	using Position = std::pair<uint8_t, uint8_t>;
 
 public:
-	Map(const uint8_t &numberOfPlayers);
+	Map(const uint8_t& numberOfPlayers);
 
+	//operators
 	Region& operator[](const Position& pos);
 	const Region& operator[](const Position& pos) const;
-	friend std::ostream& operator<<(std::ostream& os,const Map &map);
-	int GetHeight();
-	int GetWidth();
+	friend std::ostream& operator<<(std::ostream& os, const Map& map);
+
+	//getters
+	int GetHeight() const;
+	int GetWidth() const;
 
 private:
 	int m_height;
 	int m_width;
 	std::vector<Region> m_regions;
-	std::unordered_map<uint8_t, Position> m_defaultDimensions = 
+	std::unordered_map<uint8_t, Position> m_defaultDimensions =
 	{
-		{2, {3, 3}}, 
-		{3, {5, 3}}, 
+		{2, {3, 3}},
+		{3, {5, 3}},
 		{4, {6, 4}},
 	};
 

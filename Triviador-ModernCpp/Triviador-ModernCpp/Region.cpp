@@ -2,7 +2,7 @@
 
 Region::Region()
 {
-	m_type = Type::Territory; 
+	m_type = Type::Territory;
 	m_score = 100;
 }
 
@@ -38,7 +38,7 @@ int Region::GetScore() const
 	return m_score;
 }
 
-Player Region::GetOwner() const 
+Player Region::GetOwner() const
 {
 	return m_owner;
 }
