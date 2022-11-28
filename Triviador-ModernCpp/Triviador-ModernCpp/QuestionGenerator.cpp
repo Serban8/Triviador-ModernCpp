@@ -10,7 +10,7 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GenerateMultipleChoiceQue
 	std::vector<MultipleChoiceQuestion> questions;
 	int numOfQuestionsToInsert = numberOfQuestions;
 
-	//generate the question in batches of 50 - since that is the max the online db can return for one request
+	//generate the question in batches of 50 - since that is the max onlinetdb.com can return for one request
 	while (questions.size() < numberOfQuestions) {
 		if (numOfQuestionsToInsert >= 50) {
 			std::vector<MultipleChoiceQuestion> tmpQ = GetMultipleChoiceQuestions();
@@ -53,7 +53,6 @@ std::string QuestionGenerator::GenerateToken()
 		throw std::runtime_error(tokenResponse["response_message"]);
 	}
 
-	//std::cout << tokenResponse["token"];
 	return std::string(tokenResponse["token"]);
 }
 
@@ -75,10 +74,10 @@ std::vector<MultipleChoiceQuestion> QuestionGenerator::GetMultipleChoiceQuestion
 
 	//response validation
 	if (responseCode) {
-		throw std::runtime_error("Questions request threw an error.");
+		throw std::runtime_error("Questions request threw an error");
 	}
 
-	//generate objects of type Question based on the result
+	//generate objects of type MultipleChoiceQuestion based on the result
 	json questions = response["results"];
 
 	for (auto& i : questions.items())
@@ -134,7 +133,7 @@ std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> QuestionGe
 				generatedQuestions.push_back(QInt);
 			}
 		}
-		catch (std::invalid_argument const& ex) //catches stoi or stof exception - catches exception when answer does not have an int/float
+		catch (std::invalid_argument const& ex) //catches stoi or stof exception - catches exception when string cannot be converted to int/float
 		{
 			continue;
 		}

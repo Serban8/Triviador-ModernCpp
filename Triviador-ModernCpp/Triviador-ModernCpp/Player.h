@@ -12,8 +12,12 @@ public:
 	};
 
 public:
-	Player(){}
+	Player() {}
 	Player(std::string username);
+
+	//operators
+	friend bool operator==(const Player& p1, const Player& p2);
+	friend bool operator<(const Player& p1, const Player& p2);
 
 	//getters
 	int GetPoints() const;
@@ -27,9 +31,6 @@ public:
 	//methods
 	void useAdvantage(Advatage advantage);
 
-	friend bool operator==(const Player& p1, const Player& p2);
-	friend bool operator<(const Player& p1, const Player& p2);
-
 private:
 	int m_points = 0;
 	bool m_isActive = true;
@@ -42,5 +43,4 @@ private:
 		{Advatage::ChooseAnswer, false},
 		{Advatage::SuggestAnswer, false}
 	} };
-
 };

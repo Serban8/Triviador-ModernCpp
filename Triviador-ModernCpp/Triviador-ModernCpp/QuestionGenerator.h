@@ -31,13 +31,18 @@ public:
 	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> GenerateNumberAnswerQuestions(int numberOfQuestions = 100);
 
 private:
-	const std::string m_baseMultipleChoiceQuestionDatabaseUrl = "https://opentdb.com/";
-	const std::string m_baseNumberAnswerQuestionDatabaseUrl = "https://the-trivia-api.com/";
-	std::string m_token;
+	//multiple choice questions helpers
 	std::string GenerateToken();
 	std::vector<MultipleChoiceQuestion> GetMultipleChoiceQuestions(uint8_t numOfQuestions = 50);
+
+private:
+	//number answer questions helpers
 	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> GetNumberAnswerQuestions(uint8_t numOfQuestions = 30);
 	NumberQuestion<int> GenerateIntQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 	NumberQuestion<float> GenerateFloatQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 
+private:
+	const std::string m_baseMultipleChoiceQuestionDatabaseUrl = "https://opentdb.com/";
+	const std::string m_baseNumberAnswerQuestionDatabaseUrl = "https://the-trivia-api.com/";
+	std::string m_token;
 };

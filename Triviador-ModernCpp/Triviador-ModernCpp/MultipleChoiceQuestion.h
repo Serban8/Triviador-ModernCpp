@@ -1,17 +1,17 @@
 #pragma once
 #include <string>
 #include <array>
+
 #include "AbstractQuestion.h"
 
-class MultipleChoiceQuestion : public AbstractQuestion {
-
+class MultipleChoiceQuestion : public AbstractQuestion
+{
 public:
 	MultipleChoiceQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
 		AbstractQuestion(question, category),
 		m_correctAnswer(correctAnswer),
 		m_incorrectAnswers(incorrectAnswers)
 	{
-		//empty
 	}
 
 	//getters
@@ -23,4 +23,3 @@ private:
 	std::array<std::string, 3> m_incorrectAnswers;
 
 };
-

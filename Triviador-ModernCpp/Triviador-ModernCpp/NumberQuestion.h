@@ -1,14 +1,14 @@
 #pragma once
-#include "AbstractQuestion.h"
 #include <iostream>
+#include <string>
+
+#include "AbstractQuestion.h"
 
 template<class N>
 class NumberQuestion : public AbstractQuestion
 {
 public:
-
 	NumberQuestion() {}
-
 	NumberQuestion(std::string question, std::string category, N correctAnswer, std::array<N, 3> incorrectAnswers) :
 		AbstractQuestion(question, category), m_correctAnswer(correctAnswer), m_incorrectAnswers(incorrectAnswers)
 	{
@@ -17,12 +17,10 @@ public:
 	//getters
 	std::array<N, 3> GetIncorrectAnswers() const;
 	N GetCorrectAnswer() const;
-	
-private:
 
+private:
 	N m_correctAnswer;
 	std::array<N, 3> m_incorrectAnswers;
-
 };
 
 template<typename N>

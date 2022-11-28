@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <array>
 #include <iostream>
 
 class AbstractQuestion {
@@ -11,14 +10,16 @@ public:
 		m_question(question),
 		m_category(category)
 	{
-		//empty
 	}
 
 	//getters
 	virtual std::string GetQuestion() const;
 	virtual std::string GetCategory() const;
-	//operator afisare
+
+	//operators
 	friend  std::ostream& operator<<(std::ostream& out, const AbstractQuestion& question);
+
+	//methods
 	virtual void PrintQuestion() const;
 
 protected:

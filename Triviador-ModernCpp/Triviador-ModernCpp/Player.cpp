@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(std::string username):
+Player::Player(std::string username) :
 	m_username(username)
 {
 }
