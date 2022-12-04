@@ -9,7 +9,6 @@
 #include "Player.h"
 #include "Map.h"
 #include "GameDatabase.h"
-#include"GameQuestionDatabase.h"
 #include"PlayerGameDatabase.h"
 
 inline auto createStorage(const std::string& filename)
@@ -38,13 +37,6 @@ inline auto createStorage(const std::string& filename)
 			make_column("rounds", &GameDatabase::m_rounds),
 			make_column("date", &GameDatabase::m_date),
 			foreign_key(&GameDatabase::m_winner).references(&PlayerDatabase::m_username)
-		),
-		make_table("GameQuestion",
-			make_column("gameId", &GameQuestionDatabase::m_gameId),
-			make_column("questionId", &GameQuestionDatabase::m_questionId),
-			primary_key(&GameQuestionDatabase::m_gameId, &GameQuestionDatabase::m_questionId),
-			foreign_key(&GameQuestionDatabase::m_gameId).references(&GameDatabase::m_id),
-			foreign_key(&GameQuestionDatabase::m_questionId).references(&QuestionDatabase::m_id)
 		),
 		make_table("PlayerGames",
 			make_column("game", &PlayerGameDatabase::m_gameId),
@@ -114,6 +106,23 @@ void databaseTest()
 
 	for (auto q : resultedQ) {
 		std::cout<< q.GetQuestion() << " " << q.GetCorrectAnswer() << std::endl;
+	}
+
+	std::vector<std::variant<NumberQuestion<int>,NumberQuestion<float>>> resultedNQ;
+	auto tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+	tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+
+	for (auto q : resultedNQ) {
+		if (std::holds_alternative< NumberQuestion<int>>(q)) {
+			NumberQuestion<int> intQ = std::get<NumberQuestion<int>>(q);
+			std::cout << std::endl << intQ.GetCorrectAnswer() << " " << intQ.GetQuestion();
+		}
+		else {
+			NumberQuestion<float> floatQ = std::get<NumberQuestion<float>>(q);
+			std::cout << std::endl << floatQ.GetCorrectAnswer() << " " << floatQ.GetQuestion();
+		}
 	}
 	storage.sync_schema();
 }
@@ -192,13 +201,13 @@ int main()
 {
 
 	//testing database adding of questions
-	//databaseTest();
+	databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	//gameTest();
-	questionTest();
+	//questionTest();
 	//mapTest();
 	return 0;
 }

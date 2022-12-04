@@ -30,6 +30,7 @@ public:
 	QuestionGenerator();
 	std::vector<MultipleChoiceQuestion> GenerateMultipleChoiceQuestions(int numberOfQuestions = 100);
 	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> GenerateNumberAnswerQuestions(int numberOfQuestions = 100);
+	std::variant<NumberQuestion<int>, NumberQuestion<float>> GenerateQuestion(std::string question, std::string category, std::string correctAns, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 
 private:
 	//multiple choice questions helpers
@@ -39,7 +40,6 @@ private:
 private:
 	//number answer questions helpers
 	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> GetNumberAnswerQuestions(uint8_t numOfQuestions = 30);
-	std::variant<NumberQuestion<int>, NumberQuestion<float>> GenerateQuestion(std::string question, std::string category, std::string correctAns, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 	NumberQuestion<int> GenerateIntQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 	NumberQuestion<float> GenerateFloatQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid);
 

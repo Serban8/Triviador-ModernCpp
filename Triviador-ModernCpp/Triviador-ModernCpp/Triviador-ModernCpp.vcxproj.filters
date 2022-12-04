@@ -80,9 +80,6 @@
     <ClInclude Include="QuestionDatabase.h">
       <Filter>Header Files\Database Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameQuestionDatabase.h">
-      <Filter>Header Files\Database Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameDatabase.h">
       <Filter>Header Files\Database Files</Filter>
     </ClInclude>

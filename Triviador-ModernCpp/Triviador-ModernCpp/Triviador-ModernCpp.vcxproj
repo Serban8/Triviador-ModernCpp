@@ -149,7 +149,6 @@
     <ClInclude Include="Question.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDatabase.h" />
-    <ClInclude Include="GameQuestionDatabase.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
