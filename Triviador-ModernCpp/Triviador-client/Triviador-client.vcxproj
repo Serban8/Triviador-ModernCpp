@@ -89,7 +89,6 @@
     <QtRcc Include="TriviadorClient.qrc" />
     <QtUic Include="TriviadorClient.ui" />
     <QtMoc Include="TriviadorClient.h" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="NumberQuestion.cpp" />
@@ -100,7 +99,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="NumberQuestion.h" />
