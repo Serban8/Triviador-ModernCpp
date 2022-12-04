@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sqlite_orm/sqlite_orm.h>
+#include <crow.h>
+
 #include "MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
@@ -9,7 +11,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "GameDatabase.h"
-#include"PlayerGameDatabase.h"
+#include "PlayerGameDatabase.h"
 
 inline auto createStorage(const std::string& filename)
 {
@@ -187,7 +189,28 @@ void questionTest()
 	NumberQuestion<int> nq("What was the year Max Verstappen won his first WDC ? ", "Sports", 2021, numericIncorrectAnswers);
 	std::cout << std::endl << nq.GetQuestion() << " " << nq.GetCorrectAnswer();
 }
+void connectionTest()
+{
+	auto storage = createStorage("TRIV");
+	storage.sync_schema();
+	std::vector<MultipleChoiceQuestion> resultedQ;
+	auto tmpQ = database::getMultipleChoiceQuestions(storage);
+	crow::SimpleApp app;
+	CROW_ROUTE(app, "/question")([&storage]() {
+		std::vector<crow::json::wvalue> questionsJson;
+		for (const auto& q : storage.iterate<QuestionDatabase>())
+		{
+			questionsJson.push_back(crow::json::wvalue{
+				{"Question", q.m_question},
+				{"Correct Answer", q.m_correctAnswer},
+				{"Type", q.m_type}
+				});
+		}
+		return crow::json::wvalue(questionsJson);
+		});
 
+	app.port(18080).multithreaded().run();
+}
 void mapTest()
 {
 	Map m1(2);
@@ -198,10 +221,11 @@ void mapTest()
 }
 int main()
 {
-	databaseTest();
-	playerTest();
-	questionTest();
-	mapTest();
-	gameTest();
+	//databaseTest();
+	//playerTest();
+	//questionTest();
+	//mapTest();
+	//gameTest();
+	connectionTest();
 	return 0;
 }
