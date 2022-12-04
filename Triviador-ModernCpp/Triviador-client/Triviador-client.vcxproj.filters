@@ -7,19 +7,28 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Triviador-ModernCpp\Region.cpp">
+    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Triviador-ModernCpp\AbstractQuestion.cpp">
+    <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Triviador-ModernCpp\Map.cpp">
+    <ClCompile Include="MultipleChoiceQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Triviador-ModernCpp\MultipleChoiceQuestion.cpp">
+    <ClCompile Include="NumberQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Triviador-ModernCpp\Player.cpp">
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Region.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,22 +59,28 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Triviador-ModernCpp\AbstractQuestion.h">
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Triviador-ModernCpp\Map.h">
+    <ClInclude Include="Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Triviador-ModernCpp\MultipleChoiceQuestion.h">
+    <ClInclude Include="MultipleChoiceQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Triviador-ModernCpp\NumberQuestion.h">
+    <ClInclude Include="NumberQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Triviador-ModernCpp\Player.h">
+    <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Triviador-ModernCpp\Region.h">
+    <ClInclude Include="Question.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Region.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
