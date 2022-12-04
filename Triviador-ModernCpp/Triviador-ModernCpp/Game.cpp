@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "QuestionGenerator.h"
 
-Game::Game(std::vector<Player> players) :
+Game::Game(std::vector<Player>& players) :
 	m_activePlayers(players),
 	m_map(Map(players.size()))
 {

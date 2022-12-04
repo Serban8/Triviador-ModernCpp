@@ -136,17 +136,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractQuestion.cpp" />
+    <ClCompile Include="Question.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="Region.cpp" />
-    <ClCompile Include="Triviador-ModernCpp.cpp" />
+    <ClCompile Include="TriviadorServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractQuestion.h" />
+    <ClInclude Include="Question.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDatabase.h" />
     <ClInclude Include="GameQuestionDatabase.h" />

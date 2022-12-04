@@ -3,11 +3,11 @@
 #include <iostream>
 
 //also needed in client
-class AbstractQuestion {
+class Question {
 
 public:
-	AbstractQuestion() {}
-	AbstractQuestion(std::string question, std::string category) :
+	Question() {}
+	Question(std::string question, std::string category) :
 		m_question(question),
 		m_category(category)
 	{
@@ -18,7 +18,7 @@ public:
 	virtual std::string GetCategory() const;
 
 	//operators
-	friend  std::ostream& operator<<(std::ostream& out, const AbstractQuestion& question);
+	friend  std::ostream& operator<<(std::ostream& out, const Question& question);
 
 	//methods
 	virtual void PrintQuestion() const;

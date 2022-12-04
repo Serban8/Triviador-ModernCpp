@@ -18,26 +18,3 @@ struct GameQuestionDatabase
 	int m_gameId;
 	int m_questionId;
 };
-
-namespace database {
-	namespace gameQuestion {
-		template <class T>
-		void static insertGameQuestion(T& storage, GameDatabase game, QuestionDatabase question)
-		{
-			GameQuestionDatabase gameQuestionDB(game, question);
-			storage.insert(gameQuestionDB);
-		}
-		template <class T>
-		std::vector<GameQuestionDatabase> static getAllGameQuestions(T& storage)
-		{
-			auto allGameQuestions = storage.get_all<GameQuestionDatabase>();
-			//for testing
-			for (auto& p : allGameQuestions)
-			{
-				std::cout << storage.dump(p) << std::endl;
-			}
-			//
-			return allGameQuestions;
-		}
-	}
-}
