@@ -64,31 +64,43 @@ void databaseTest()
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
 	//inserting questions in the database
-	database::question::insertQuestions(storage);
-	database::question::getAllQuestions(storage);
+	database::insertQuestions(storage);
+	auto questions = storage.get_all<QuestionDatabase>();
+	for (auto& q : questions)
+	{
+		std::cout << q.m_question << std::endl;
+	}
 	/*database::question::getQuestion(storage,3102);
 	database::question::getQuestion(storage,3167);
 	database::question::getQuestion(storage,3169);
 	database::question::getQuestion(storage,3133);*/
 
 	//inserting players into database
-	database::player::insertPlayer(storage, Player("Flo"));
-	database::player::insertPlayer(storage, Player("Dany"));
-	database::player::insertPlayer(storage, Player("Jimmy"));
-	database::player::getAllPlayers(storage);
-	database::player::getPlayer(storage, "Flo");
-	database::player::getPlayer(storage, "Mirkea");
-
+	database::insertPlayer(storage, Player("Flo"));
+	database::insertPlayer(storage, Player("Dany"));
+	database::insertPlayer(storage, Player("Jimmy"));
+	auto players = storage.get_all<PlayerDatabase>();
+	for (auto& p : players)
+	{
+		std::cout << p.m_username << std::endl;
+	}
+	auto p = storage.get<PlayerDatabase>("Flo");
+	std::cout<< p.m_username << std::endl;
+	//storage.get<PlayerDatabase>("Mirkea");
 
 	//insertin games into database
-	database::game::insertGame(storage, "Dany", 5);
-	database::game::insertGame(storage, "Jimmy", 6);
-	database::game::insertGame(storage, "Flo", 4);
+	storage.insert(GameDatabase("Dany", 5));
+	storage.insert(GameDatabase("Jimmy", 6));
+	storage.insert(GameDatabase("Flo", 4));
+	
 	//database::game::getAllGames(storage);
-	database::game::getGame(storage, 34);
-	database::game::getGame(storage, 2);
-	database::game::getGame(storage, 39);
-
+	//
+	auto g1 = storage.get<GameDatabase>(1);
+	auto g2 = storage.get<GameDatabase>(2);
+	auto g3 = storage.get<GameDatabase>(3);
+	std::cout << g1.m_id << " " << g1.m_winner << std::endl;
+	std::cout << g2.m_id << " " << g2.m_winner << std::endl;
+	std::cout << g3.m_id << " " << g3.m_winner << std::endl;
 	//insert playerGames into database
 	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Flo")), PlayerDatabase(Player("Flo")));
 	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Jimmy")), PlayerDatabase(Player("Jimmy")));
@@ -109,12 +121,12 @@ void gameTest() {
 
 	QuestionGenerator qg;
 	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
-	
-	std::vector<AbstractQuestion*> aq;
+
+	std::vector<Question*> aq;
 
 	for (auto& question : mq) {
 
-		aq.push_back(static_cast<AbstractQuestion*>(&question));
+		aq.push_back(static_cast<Question*>(&question));
 	}
 
 	/*for (auto& question : aq) {
@@ -170,12 +182,12 @@ int main()
 {
 
 	//testing database adding of questions
-	//databaseTest();
+	databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
-	gameTest();
+	//gameTest();
 	//questionTest();
 	//mapTest();
 	return 0;

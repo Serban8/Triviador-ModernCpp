@@ -2,14 +2,14 @@
 #include <string>
 #include <array>
 
-#include "AbstractQuestion.h"
+#include "Question.h"
 
 //needed in client
-class MultipleChoiceQuestion : public AbstractQuestion
+class MultipleChoiceQuestion : public Question
 {
 public:
 	MultipleChoiceQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
-		AbstractQuestion(question, category),
+		Question(question, category),
 		m_correctAnswer(correctAnswer),
 		m_incorrectAnswers(incorrectAnswers)
 	{

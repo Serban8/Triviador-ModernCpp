@@ -36,34 +36,3 @@ struct GameDatabase
 	std::string m_date;
 
 };
-
-namespace database {
-	namespace game {
-		template <class T> 
-		void static insertGame(T& storage, std::string winner, int rounds){
-			GameDatabase gameDB(winner,rounds);
-			storage.insert(gameDB);			
-		}
-		template<class T>
-		std::vector<GameDatabase> static getAllGames(T& storage)
-		{
-			auto allGames = storage.get_all<GameDatabase>();
-			//for testing
-			for (auto& p : allGames)
-			{
-				std::cout << storage.dump(p) << std::endl;
-			}
-			//
-			return allGames;
-		}
-		template<class T>
-		GameDatabase static getGame(T& storage, int id)
-		{
-			auto games = storage.get<GameDatabase>(id);
-			//for testing
-				std::cout << storage.dump(games) << std::endl;
-			//
-			return games;
-		}
-	}
-}

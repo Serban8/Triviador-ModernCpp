@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Triviador-ModernCpp.cpp">
+    <ClCompile Include="TriviadorServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MultipleChoiceQuestion.cpp">
@@ -30,7 +30,7 @@
     <ClCompile Include="QuestionGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractQuestion.cpp">
+    <ClCompile Include="Question.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -53,7 +53,7 @@
     <ClInclude Include="QuestionGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractQuestion.h">
+    <ClInclude Include="Question.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NumberQuestion.h">

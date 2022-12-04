@@ -13,7 +13,7 @@ class Game
 {
 public:
 
-	Game(std::vector<Player> players);
+	Game(std::vector<Player>& players);
 
 	//getters
 	std::vector<Player> GetPlayers() const;

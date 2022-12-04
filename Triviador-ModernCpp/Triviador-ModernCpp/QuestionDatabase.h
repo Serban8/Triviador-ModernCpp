@@ -39,58 +39,31 @@ struct QuestionDatabase
 };
 
 namespace database {
-	namespace question {
-		template<class T> 
-		void static insertQuestions(T& storage)
-		{
-			QuestionGenerator qGen;
-			std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
-			//std::vector<NumberQuestion> numberQuestions = qGen.GenerateNumberQuestions();
+	template<class T>
+	void static insertQuestions(T& storage)
+	{
+		QuestionGenerator qGen;
+		std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
+		//std::vector<NumberQuestion> numberQuestions = qGen.GenerateNumberQuestions();
 
-			std::vector<QuestionDatabase> vectDB;
-			//adding multiple choice questions
-			for (const auto& q : multipleChoiceQuestions)
-			{
-				vectDB.push_back(QuestionDatabase(q));
-			}
-			for (const auto& q : vectDB)
-			{
-				storage.insert(q);
-			}
-			//adding number questions
-			/*for (const auto& q : numberQuestions)
-			{
-				vectDB.push_back(QuestionDatabase(q));
-			}
-			for (const auto& q : vectDB)
-			{
-				storage.insert(q);
-			}*/
-		}
-
-		template <class T>
-		std::vector<QuestionDatabase> static getAllQuestions(T& storage)
+		std::vector<QuestionDatabase> vectDB;
+		//adding multiple choice questions
+		for (const auto& q : multipleChoiceQuestions)
 		{
-			//printing the contents
-			auto allQuestions = storage.get_all<QuestionDatabase>();
-			//for testing
-			std::cout << "allQuestions (" << allQuestions.size() << "):" << std::endl;
-			for (auto& q : allQuestions)
-			{
-				std::cout << storage.dump(q) << std::endl;
-			}
-			//
-			return allQuestions;
+			vectDB.push_back(QuestionDatabase(q));
 		}
-		template<class T>
-		QuestionDatabase static getQuestion(T& storage, int id)
+		for (const auto& q : vectDB)
 		{
-			//printing the contents
-			auto question = storage.get<QuestionDatabase>(id);
-			//for testing
-			std::cout << storage.dump(question) << std::endl;
-			//
-			return question;
+			storage.insert(q);
 		}
+		//adding number questions
+		/*for (const auto& q : numberQuestions)
+		{
+			vectDB.push_back(QuestionDatabase(q));
+		}
+		for (const auto& q : vectDB)
+		{
+			storage.insert(q);
+		}*/
 	}
 }
