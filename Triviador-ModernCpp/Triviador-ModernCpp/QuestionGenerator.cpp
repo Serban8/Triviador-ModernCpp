@@ -119,19 +119,11 @@ std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> QuestionGe
 		std::array<std::string, 3> incorrectAnswers = { question["incorrectAnswers"][0], question["incorrectAnswers"][1], question["incorrectAnswers"][2] };
 		//determine if answer is float, int or neither
 		try {
-			bool isValid = true;
-			//try with int
-			NumberQuestion<int> QInt = GenerateIntQuestion(question["question"], question["category"], correctAns, incorrectAnswers, isValid);
-			if (!isValid) {
-				//try with float if int didnt work
-				NumberQuestion<float> QFloat = GenerateFloatQuestion(question["question"], question["category"], correctAns, incorrectAnswers, isValid);
-				if (isValid) {
-					generatedQuestions.push_back(QFloat);
-				}
-			}
-			else {
-				generatedQuestions.push_back(QInt);
-			}
+			bool isValid;
+			//try to generate question (isValid is false when string start with number (ex: "5 or 1"))
+			auto genQ = GenerateQuestion(question["question"], question["category"], correctAns, incorrectAnswers, isValid);
+			if(isValid)
+				generatedQuestions.push_back(genQ);
 		}
 		catch (std::invalid_argument const& ex) //catches stoi or stof exception - catches exception when string cannot be converted to int/float
 		{
@@ -144,6 +136,25 @@ std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> QuestionGe
 	}
 
 	return generatedQuestions;
+}
+
+std::variant<NumberQuestion<int>, NumberQuestion<float>> QuestionGenerator::GenerateQuestion(std::string question, std::string category, std::string correctAns, std::array<std::string, 3> incorrectAnswers, bool& isValid)
+{
+	std::variant<NumberQuestion<int>, NumberQuestion<float>> resultedQuestion;
+	isValid = true;
+	//try with int
+	NumberQuestion<int> QInt = GenerateIntQuestion(question, category, correctAns, incorrectAnswers, isValid);
+	if (!isValid) {
+		//try with float if int didnt work
+		NumberQuestion<float> QFloat = GenerateFloatQuestion(question, category, correctAns, incorrectAnswers, isValid);
+		if (isValid) {
+			resultedQuestion = QFloat;
+		}
+	}
+	else {
+		resultedQuestion = QInt;
+	}
+	return resultedQuestion;
 }
 
 NumberQuestion<int> QuestionGenerator::GenerateIntQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers, bool& isValid)

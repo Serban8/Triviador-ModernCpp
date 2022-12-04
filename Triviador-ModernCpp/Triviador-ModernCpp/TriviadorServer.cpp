@@ -162,6 +162,8 @@ void questionTest()
 
 	std::cout << "\n\n--------------\n\n";
 
+	std::cout << questions.size() << std::endl;
+
 	for (auto q : questions) {
 		if (std::holds_alternative< NumberQuestion<int>>(q)) {
 			NumberQuestion<int> intQ = std::get<NumberQuestion<int>>(q);
@@ -190,13 +192,13 @@ int main()
 {
 
 	//testing database adding of questions
-	databaseTest();
+	//databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	//gameTest();
-	//questionTest();
+	questionTest();
 	//mapTest();
 	return 0;
 }
