@@ -107,6 +107,23 @@ void databaseTest()
 	for (auto q : resultedQ) {
 		std::cout<< q.GetQuestion() << " " << q.GetCorrectAnswer() << std::endl;
 	}
+
+	std::vector<std::variant<NumberQuestion<int>,NumberQuestion<float>>> resultedNQ;
+	auto tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+	tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+
+	for (auto q : resultedNQ) {
+		if (std::holds_alternative< NumberQuestion<int>>(q)) {
+			NumberQuestion<int> intQ = std::get<NumberQuestion<int>>(q);
+			std::cout << std::endl << intQ.GetCorrectAnswer() << " " << intQ.GetQuestion();
+		}
+		else {
+			NumberQuestion<float> floatQ = std::get<NumberQuestion<float>>(q);
+			std::cout << std::endl << floatQ.GetCorrectAnswer() << " " << floatQ.GetQuestion();
+		}
+	}
 	storage.sync_schema();
 }
 
@@ -184,13 +201,13 @@ int main()
 {
 
 	//testing database adding of questions
-	//databaseTest();
+	databaseTest();
 
 	//QuestionGenerator qg;
 	//qg.GenerateNumberAnswerQuestions();
 	//playerTest();
 	//gameTest();
-	questionTest();
+	//questionTest();
 	//mapTest();
 	return 0;
 }

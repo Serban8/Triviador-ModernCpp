@@ -20,9 +20,7 @@ struct QuestionDatabase
 		m_incorrectAnswer2(q.GetIncorrectAnswers()[1]),
 		m_incorrectAnswer3(q.GetIncorrectAnswers()[2])
 	{
-
 	}
-	//used int for testing we will need to use std::variant
 	QuestionDatabase(std::variant<NumberQuestion<int>, NumberQuestion<float>> nq):
 		m_type("Number")
 	{
@@ -30,21 +28,21 @@ struct QuestionDatabase
 		{
 			m_question = std::get<NumberQuestion<int>>(nq).GetQuestion();
 			m_category = std::get<NumberQuestion<int>>(nq).GetCategory();
-			m_correctAnswer = std::get<NumberQuestion<int>>(nq).GetCorrectAnswer();
+			m_correctAnswer = std::to_string(std::get<NumberQuestion<int>>(nq).GetCorrectAnswer());
 			std::array<int,3> auxArray= std::get<NumberQuestion<int>>(nq).GetIncorrectAnswers();
-			m_incorrectAnswer1 = auxArray[0];
-			m_incorrectAnswer3 =  auxArray[1];
-			m_incorrectAnswer2 =  auxArray[2];
+			m_incorrectAnswer1 = std::to_string(auxArray[0]);
+			m_incorrectAnswer3 = std::to_string(auxArray[1]);
+			m_incorrectAnswer2 = std::to_string(auxArray[2]);
 
 		}
 		else {
 			m_question = std::get<NumberQuestion<float>>(nq).GetQuestion();
 			m_category = std::get<NumberQuestion<float>>(nq).GetCategory();
-			m_correctAnswer = std::get<NumberQuestion<float>>(nq).GetCorrectAnswer();
+			m_correctAnswer = std::to_string(std::get<NumberQuestion<float>>(nq).GetCorrectAnswer());
 			std::array<float, 3> auxArray = std::get<NumberQuestion<float>>(nq).GetIncorrectAnswers();
-			m_incorrectAnswer1 = auxArray[0];
-			m_incorrectAnswer3 = auxArray[1];
-			m_incorrectAnswer2 = auxArray[2];
+			m_incorrectAnswer1 = std::to_string(auxArray[0]);
+			m_incorrectAnswer3 = std::to_string(auxArray[1]);
+			m_incorrectAnswer2 = std::to_string(auxArray[2]);
 		}
 	}
 
@@ -80,10 +78,6 @@ namespace database {
 		{
 			vectDB.push_back(QuestionDatabase(q));
 		}
-		/*for (const auto& q : vectDB)
-		{
-			storage.insert(q);
-		}*/
 		//adding number questions
 		for (const auto& q : numberQuestions)
 		{
@@ -134,6 +128,46 @@ namespace database {
 		//	std::ostream_iterator<int>(std::cout, " "));
 		//std::cout << std::endl;
 		//
+
+		return resultedQuestions;
+	}
+	template<class T>
+	std::vector<std::variant<NumberQuestion<int>,NumberQuestion<float>>> getNumberQuestions(T& storage, int numberOfQuestions = 5)
+	{
+		namespace sql = sqlite_orm;
+		static std::unordered_set<int> usedIndexes;
+
+		auto allNumberQ = storage.get_all<QuestionDatabase>(sql::where(sql::c(&QuestionDatabase::m_type) = "Number"));
+		std::vector<std::variant<NumberQuestion<int>,NumberQuestion<float>>> resultedQuestions;
+
+		for (int i = 0; i < numberOfQuestions; ++i) {
+			int randIndex;
+			do {
+				randIndex = getRandNum(0, allNumberQ.size() - 1);
+			} while (usedIndexes.contains(randIndex));
+			auto selectedQuestion = allNumberQ[randIndex];
+
+			QuestionGenerator qg;
+			bool isValid;
+			//assuming selected question is valid, since validation has been made when inserting the questions into the database
+			auto generatedQuestion = qg.GenerateQuestion(
+				selectedQuestion.m_question,
+				selectedQuestion.m_category,
+				selectedQuestion.m_correctAnswer,
+				std::array<std::string, 3> {selectedQuestion.m_incorrectAnswer1, selectedQuestion.m_incorrectAnswer2, selectedQuestion.m_incorrectAnswer3},
+				isValid
+			);
+			if (isValid) 
+			{
+				resultedQuestions.push_back(generatedQuestion);
+			}
+			else {
+				//if the question can't be converted it should be removed from database
+				throw std::runtime_error("Invalid question stored in database");
+				i--;
+			}
+			usedIndexes.insert(randIndex);
+		}
 
 		return resultedQuestions;
 	}
