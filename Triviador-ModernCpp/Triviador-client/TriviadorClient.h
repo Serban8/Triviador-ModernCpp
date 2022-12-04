@@ -2,6 +2,9 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_TriviadorClient.h"
+#include "cpr/cpr.h"
+#include "crow.h"
+#include <QLabel>
 
 class TriviadorClient : public QMainWindow
 {
@@ -10,7 +13,6 @@ class TriviadorClient : public QMainWindow
 public:
     TriviadorClient(QWidget *parent = nullptr);
     ~TriviadorClient();
-
 private:
     Ui::TriviadorclientClass ui;
 };
