@@ -122,7 +122,7 @@ std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> QuestionGe
 			bool isValid;
 			//try to generate question (isValid is false when string start with number (ex: "5 or 1"))
 			auto genQ = GenerateQuestion(question["question"], question["category"], correctAns, incorrectAnswers, isValid);
-			if(isValid)
+			if (isValid)
 				generatedQuestions.push_back(genQ);
 		}
 		catch (std::invalid_argument const& ex) //catches stoi or stof exception - catches exception when string cannot be converted to int/float

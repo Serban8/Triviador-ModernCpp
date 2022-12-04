@@ -1,9 +1,7 @@
 #pragma once
-
 #include <string>
 #include "Player.h"
 
-//also needed in client
 class Region
 {
 public:

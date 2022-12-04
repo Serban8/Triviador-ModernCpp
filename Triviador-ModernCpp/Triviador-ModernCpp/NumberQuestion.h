@@ -4,16 +4,14 @@
 
 #include "Question.h"
 
-//also needed in client
 template<class N>
 class NumberQuestion : public Question
 {
 public:
-	NumberQuestion() {}
+	NumberQuestion() = default;
 	NumberQuestion(std::string question, std::string category, N correctAnswer, std::array<N, 3> incorrectAnswers) :
 		Question(question, category), m_correctAnswer(correctAnswer), m_incorrectAnswers(incorrectAnswers)
-	{
-	}
+	{}
 
 	//getters
 	std::array<N, 3> GetIncorrectAnswers() const;

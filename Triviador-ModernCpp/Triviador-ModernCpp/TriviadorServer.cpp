@@ -77,14 +77,14 @@ void databaseTest()
 		std::cout << p.m_username << std::endl;
 	}
 	auto p = storage.get<PlayerDatabase>("Flo");
-	std::cout<< p.m_username << std::endl;
+	std::cout << p.m_username << std::endl;
 	//storage.get<PlayerDatabase>("Mirkea");
 
 	//insertin games into database
 	storage.insert(GameDatabase("Dany", 5));
 	storage.insert(GameDatabase("Jimmy", 6));
 	storage.insert(GameDatabase("Flo", 4));
-	
+
 	//database::game::getAllGames(storage);
 	//
 	auto g1 = storage.get<GameDatabase>(1);
@@ -105,10 +105,10 @@ void databaseTest()
 	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
 
 	for (auto q : resultedQ) {
-		std::cout<< q.GetQuestion() << " " << q.GetCorrectAnswer() << std::endl;
+		std::cout << q.GetQuestion() << " " << q.GetCorrectAnswer() << std::endl;
 	}
 
-	std::vector<std::variant<NumberQuestion<int>,NumberQuestion<float>>> resultedNQ;
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> resultedNQ;
 	auto tmpNQ = database::getNumberQuestions(storage);
 	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
 	tmpNQ = database::getNumberQuestions(storage);
@@ -130,11 +130,10 @@ void databaseTest()
 void playerTest() {
 	Player p("marcel");
 	//use debugger
-	p.useAdvantage(Player::Advatage::FiftyFifty);
+	p.UseAdvantage(Player::Advantage::FiftyFifty);
 }
 
 void gameTest() {
-
 
 	QuestionGenerator qg;
 	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
@@ -199,15 +198,10 @@ void mapTest()
 }
 int main()
 {
-
-	//testing database adding of questions
 	databaseTest();
-
-	//QuestionGenerator qg;
-	//qg.GenerateNumberAnswerQuestions();
-	//playerTest();
-	//gameTest();
-	//questionTest();
-	//mapTest();
+	playerTest();
+	questionTest();
+	mapTest();
+	gameTest();
 	return 0;
 }

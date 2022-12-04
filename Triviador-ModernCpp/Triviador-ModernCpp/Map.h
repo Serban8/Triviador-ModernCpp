@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <iostream>
 
-//needed in client
 class Map
 {
 public:
@@ -25,6 +24,8 @@ private:
 	int m_height;
 	int m_width;
 	std::vector<Region> m_regions;
+
+private:
 	std::unordered_map<uint8_t, Position> m_defaultDimensions =
 	{
 		{2, {3, 3}},
@@ -33,4 +34,3 @@ private:
 	};
 
 };
-

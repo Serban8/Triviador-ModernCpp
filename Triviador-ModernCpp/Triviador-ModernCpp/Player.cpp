@@ -3,6 +3,14 @@
 Player::Player(std::string username) :
 	m_username(username)
 {
+	m_points = 0;
+	m_isActive = true;
+	m_advantages =
+	{ {
+		{Advantage::FiftyFifty, false},
+		{Advantage::ChooseAnswer, false},
+		{Advantage::SuggestAnswer, false}
+	} };
 }
 
 int Player::GetPoints() const
@@ -30,7 +38,7 @@ void Player::SetActive(bool isActive)
 	m_isActive = isActive;
 }
 
-void Player::useAdvantage(Advatage advantage)
+void Player::UseAdvantage(Advantage advantage)
 {
 	m_advantages.at(static_cast<uint8_t>(advantage)).second = true;
 }

@@ -1,10 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
+
 #include "Player.h"
+
 struct PlayerDatabase
 {
-	PlayerDatabase() {}
+	PlayerDatabase() = default;
 
 	PlayerDatabase(Player p) :
 		m_username(p.GetUsername())
@@ -15,8 +17,6 @@ struct PlayerDatabase
 	std::string m_username;
 	std::string m_password = "tmpass123";
 
-	//TODO: create table GamesPlayers to solve many to many relationship between player table and game table.
-
 };
 
 namespace database {
@@ -25,8 +25,7 @@ namespace database {
 	{
 		PlayerDatabase pDB(p);
 		//used .replace() instead of .insert() because we do not have autoincrement primary_key
-		//in pl
+		//in player table (primary key is usernam)
 		storage.replace(pDB);
 	}
 }
-

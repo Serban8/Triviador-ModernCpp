@@ -4,7 +4,6 @@
 
 #include "Question.h"
 
-//needed in client
 class MultipleChoiceQuestion : public Question
 {
 public:

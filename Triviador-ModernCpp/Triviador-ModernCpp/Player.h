@@ -2,11 +2,10 @@
 #include <string>
 #include <array>
 
-//also needed in client
 class Player
 {
 public:
-	enum class Advatage :uint8_t {
+	enum class Advantage :uint8_t {
 		FiftyFifty,
 		ChooseAnswer,
 		SuggestAnswer
@@ -30,18 +29,13 @@ public:
 	void SetActive(bool isActive);
 
 	//methods
-	void useAdvantage(Advatage advantage);
+	void UseAdvantage(Advantage advantage);
 
 private:
-	int m_points = 0;
-	bool m_isActive = true;
+	int m_points;
+	bool m_isActive;
 	std::string m_username;
 
 	//array of advantages - pair with advantage and status: used = true, not used = false
-	std::array<std::pair<Advatage, bool>, 3> m_advantages =
-	{ {
-		{Advatage::FiftyFifty, false},
-		{Advatage::ChooseAnswer, false},
-		{Advatage::SuggestAnswer, false}
-	} };
+	std::array<std::pair<Advantage, bool>, 3> m_advantages;
 };

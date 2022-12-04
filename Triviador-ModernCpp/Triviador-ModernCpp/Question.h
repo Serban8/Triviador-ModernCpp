@@ -2,7 +2,6 @@
 #include <string>
 #include <iostream>
 
-//also needed in client
 class Question {
 
 public:
@@ -18,7 +17,7 @@ public:
 	virtual std::string GetCategory() const;
 
 	//operators
-	friend  std::ostream& operator<<(std::ostream& out, const Question& question);
+	friend std::ostream& operator<<(std::ostream& out, const Question& question);
 
 	//methods
 	virtual void PrintQuestion() const;

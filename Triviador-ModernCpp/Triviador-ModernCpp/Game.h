@@ -8,11 +8,9 @@
 #include "Player.h"
 #include "Map.h"
 
-//not needed in client
 class Game
 {
 public:
-
 	Game(std::vector<Player>& players);
 
 	//getters
@@ -21,7 +19,9 @@ public:
 	//methods
 	void AddInactivePlayer(Player player);
 	void PlayGame();
+	//Here for testing only
 	std::vector<Player> DetermineWinners();
+	//
 
 private:
 	//the main steps of the game

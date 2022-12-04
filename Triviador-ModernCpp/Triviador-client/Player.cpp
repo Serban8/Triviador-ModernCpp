@@ -30,7 +30,7 @@ void Player::SetActive(bool isActive)
 	m_isActive = isActive;
 }
 
-void Player::useAdvantage(Advatage advantage)
+void Player::UseAdvantage(Advantage advantage)
 {
 	m_advantages.at(static_cast<uint8_t>(advantage)).second = true;
 }
