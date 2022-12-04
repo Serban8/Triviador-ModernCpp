@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <iostream>
 
+//needed in client
 class Map
 {
 public:

@@ -5,6 +5,8 @@ Game::Game(std::vector<Player> players) :
 	m_activePlayers(players),
 	m_map(Map(players.size()))
 {
+	//the game is initialized with a vector of players. We should have a function which handles player login - finding players
+	//
 	//getting questions directly from online database;
 	//in future we need to change this to get them from our database;
 	QuestionGenerator qg;
@@ -47,6 +49,7 @@ void Game::AddInactivePlayer(Player player)
 
 void Game::PlayGame()
 {
+	//TOOO: display starting animation/message to all players (in client)
 	for (const auto& player : m_activePlayers)
 	{
 		std::cout << "Welcome, " << player.GetUsername() << ". It's in the game." << std::endl;
@@ -75,9 +78,12 @@ std::vector<std::pair<Player, T>> Game::GetNumberAnswers(std::vector<Player> pla
 template<typename T>
 std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T correctAnswer) const
 {
+	//Setp 3 - Sorting the players according to their response
 	using playerAndAnswer = std::pair<Player, T>;
 
 	std::vector<Player> sortedPlayers;
+
+	//todo: the function should recieve the answers as parameter
 	std::vector<playerAndAnswer> answers = GetNumberAnswers<T>(players);
 	std::sort(
 		begin(answers),
@@ -104,11 +110,19 @@ std::vector<Player> Game::SortPlayersByAnswers(std::vector<Player> players, T co
 
 void Game::ChoosingBases()
 {
+	//1. Get question from vector
+	//2. Display question & ask for answers
+	//3. Create leaderboard
+	//4. Get players to choose bases according to leaderboard
+	//5. Update map
 	std::cout << "\nChoosing bases:\n\n";
 	std::cout << m_map << std::endl;
 
-	//printing the question:
+	//AskNumberQuestion handles setps 1-3
 	std::vector<Player> sortedPlayers = AskNumberQuestion(m_activePlayers);
+
+	//Setp 4. Choosing bases - (in client) each player should be promted to choose base and while a player is choosing the others should be informed about that
+	//						 - (in server) we should iterate through the list of players and update with the info received from the client
 	for (const auto& p : sortedPlayers)
 	{
 		std::cout << "Please, " << p.GetUsername() << ", choose the position of your base: " << std::endl << "> ";
@@ -117,12 +131,13 @@ void Game::ChoosingBases()
 		--line; --col; //player input pos between (1, height) and (1, width)
 
 		//input validation
-		while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
+		while (!(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()) || !m_map[{line, col}].GetOwner().GetUsername().empty())
 		{
-			std::cout << "Invalid choice, please choose another position\n< ";
+			std::cout << "Invalid choice, please choose another position\n> ";
 			std::cin >> line >> col;
 			--line; --col;
 		}
+		//Step 5 - map update should be done here and reflected in client
 		m_map[{line, col}].SetOwner(p);
 		m_map[{line, col}].SetScore(300);
 		m_map[{line, col}].SetType(Region::Type::Base);
@@ -132,26 +147,37 @@ void Game::ChoosingBases()
 
 void Game::DistributeTerritories()
 {
+	//1. Get question from vector
+	//2. Display question & ask for answers
+	//3. Create leaderboard
+	//4. Get players to choose territories according to leaderboard and rules
+	//5. Update map
+
 	const uint8_t topPlayerNumberOfChoices = m_activePlayers.size() - 1;
 	//the territories left undistributed are all except the bases
 	uint8_t territoriesLeft = (m_map.GetHeight() * m_map.GetWidth()) - m_activePlayers.size();
 
 	std::cout << "Choosing Territories: \n";
 	while (territoriesLeft != 0) {
-		//print the map
+		//print the map (client)
 		std::cout << m_map << std::endl;
 
 		//ask the question and determine the leaderboard
+		//AskNumberQuestion handles setps 1-3
 		std::vector<Player> sortedPlayers = AskNumberQuestion(m_activePlayers);
 
 		//the last player does not choose any territory
 		sortedPlayers.pop_back();
 
-		//selecting the territories
+		//Setp 4 - selecting territories
+		//Each player selects a set amount of territories. This should be handled by client
+		//    server sends the player that should select and the number of territories they should select
+		//    the client returns the chosen territories (the client handles validation)
 		if (territoriesLeft >= (topPlayerNumberOfChoices * (topPlayerNumberOfChoices + 1) / 2)) {
 			//gauss sum represents the number of territories distributed in a normal round
 			uint8_t numOfChoices = topPlayerNumberOfChoices;
 			for (const auto& player : sortedPlayers) {
+				//here - send needed info to client and parse response
 				uint8_t numOfChoicesLeft = numOfChoices;
 				--numOfChoices;
 				while (numOfChoicesLeft != 0) {
@@ -160,12 +186,13 @@ void Game::DistributeTerritories()
 					int line, col;
 					std::cin >> line >> col;
 					--line; --col;
-					while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
+					while (!(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()) || !m_map[{line, col}].GetOwner().GetUsername().empty())
 					{
 						std::cout << "Invalid choice, please choose another position\n> ";
 						std::cin >> line >> col;
 						--line; --col;
 					}
+					//Step 5 - update the map and sync it with client map
 					m_map[{line, col}].SetOwner(player); //region is territory and has score set to 100 by default
 					--numOfChoicesLeft;
 					--territoriesLeft;
@@ -175,6 +202,7 @@ void Game::DistributeTerritories()
 		else {
 			//if there are not enough territories left for a full round, we distribute them one by one in the order of the leaderboard
 			for (size_t i = 0; i < sortedPlayers.size() && territoriesLeft > 0; ++i) {
+				//here - send needed info to client and parse response
 				const auto& player = sortedPlayers[i];
 				//asking for territory
 				std::cout << "Please, " << player.GetUsername() << " choose the position of a territory you want: " << std::endl;
@@ -182,12 +210,13 @@ void Game::DistributeTerritories()
 				std::cout << player.GetUsername() << ": ";
 				std::cin >> line >> col;
 				--line; --col;
-				while (!m_map[{line, col}].GetOwner().GetUsername().empty() || !(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()))
+				while (!(line >= 0 && line < m_map.GetHeight() && col >= 0 && col < m_map.GetWidth()) || !m_map[{line, col}].GetOwner().GetUsername().empty())
 				{
 					std::cout << "Invalid choice, please choose another position" << std::endl;
 					std::cin >> line >> col;
 					--line; --col;
 				}
+				//Step 5 - update the map and sync it with client map
 				m_map[{line, col}].SetOwner(player); //region is territory and has score set to 100 by default
 				--territoriesLeft;
 			}
@@ -199,11 +228,20 @@ void Game::DistributeTerritories()
 
 std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 {
+	//1. Get question from vector
+	//2. 2.1 Display question & 
+	//	 2.2 Ask for answers
+	//3. Create leaderboard
+
+	//Step 1 - Getting the question
 	std::vector<Player> sortedPlayers;
-	//ask a question and return the top players
 	auto q = m_numberQuestions.back();
 	m_numberQuestions.pop_back();
-	//printing the question:
+
+	//Step 2 -> Displaying the question (should be handles in client - pack the info and sending it to each client)
+	//		 -> Each client should return the answer of each player
+	//
+	//Setp 3 is handles in SortPLayersByAnswers
 	std::cout << "Please answer this question: \n\n";
 	if (std::holds_alternative<NumberQuestion<int>>(q))
 	{
@@ -220,6 +258,7 @@ std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 	return sortedPlayers;
 }
 
+//Should also send the leaderboard to the client
 std::vector<Player> Game::DetermineWinners()
 {
 	std::vector<Player> winners;

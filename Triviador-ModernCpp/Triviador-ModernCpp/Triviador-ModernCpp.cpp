@@ -131,6 +131,7 @@ void gameTest() {
 	p4.SetPoints(800);
 	std::vector<Player> player = { p1,p2,p3,p4 };
 	Game topG(player);
+	topG.PlayGame();
 	topG.DetermineWinners();
 }
 

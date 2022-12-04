@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Triviador-ModernCpp", "Triviador-ModernCpp\Triviador-ModernCpp.vcxproj", "{26CE10D7-1D4D-43DB-9819-CDEA4192DFA7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Triviador-Server", "Triviador-ModernCpp\Triviador-ModernCpp.vcxproj", "{26CE10D7-1D4D-43DB-9819-CDEA4192DFA7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Triviador-Client", "Triviador-client\Triviador-client.vcxproj", "{FC1725AE-46D9-407C-9777-F87E140DBB60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{26CE10D7-1D4D-43DB-9819-CDEA4192DFA7}.Release|x64.Build.0 = Release|x64
 		{26CE10D7-1D4D-43DB-9819-CDEA4192DFA7}.Release|x86.ActiveCfg = Release|Win32
 		{26CE10D7-1D4D-43DB-9819-CDEA4192DFA7}.Release|x86.Build.0 = Release|Win32
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Debug|x64.ActiveCfg = Debug|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Debug|x64.Build.0 = Debug|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Debug|x86.ActiveCfg = Debug|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Debug|x86.Build.0 = Debug|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Release|x64.ActiveCfg = Release|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Release|x64.Build.0 = Release|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Release|x86.ActiveCfg = Release|x64
+		{FC1725AE-46D9-407C-9777-F87E140DBB60}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

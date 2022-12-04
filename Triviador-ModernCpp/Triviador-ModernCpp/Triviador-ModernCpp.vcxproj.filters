@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\JSON">
+      <UniqueIdentifier>{cdb248f5-60bb-4390-ad4a-37ac0c3da414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Database Files">
+      <UniqueIdentifier>{5496e8fa-69e7-41e5-9644-3352f13338a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Triviador-ModernCpp.cpp">
@@ -41,16 +47,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="json.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MultipleChoiceQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QuestionGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QuestionDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AbstractQuestion.h">
@@ -65,23 +65,29 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Region.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameQuestionDatabase.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="PlayerDatabase.h">
+      <Filter>Header Files\Database Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerGameDatabase.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Database Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionDatabase.h">
+      <Filter>Header Files\Database Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameQuestionDatabase.h">
+      <Filter>Header Files\Database Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDatabase.h">
+      <Filter>Header Files\Database Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Header Files\JSON</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 
+//also needed in client
 class AbstractQuestion {
 
 public:

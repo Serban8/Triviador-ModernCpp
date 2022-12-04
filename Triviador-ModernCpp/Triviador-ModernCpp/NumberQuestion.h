@@ -4,6 +4,7 @@
 
 #include "AbstractQuestion.h"
 
+//also needed in client
 template<class N>
 class NumberQuestion : public AbstractQuestion
 {

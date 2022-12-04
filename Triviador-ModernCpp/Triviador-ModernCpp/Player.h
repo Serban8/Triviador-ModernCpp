@@ -2,6 +2,7 @@
 #include <string>
 #include <array>
 
+//also needed in client
 class Player
 {
 public:
@@ -12,7 +13,7 @@ public:
 	};
 
 public:
-	Player() {}
+	Player() = default;
 	Player(std::string username);
 
 	//operators

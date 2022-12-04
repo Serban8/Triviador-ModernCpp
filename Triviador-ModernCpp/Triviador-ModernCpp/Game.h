@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Map.h"
 
+//not needed in client
 class Game
 {
 public:

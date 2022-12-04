@@ -24,6 +24,7 @@
     <ProjectGuid>{26ce10d7-1d4d-43db-9819-cdea4192dfa7}</ProjectGuid>
     <RootNamespace>TriviadorModernCpp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Triviador-Server</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
