@@ -23,11 +23,29 @@ struct QuestionDatabase
 
 	}
 	//used int for testing we will need to use std::variant
-	QuestionDatabase(NumberQuestion<int> nq) :
-		m_question(nq.GetQuestion()),
-		m_category(nq.GetCategory()),
+	QuestionDatabase(std::variant<NumberQuestion<int>, NumberQuestion<float>> nq):
 		m_type("Number")
 	{
+		if (std::holds_alternative<NumberQuestion<int>>(nq))
+		{
+			m_question = std::get<NumberQuestion<int>>(nq).GetQuestion();
+			m_category = std::get<NumberQuestion<int>>(nq).GetCategory();
+			m_correctAnswer = std::get<NumberQuestion<int>>(nq).GetCorrectAnswer();
+			std::array<int,3> auxArray= std::get<NumberQuestion<int>>(nq).GetIncorrectAnswers();
+			m_incorrectAnswer1 = auxArray[0];
+			m_incorrectAnswer3 =  auxArray[1];
+			m_incorrectAnswer2 =  auxArray[2];
+
+		}
+		else {
+			m_question = std::get<NumberQuestion<float>>(nq).GetQuestion();
+			m_category = std::get<NumberQuestion<float>>(nq).GetCategory();
+			m_correctAnswer = std::get<NumberQuestion<float>>(nq).GetCorrectAnswer();
+			std::array<float, 3> auxArray = std::get<NumberQuestion<float>>(nq).GetIncorrectAnswers();
+			m_incorrectAnswer1 = auxArray[0];
+			m_incorrectAnswer3 = auxArray[1];
+			m_incorrectAnswer2 = auxArray[2];
+		}
 	}
 
 	int m_id;
@@ -54,7 +72,7 @@ namespace database {
 	{
 		QuestionGenerator qGen;
 		std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
-		//std::vector<NumberQuestion> numberQuestions = qGen.GenerateNumberQuestions();
+		std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> numberQuestions = qGen.GenerateNumberAnswerQuestions();
 
 		std::vector<QuestionDatabase> vectDB;
 		//adding multiple choice questions
@@ -62,21 +80,19 @@ namespace database {
 		{
 			vectDB.push_back(QuestionDatabase(q));
 		}
-		for (const auto& q : vectDB)
+		/*for (const auto& q : vectDB)
 		{
 			storage.insert(q);
-		}
+		}*/
 		//adding number questions
-		/*for (const auto& q : numberQuestions)
+		for (const auto& q : numberQuestions)
 		{
 			vectDB.push_back(QuestionDatabase(q));
 		}
 		for (const auto& q : vectDB)
 		{
 			storage.insert(q);
-		}*/
-		storage.insert(QuestionDatabase(NumberQuestion<int>("Cati ani are Cosmin?", "General Culture", 20, std::array<int, 3> {1, 2, 3})));
-		storage.insert(QuestionDatabase(NumberQuestion<int>("Cati ani are Gigel?", "General Culture", 10, std::array<int, 3> {1, 2, 3})));
+		}
 	}
 	template<class T>
 	std::vector<MultipleChoiceQuestion>  getMultipleChoiceQuestions(T& storage, int numberOfQuestions = 5)

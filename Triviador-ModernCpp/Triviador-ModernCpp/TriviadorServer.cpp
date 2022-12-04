@@ -9,7 +9,6 @@
 #include "Player.h"
 #include "Map.h"
 #include "GameDatabase.h"
-#include"GameQuestionDatabase.h"
 #include"PlayerGameDatabase.h"
 
 inline auto createStorage(const std::string& filename)
@@ -38,13 +37,6 @@ inline auto createStorage(const std::string& filename)
 			make_column("rounds", &GameDatabase::m_rounds),
 			make_column("date", &GameDatabase::m_date),
 			foreign_key(&GameDatabase::m_winner).references(&PlayerDatabase::m_username)
-		),
-		make_table("GameQuestion",
-			make_column("gameId", &GameQuestionDatabase::m_gameId),
-			make_column("questionId", &GameQuestionDatabase::m_questionId),
-			primary_key(&GameQuestionDatabase::m_gameId, &GameQuestionDatabase::m_questionId),
-			foreign_key(&GameQuestionDatabase::m_gameId).references(&GameDatabase::m_id),
-			foreign_key(&GameQuestionDatabase::m_questionId).references(&QuestionDatabase::m_id)
 		),
 		make_table("PlayerGames",
 			make_column("game", &PlayerGameDatabase::m_gameId),
