@@ -95,7 +95,6 @@
     <ClCompile Include="NumberQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Question.cpp" />
-    <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="TriviadorClient.cpp" />
     <ClCompile Include="main.cpp" />
@@ -107,7 +106,6 @@
     <ClInclude Include="NumberQuestion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
-    <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="Region.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
