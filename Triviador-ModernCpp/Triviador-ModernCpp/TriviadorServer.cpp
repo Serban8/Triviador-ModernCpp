@@ -68,7 +68,7 @@ void databaseTest()
 	auto questions = storage.get_all<QuestionDatabase>();
 	for (auto& q : questions)
 	{
-		std::cout << q.m_question << std::endl;
+		std::cout << q.m_id << " " << q.m_question << std::endl;
 	}
 	/*database::question::getQuestion(storage,3102);
 	database::question::getQuestion(storage,3167);
@@ -106,7 +106,15 @@ void databaseTest()
 	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Jimmy")), PlayerDatabase(Player("Jimmy")));
 	//database::playerGame::insertPlayer(storage, GameDatabase("Jimmy", 6), PlayerDatabase(Player("Jimmy")));
 
+	std::vector<MultipleChoiceQuestion> resultedQ;
+	auto tmpQ = database::getMultipleChoiceQuestions(storage);
+	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
+	tmpQ = database::getMultipleChoiceQuestions(storage);
+	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
 
+	for (auto q : resultedQ) {
+		std::cout<< q.GetQuestion() << " " << q.GetCorrectAnswer() << std::endl;
+	}
 	storage.sync_schema();
 }
 
