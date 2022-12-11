@@ -15,3 +15,31 @@ TriviadorClient::TriviadorClient(QWidget *parent)
 
 TriviadorClient::~TriviadorClient()
 {}
+
+int TriviadorClient::LoginFunction(std::string & username, std::string & password)
+{
+		cpr::Response response;
+
+		response = cpr::Post(
+			cpr::Url{ " http://18080/checkplayer "/* not sure */ },
+			cpr::Payload{
+				{ " username ", username },
+				{ " password ", password }
+			}
+		);
+
+		return response.status_code;
+}
+
+int TriviadorClient::CreateNewPlayer(std::string& username, std::string& password)
+{
+		auto response = cpr::Post(
+			cpr::Url{ " http://18080/addNewplayer "/* not sure */ },
+			cpr::Payload{
+				{ " username ", username },
+				{ " password ", password }
+			}
+		);
+
+		return response.status_code;
+}
