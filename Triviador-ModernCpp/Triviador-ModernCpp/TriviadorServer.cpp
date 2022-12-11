@@ -267,7 +267,23 @@ int main()
 
 	//waiting room & related routes
 	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
+	
+	CROW_ROUTE(app, "/addtowaitingroom")
+		.methods(crow::HTTPMethod::PUT)([&waitingRoomList,&storage](const crow::request& req) {
 
+		auto kvStr = req.body;
+		std::string delimiter = "=";
+
+		size_t pos = 0;
+		std::string token;
+		pos = kvStr.find(delimiter);
+		if (pos != std::string::npos)
+		{
+			token = kvStr.substr(pos + 1);
+			waitingRoomList.push_back(Player(token));
+		}
+		return crow::response(200);
+			});
 	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList]() {
 		std::vector<crow::json::wvalue> waitingRoomList_json;
 		for (const auto& player : waitingRoomList) {
@@ -278,6 +294,23 @@ int main()
 		//
 		return crow::json::wvalue{ waitingRoomList_json };
 		});
+	//game history
+	CROW_ROUTE(app, "/player/<string>")([&storage](std::string username)
+		{
+			std::vector<crow::json::wvalue> games_json;
+			auto playerGame = storage.get_all<PlayerGameDatabase>(sqlite_orm::where(sqlite_orm::c(&PlayerGameDatabase::m_playerId) = username));
+			for (const auto& pg : playerGame)
+			{
+				GameDatabase g = storage.get<GameDatabase>(pg.m_gameId);
+				games_json.push_back(crow::json::wvalue{
+					{"date", g.m_date },
+					{"rounds", std::to_string(g.m_rounds)},
+					{"winner", g.m_winner}
+					});
+			}
+			return crow::json::wvalue{ games_json };
+		});
+
 	//game logic related routes
 
 	Game game;
