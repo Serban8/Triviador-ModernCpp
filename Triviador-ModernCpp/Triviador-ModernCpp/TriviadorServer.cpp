@@ -63,6 +63,7 @@ void databaseTest()
 	auto storage = createStorage("TRIV");
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
+
 	//inserting questions in the database
 	database::insertQuestions(storage);
 	auto questions = storage.get_all<QuestionDatabase>();
@@ -70,10 +71,6 @@ void databaseTest()
 	{
 		std::cout << q.m_id << " " << q.m_question << std::endl;
 	}
-	/*database::question::getQuestion(storage,3102);
-	database::question::getQuestion(storage,3167);
-	database::question::getQuestion(storage,3169);
-	database::question::getQuestion(storage,3133);*/
 
 	//inserting players into database
 	database::insertPlayer(storage, Player("Flo"));
@@ -86,7 +83,6 @@ void databaseTest()
 	}
 	auto p = storage.get<PlayerDatabase>("Flo");
 	std::cout << p.m_username << std::endl;
-	//storage.get<PlayerDatabase>("Mirkea");
 
 	//insertin games into database
 	storage.insert(GameDatabase("Dany", 5));
@@ -101,10 +97,6 @@ void databaseTest()
 	std::cout << g1.m_id << " " << g1.m_winner << std::endl;
 	std::cout << g2.m_id << " " << g2.m_winner << std::endl;
 	std::cout << g3.m_id << " " << g3.m_winner << std::endl;
-	//insert playerGames into database
-	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Flo")), PlayerDatabase(Player("Flo")));
-	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Jimmy")), PlayerDatabase(Player("Jimmy")));
-	//database::playerGame::insertPlayer(storage, GameDatabase("Jimmy", 6), PlayerDatabase(Player("Jimmy")));
 
 	std::vector<MultipleChoiceQuestion> resultedQ;
 	auto tmpQ = database::getMultipleChoiceQuestions(storage);
@@ -153,10 +145,6 @@ void gameTest() {
 		aq.push_back(static_cast<Question*>(&question));
 	}
 
-	/*for (auto& question : aq) {
-
-		std::cout << question->GetQuestion()<<"\n";
-	}*/
 	Player p1("marcel");
 	Player p2("gigel");
 	Player p3("costel");
@@ -215,29 +203,10 @@ void connectionTest()
 		return crow::json::wvalue(questionsJson);
 		});
 
-	/*CROW_ROUTE(app, "/addnewplayer/<string>")([&storage](const crow::request& req) {
-		char* username_chr = req.url_params.get("username");
-		char* password_chr = req.url_params.get("password");
-		PlayerDatabase pDB(Player(username_chr), password_chr);
-		try  {
-			storage.replace(pDB);
-			return crow::response(200);
-		}
-		catch (std::system_error e) {
-			std::cout << e.what() << std::endl;
-			return crow::response(409);
-		}
-		catch (...) {
-			std::cout << "unknown exeption" << std::endl;
-			return crow::response(409);
-		}
-	});*/
-
 	CROW_ROUTE(app, "/addnewplayer")
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
 		return database::addNewPlayer(storage, req);
 			});
-	//addNewPlayerPut(database::addNewPlayer(storage);
 
 	app.port(18080).multithreaded().run();
 }
@@ -246,21 +215,20 @@ void mapTest()
 	Map m1(2);
 	Map m2(3);
 	Map m3(4);
-	//Map m6(6);
 	std::cout << m3;
 }
 
 int main()
 {
-	///TESTS
-		//databaseTest();
-		//playerTest();
-		//questionTest();
-		//mapTest();
-		//gameTest();
-		//connectionTest();
-
-		//for testing
+///TESTS
+	//databaseTest();
+	//playerTest();
+	//questionTest();
+	//mapTest();
+	//gameTest();
+	//connectionTest();
+///
+	//for testing
 	std::vector<Player> playersTest = { Player("Gigi"), Player("Marci"), Player("Luci") };
 
 	crow::SimpleApp app;
@@ -289,14 +257,12 @@ int main()
 				return crow::response(401, "UNAUTHORIZED");
 			}
 		}
+		else if (passwordIter == end)
+		{
+			return crow::response(401, "UNAUTHORIZED");
+		}
 		else {
-			if (passwordIter == end)
-			{
-				return crow::response(401, "UNAUTHORIZED");
-			}
-			else {
-				return crow::response(404, "NOT FOUND");
-			}
+			return crow::response(404, "NOT FOUND");
 		}
 		return crow::response(200);
 			});
