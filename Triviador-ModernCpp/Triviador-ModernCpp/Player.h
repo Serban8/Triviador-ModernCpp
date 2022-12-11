@@ -38,4 +38,4 @@ private:
 
 	//array of advantages - pair with advantage and status: used = true, not used = false
 	std::array<std::pair<Advantage, bool>, 3> m_advantages;
-};
+};	
