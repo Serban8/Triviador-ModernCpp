@@ -259,7 +259,7 @@ int main()
 		//mapTest();
 		//gameTest();
 		//connectionTest();
-	
+
 		//for testing
 	std::vector<Player> playersTest = { Player("Gigi"), Player("Marci"), Player("Luci") };
 
@@ -270,6 +270,35 @@ int main()
 	CROW_ROUTE(app, "/addnewplayer")
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
 		return database::addNewPlayer(storage, req);
+			});
+	CROW_ROUTE(app, "/checkplayer")
+		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);  //id=2&quantity=3&...
+		auto end = bodyArgs.end();
+		auto userIter = bodyArgs.find("username");
+		auto passwordIter = bodyArgs.find("password");
+		if (userIter != end && passwordIter != end)
+		{
+			auto playersCount = storage.get_all<PlayerDatabase>(sql::where(sql::c(&PlayerDatabase::m_username) = userIter->second));
+			if (playersCount.size() != 1)
+			{
+				return crow::response(404, "NOT FOUND");
+			}
+			if (playersCount[0].m_password != passwordIter->second)
+			{
+				return crow::response(401, "UNAUTHORIZED");
+			}
+		}
+		else {
+			if (passwordIter == end)
+			{
+				return crow::response(401, "UNAUTHORIZED");
+			}
+			else {
+				return crow::response(404, "NOT FOUND");
+			}
+		}
+		return crow::response(200);
 			});
 	//game logic related routes
 
