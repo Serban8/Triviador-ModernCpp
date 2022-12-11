@@ -14,6 +14,7 @@ public:
     TriviadorClient(QWidget *parent = nullptr);
     ~TriviadorClient();
     int LoginFunction(std::string& username, std::string& password);
+    int CreateNewPlayer(std::string& username, std::string& password);
 private:
     Ui::TriviadorclientClass ui;
 };
