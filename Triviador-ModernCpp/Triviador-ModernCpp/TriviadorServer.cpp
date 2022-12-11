@@ -267,7 +267,23 @@ int main()
 
 	//waiting room & related routes
 	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
+	
+	CROW_ROUTE(app, "/addtowaitingroom")
+		.methods(crow::HTTPMethod::PUT)([&waitingRoomList,&storage](const crow::request& req) {
 
+		auto kvStr = req.body;
+		std::string delimiter = "=";
+
+		size_t pos = 0;
+		std::string token;
+		pos = kvStr.find(delimiter);
+		if (pos != std::string::npos)
+		{
+			token = kvStr.substr(pos + 1);
+			waitingRoomList.push_back(Player(token));
+		}
+		return crow::response(200);
+			});
 	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList]() {
 		std::vector<crow::json::wvalue> waitingRoomList_json;
 		for (const auto& player : waitingRoomList) {
