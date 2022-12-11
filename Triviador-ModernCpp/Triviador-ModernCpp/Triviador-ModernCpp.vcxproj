@@ -144,6 +144,7 @@
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="TriviadorServer.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Question.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="NumberQuestion.h" />
     <ClInclude Include="Region.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

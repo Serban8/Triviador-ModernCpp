@@ -1,7 +1,11 @@
-#include <iostream>
 #include <sqlite_orm/sqlite_orm.h>
 #include <crow.h>
+#include <unordered_map>
+#include <string>
+#include <vector>
+#include <iostream>
 
+#include "utils.h"
 #include "MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
@@ -13,42 +17,44 @@
 #include "GameDatabase.h"
 #include "PlayerGameDatabase.h"
 
+namespace sql = sqlite_orm;
+
 inline auto createStorage(const std::string& filename)
 {
-	using namespace sqlite_orm;
-	return make_storage(
+	return sql::make_storage(
 		filename,
-		make_table("Players",
-			make_column("username", &PlayerDatabase::m_username, primary_key()),//or player, need to see
-			make_column("password", &PlayerDatabase::m_password)
+		sql::make_table("Players",
+			sql::make_column("username", &PlayerDatabase::m_username, sql::primary_key()),//or player, need to see
+			sql::make_column("password", &PlayerDatabase::m_password)
 			//instead of an column we will make a query to get no. of  games played
 		),
-		make_table("Questions",
-			make_column("id", &QuestionDatabase::m_id, autoincrement(), primary_key()),
-			make_column("question", &QuestionDatabase::m_question),
-			make_column("category", &QuestionDatabase::m_category),
-			make_column("type", &QuestionDatabase::m_type),
-			make_column("correctAnswer", &QuestionDatabase::m_correctAnswer),
-			make_column("incorrectAnswer1", &QuestionDatabase::m_incorrectAnswer1),
-			make_column("incorrectAnswer2", &QuestionDatabase::m_incorrectAnswer2),
-			make_column("incorrectAnswer3", &QuestionDatabase::m_incorrectAnswer3)
+		sql::make_table("Questions",
+			sql::make_column("id", &QuestionDatabase::m_id, sql::autoincrement(), sql::primary_key()),
+			sql::make_column("question", &QuestionDatabase::m_question),
+			sql::make_column("category", &QuestionDatabase::m_category),
+			sql::make_column("type", &QuestionDatabase::m_type),
+			sql::make_column("correctAnswer", &QuestionDatabase::m_correctAnswer),
+			sql::make_column("incorrectAnswer1", &QuestionDatabase::m_incorrectAnswer1),
+			sql::make_column("incorrectAnswer2", &QuestionDatabase::m_incorrectAnswer2),
+			sql::make_column("incorrectAnswer3", &QuestionDatabase::m_incorrectAnswer3)
 		),
-		make_table("Game",
-			make_column("id", &GameDatabase::m_id, autoincrement(), primary_key()),
-			make_column("winner", &GameDatabase::m_winner),
-			make_column("rounds", &GameDatabase::m_rounds),
-			make_column("date", &GameDatabase::m_date),
-			foreign_key(&GameDatabase::m_winner).references(&PlayerDatabase::m_username)
+		sql::make_table("Game",
+			sql::make_column("id", &GameDatabase::m_id, sql::autoincrement(), sql::primary_key()),
+			sql::make_column("winner", &GameDatabase::m_winner),
+			sql::make_column("rounds", &GameDatabase::m_rounds),
+			sql::make_column("date", &GameDatabase::m_date),
+			sql::foreign_key(&GameDatabase::m_winner).references(&PlayerDatabase::m_username)
 		),
-		make_table("PlayerGames",
-			make_column("game", &PlayerGameDatabase::m_gameId),
-			make_column("username", &PlayerGameDatabase::m_playerId),
-			primary_key(&PlayerGameDatabase::m_gameId, &PlayerGameDatabase::m_playerId),
-			foreign_key(&PlayerGameDatabase::m_gameId).references(&GameDatabase::m_id),
-			foreign_key(&PlayerGameDatabase::m_playerId).references(&PlayerDatabase::m_username)
+		sql::make_table("PlayerGames",
+			sql::make_column("game", &PlayerGameDatabase::m_gameId),
+			sql::make_column("username", &PlayerGameDatabase::m_playerId),
+			sql::primary_key(&PlayerGameDatabase::m_gameId, &PlayerGameDatabase::m_playerId),
+			sql::foreign_key(&PlayerGameDatabase::m_gameId).references(&GameDatabase::m_id),
+			sql::foreign_key(&PlayerGameDatabase::m_playerId).references(&PlayerDatabase::m_username)
 		)
 	);
 }
+
 
 void databaseTest()
 {
@@ -57,6 +63,7 @@ void databaseTest()
 	auto storage = createStorage("TRIV");
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
+
 	//inserting questions in the database
 	database::insertQuestions(storage);
 	auto questions = storage.get_all<QuestionDatabase>();
@@ -64,10 +71,6 @@ void databaseTest()
 	{
 		std::cout << q.m_id << " " << q.m_question << std::endl;
 	}
-	/*database::question::getQuestion(storage,3102);
-	database::question::getQuestion(storage,3167);
-	database::question::getQuestion(storage,3169);
-	database::question::getQuestion(storage,3133);*/
 
 	//inserting players into database
 	database::insertPlayer(storage, Player("Flo"));
@@ -80,7 +83,6 @@ void databaseTest()
 	}
 	auto p = storage.get<PlayerDatabase>("Flo");
 	std::cout << p.m_username << std::endl;
-	//storage.get<PlayerDatabase>("Mirkea");
 
 	//insertin games into database
 	storage.insert(GameDatabase("Dany", 5));
@@ -95,10 +97,6 @@ void databaseTest()
 	std::cout << g1.m_id << " " << g1.m_winner << std::endl;
 	std::cout << g2.m_id << " " << g2.m_winner << std::endl;
 	std::cout << g3.m_id << " " << g3.m_winner << std::endl;
-	//insert playerGames into database
-	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Flo")), PlayerDatabase(Player("Flo")));
-	//database::playerGame::insertPlayer(storage, storage.get<GameDatabase>(where(c(&GameDatabase::m_winner)=="Jimmy")), PlayerDatabase(Player("Jimmy")));
-	//database::playerGame::insertPlayer(storage, GameDatabase("Jimmy", 6), PlayerDatabase(Player("Jimmy")));
 
 	std::vector<MultipleChoiceQuestion> resultedQ;
 	auto tmpQ = database::getMultipleChoiceQuestions(storage);
@@ -147,10 +145,6 @@ void gameTest() {
 		aq.push_back(static_cast<Question*>(&question));
 	}
 
-	/*for (auto& question : aq) {
-
-		std::cout << question->GetQuestion()<<"\n";
-	}*/
 	Player p1("marcel");
 	Player p2("gigel");
 	Player p3("costel");
@@ -209,6 +203,11 @@ void connectionTest()
 		return crow::json::wvalue(questionsJson);
 		});
 
+	CROW_ROUTE(app, "/addnewplayer")
+		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
+		return database::addNewPlayer(storage, req);
+			});
+
 	app.port(18080).multithreaded().run();
 }
 void mapTest()
@@ -216,7 +215,6 @@ void mapTest()
 	Map m1(2);
 	Map m2(3);
 	Map m3(4);
-	//Map m6(6);
 	std::cout << m3;
 }
 
@@ -232,10 +230,42 @@ int main()
 ///
 	//for testing
 	std::vector<Player> playersTest = { Player("Gigi"), Player("Marci"), Player("Luci") };
-	//
-	crow::SimpleApp app;
 
-	//insert all login-related routes here
+	crow::SimpleApp app;
+	auto storage = createStorage("TRIV");
+	storage.sync_schema();
+	//login-related routes
+	CROW_ROUTE(app, "/addnewplayer")
+		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
+		return database::addNewPlayer(storage, req);
+			});
+	CROW_ROUTE(app, "/checkplayer")
+		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);  //id=2&quantity=3&...
+		auto end = bodyArgs.end();
+		auto userIter = bodyArgs.find("username");
+		auto passwordIter = bodyArgs.find("password");
+		if (userIter != end && passwordIter != end)
+		{
+			auto playersCount = storage.get_all<PlayerDatabase>(sql::where(sql::c(&PlayerDatabase::m_username) = userIter->second));
+			if (playersCount.size() != 1)
+			{
+				return crow::response(404, "NOT FOUND");
+			}
+			if (playersCount[0].m_password != passwordIter->second)
+			{
+				return crow::response(401, "UNAUTHORIZED");
+			}
+		}
+		else if (passwordIter == end)
+		{
+			return crow::response(401, "UNAUTHORIZED");
+		}
+		else {
+			return crow::response(404, "NOT FOUND");
+		}
+		return crow::response(200);
+			});
 	//game logic related routes
 
 	Game game;
