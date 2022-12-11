@@ -219,13 +219,36 @@ void mapTest()
 	//Map m6(6);
 	std::cout << m3;
 }
+
 int main()
 {
+///TESTS
 	//databaseTest();
 	//playerTest();
 	//questionTest();
 	//mapTest();
 	//gameTest();
-	connectionTest();
+	//connectionTest();
+///
+	//for testing
+	std::vector<Player> playersTest = { Player("Gigi"), Player("Marci"), Player("Luci") };
+	//
+	crow::SimpleApp app;
+
+	//insert all login-related routes here
+	//game logic related routes
+
+	Game game;
+	//initializing the game
+	CROW_ROUTE(app, "/startgame")([&game, &playersTest] {
+		if (!playersTest.empty()) {
+			game = Game(playersTest); //to be initialized with waiting players list
+			return crow::response(200); //OK
+		}
+		return crow::response(500); //internal server error
+		});
+
+	app.port(18080).multithreaded().run();
+
 	return 0;
 }

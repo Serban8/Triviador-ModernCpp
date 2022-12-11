@@ -9,6 +9,7 @@ public:
 	using Position = std::pair<uint8_t, uint8_t>;
 
 public:
+	Map() = default;
 	Map(const uint8_t& numberOfPlayers);
 
 	//operators

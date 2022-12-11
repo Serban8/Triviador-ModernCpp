@@ -11,6 +11,7 @@
 class Game
 {
 public:
+	Game() = default;
 	Game(std::vector<Player>& players);
 
 	//getters
