@@ -228,8 +228,6 @@ int main()
 	//gameTest();
 	//connectionTest();
 ///
-	//for testing
-	std::vector<Player> playersTest = { Player("Gigi"), Player("Marci"), Player("Luci") };
 
 	crow::SimpleApp app;
 	auto storage = createStorage("TRIV");
@@ -266,13 +264,27 @@ int main()
 		}
 		return crow::response(200);
 			});
+
+	//waiting room & related routes
+	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
+
+	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList]() {
+		std::vector<crow::json::wvalue> waitingRoomList_json;
+		for (const auto& player : waitingRoomList) {
+			waitingRoomList_json.push_back(crow::json::wvalue{
+				{"username", player.GetUsername()} //todo: insert here other different stats: w/l ratio, number of games played, etc..
+				});
+		}
+		//
+		return crow::json::wvalue{ waitingRoomList_json };
+		});
 	//game logic related routes
 
 	Game game;
 	//initializing the game
-	CROW_ROUTE(app, "/startgame")([&game, &playersTest] {
-		if (!playersTest.empty()) {
-			game = Game(playersTest); //to be initialized with waiting players list
+	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList] {
+		if (!waitingRoomList.empty()) {
+			game = Game(waitingRoomList); //to be initialized with waiting players list
 			return crow::response(200); //OK
 		}
 		return crow::response(500); //internal server error
