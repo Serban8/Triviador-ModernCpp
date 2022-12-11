@@ -27,13 +27,30 @@ void TestingLogin() {
 	std::cout << "Login successful! " << std::endl;
 }
 
+void TestingAddNewPlayer() {
+
+	std::string username, password;
+	std::cin >> username;
+	std::cin >> password;
+
+	TriviadorClient player;
+
+	int response = player.CreateNewPlayer(username, password);
+
+	if (response == 200)
+		std::cout << "Action successful!" << std::endl;
+	else
+		std::cout << "Conflict! There is already a player using this username and password!" << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     /*TriviadorClient w;
     w.show();*/
 
-	TestingLogin();
+	//TestingLogin();
+	TestingAddNewPlayer();
 
     return a.exec();
 }
