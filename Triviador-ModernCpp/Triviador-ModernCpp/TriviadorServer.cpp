@@ -235,6 +235,15 @@ int main()
 	//login-related routes
 	CROW_ROUTE(app, "/addnewplayer")
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto end = bodyArgs.end();
+		auto userIter = bodyArgs.find("username");
+		auto passwordIter = bodyArgs.find("password");
+		auto playersCount = storage.get_all<PlayerDatabase>(sql::where(sql::c(&PlayerDatabase::m_username) = userIter->second));
+		if (playersCount.size() == 1)
+		{
+			return crow::response(409, "CONFLICT");
+		}
 		return database::addNewPlayer(storage, req);
 			});
 	CROW_ROUTE(app, "/checkplayer")
