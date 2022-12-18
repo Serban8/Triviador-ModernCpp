@@ -392,7 +392,27 @@ int main()
 		requestCounter++;
 		return crow::json::wvalue{ questionJson };
 		});
+	CROW_ROUTE(app, "/getmultiplechoicequestion")([&game]() {
+		static uint8_t requestCounter = 0;
+		static MultipleChoiceQuestion question("", "", "", std::array<std::string, 3>{"", "", ""});
+		crow::json::wvalue questionJson;
 
+		if (requestCounter == game.GetPlayers().size() || requestCounter == 0) {
+			question = game.GetMultipleChoiceQuestion();
+			requestCounter = 0;
+		}
+		questionJson = crow::json::wvalue{
+			{"question", question.GetQuestion()},
+			{"category", question.GetCategory()},
+			{"correctAnswer", question.GetCorrectAnswer()},
+			{"incorrectAnswer1", question.GetIncorrectAnswers()[0]},
+			{"incorrectAnswer2", question.GetIncorrectAnswers()[1]},
+			{"incorrectAnswer3", question.GetIncorrectAnswers()[2]}
+		};
+
+		requestCounter++;
+		return crow::json::wvalue{ questionJson };
+		});
 
 	app.port(18080).multithreaded().run();
 
