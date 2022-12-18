@@ -1,9 +1,9 @@
 #include "TriviadorClient.h"
 #include <QtWidgets/QApplication>
 
-void TestingLogin() {
+void LoginTest() {
 
-	int response = 0;
+	int response;
 	std::string username, password;
 
 	do {
@@ -11,23 +11,23 @@ void TestingLogin() {
 		std::cin >> username;
 		std::cin >> password;
 
-		TriviadorClient player;
+		TriviadorClient client;
 
-		response = player.LoginFunction(username, password);
+		response = client.CheckLoginInfo(username, password);
 
 		if (response == 401) {
-			std::cout << "Password does not match username. \n" << std::endl;
-			std::cout << "Enter right passowrd. \n" << std::endl;
+			std::cout << "Please enter the right passowrd. \n" << std::endl;
 		}
 		else if (response == 404) {
 			std::cout << "User not found. " << std::endl;
 		}
 	} while (response != 200);
 
+	//todo: add option to exit this loop
 	std::cout << "Login successful! " << std::endl;
 }
 
-void TestingAddNewPlayer() {
+void AddNewPlayerTest() {
 
 	std::string username, password;
 	std::cin >> username;
@@ -35,22 +35,24 @@ void TestingAddNewPlayer() {
 
 	TriviadorClient player;
 
-	int response = player.CreateNewPlayer(username, password);
+	statusCode response = player.CreateNewPlayer(username, password);
 
-	if (response == 200)
+	if (response == 200) {
 		std::cout << "Action successful!" << std::endl;
-	else
-		std::cout << "Conflict! There is already a player using this username and password!" << std::endl;
+	}
+	else {
+		std::cout << "This username is already taken. Please choose another one." << std::endl;
+	}
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
-    /*TriviadorClient w;
-    w.show();*/
+	QApplication a(argc, argv);
+	/*TriviadorClient w;
+	w.show();*/
 
-	//TestingLogin();
-	TestingAddNewPlayer();
+	AddNewPlayerTest();
+	//LoginTest();
 
-    return a.exec();
+	return a.exec();
 }
