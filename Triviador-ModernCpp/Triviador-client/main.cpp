@@ -102,6 +102,11 @@ void getNumberQuestionTest()
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getnumberquestion" });
 	std::cout << response.text << std::endl;
 }
+void getMultipleChoiceQuestionTest()
+{
+	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getmultiplechoicequestion" });
+	std::cout << response.text << std::endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -123,6 +128,7 @@ int main(int argc, char* argv[])
 		std::cout << "3 - Check waiting room." << std::endl;
 		std::cout << "4 - Check number of votes." << std::endl;
 		std::cout << "5 - Get Number Question" << std::endl;
+		std::cout << "6 - Get Multiple Choice Question" << std::endl;
 		std::cin >> x;
 		std::cout << std::endl;
 
@@ -150,6 +156,10 @@ int main(int argc, char* argv[])
 		}
 		case 5: {
 			getNumberQuestionTest();
+			break;
+		}
+		case 6: {
+			getMultipleChoiceQuestionTest();
 			break;
 		}
 		}

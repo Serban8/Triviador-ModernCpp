@@ -238,6 +238,18 @@ std::variant<NumberQuestion<int>, NumberQuestion<float>> Game::GetNumberQuestion
 	}
 	return q;
 }
+MultipleChoiceQuestion Game::GetMultipleChoiceQuestion()
+{
+	if (m_multipleChoiceQuestions.size() > 0) {
+		MultipleChoiceQuestion q = m_multipleChoiceQuestions.back();
+		m_multipleChoiceQuestions.pop_back();
+		return q;
+	}
+	else {
+		//to do: return empty variant with std::monostate
+		return MultipleChoiceQuestion("", "", "",std::array<std::string,3>{"","",""});
+	}
+}
 std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 {
 	//1. Get question from vector
