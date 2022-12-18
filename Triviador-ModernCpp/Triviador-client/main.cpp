@@ -74,8 +74,39 @@ int main(int argc, char* argv[])
 
 	//AddNewPlayerTest();
 	//LoginTest();
-	while(true)
-		checkWaitingRoomTest();
+	//while (true)
+	//	checkWaitingRoomTest();
+
+	int x = 1;
+
+	while (x != 0) {
+
+		std::cout << "1 - Add a new player. " << std::endl;
+		std::cout << "2 - Login " << std::endl;
+		std::cout << "3 - Check waiting room" << std::endl;
+		std::cin >> x;
+		std::cout << std::endl;
+
+		switch (x) {
+		default:
+		{
+			std::cout << "Eroare!" << std::endl;
+			break;
+		}
+		case 1: {
+			AddNewPlayerTest();
+			break;
+		}
+		case 2: {
+			LoginTest();
+			break;
+		}
+		case 3: {
+			checkWaitingRoomTest();
+			break;
+		}
+		}
+	}
 
 	return a.exec();
 }
