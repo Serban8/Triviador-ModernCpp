@@ -244,22 +244,26 @@ int main()
 
 	//waiting room & related routes
 	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
+	std::vector<Player> votesToStart;
 
 	CROW_ROUTE(app, "/addtowaitingroom")
 		.methods(crow::HTTPMethod::PUT)([&waitingRoomList, &storage](const crow::request& req) {
-		
+
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();
-		auto playerIter = bodyArgs.find("username");
-		auto& username = playerIter->second;
-		if (playerIter != bodyEnd)
+		auto usernameIter = bodyArgs.find("username");
+		auto& username = usernameIter->second;
+		if (usernameIter != bodyEnd)
 		{
 			waitingRoomList.push_back(Player(username));
 		}
 		else
-			return crow::response(400);
+		{
+			return crow::response(400, "BAD REQUEST");
+		}
 		return crow::response(200);
 			});
+
 	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList]() {
 		std::vector<crow::json::wvalue> waitingRoomList_json;
 		for (const auto& player : waitingRoomList) {
@@ -270,6 +274,38 @@ int main()
 		//
 		return crow::json::wvalue{ waitingRoomList_json };
 		});
+
+	CROW_ROUTE(app, "/addvote")
+		.methods(crow::HTTPMethod::PUT)([&waitingRoomList, &votesToStart](const crow::request& req) {
+
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+
+		auto usernameIter = bodyArgs.find("username");
+		auto& username = usernameIter->second;
+
+		//check if it is a bad request
+		if (usernameIter != bodyEnd)
+		{
+			auto playerIter = std::find(waitingRoomList.begin(), waitingRoomList.end(), Player(username));
+			//check if the player is in the waiting room
+			if (playerIter != waitingRoomList.end())
+			{
+				votesToStart.push_back(*playerIter);
+			}
+			else
+			{
+				CROW_LOG_INFO << "Did not find player with username \"" << username << "\" in waiting room";
+				return crow::response(404, "NOT FOUND");
+			}
+		}
+		else
+		{
+			return crow::response(400, "BAD REQUEST");
+		}
+		return crow::response(200);
+			});
+
 	//game history
 	CROW_ROUTE(app, "/player/<string>")([&storage](std::string username)
 		{
