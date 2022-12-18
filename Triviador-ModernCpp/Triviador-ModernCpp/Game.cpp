@@ -225,7 +225,19 @@ void Game::DistributeTerritories()
 	//testing
 	std::cout << m_map;
 }
-
+std::variant<NumberQuestion<int>, NumberQuestion<float>> Game::GetNumberQuestion()
+{
+	std::variant<NumberQuestion<int>, NumberQuestion<float>> q;
+	if (m_numberQuestions.size() > 0) {
+		q = m_numberQuestions.back();
+		m_numberQuestions.pop_back();
+	}
+	else {
+		//to do: return empty variant with std::monostate
+		return q;
+	}
+	return q;
+}
 std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 {
 	//1. Get question from vector

@@ -16,6 +16,7 @@ public:
 
 	//getters
 	std::vector<Player> GetPlayers() const;
+	std::variant<NumberQuestion<int>, NumberQuestion<float>> GetNumberQuestion();
 
 	//methods
 	void AddInactivePlayer(Player player);
