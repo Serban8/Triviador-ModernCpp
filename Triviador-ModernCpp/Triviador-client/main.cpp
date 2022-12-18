@@ -73,7 +73,6 @@ void checkWaitingRoomTest() {
 
 	if (vote == "yes" || vote == "Yes")
 	{
-		std::cout << "da" << std::endl;
 		auto response8 = cpr::Put(
 			cpr::Url{ "http://localhost:18080/addvote" },
 			cpr::Payload{
@@ -98,6 +97,12 @@ void numberOfVotes() {
 	std::cout << "There are " << nrOfVotes << " players who voted to start." << std::endl;
 }
 
+void getNumberQuestionTest()
+{
+	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getnumberquestion" });
+	std::cout << response.text << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);
@@ -117,6 +122,7 @@ int main(int argc, char* argv[])
 		std::cout << "2 - Login " << std::endl;
 		std::cout << "3 - Check waiting room." << std::endl;
 		std::cout << "4 - Check number of votes." << std::endl;
+		std::cout << "5 - Get Number Question" << std::endl;
 		std::cin >> x;
 		std::cout << std::endl;
 
@@ -140,6 +146,10 @@ int main(int argc, char* argv[])
 		}
 		case 4: {
 			numberOfVotes();
+			break;
+		}
+		case 5: {
+			getNumberQuestionTest();
 			break;
 		}
 		}

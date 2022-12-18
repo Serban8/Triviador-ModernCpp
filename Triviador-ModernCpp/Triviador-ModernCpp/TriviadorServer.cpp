@@ -292,7 +292,7 @@ int main()
 		waitingRoomList_json.push_back(crow::json::wvalue{
 			{"startGame", startGame ? "true" : "false"}
 			});
-		
+
 		return crow::json::wvalue{ waitingRoomList_json };
 		});
 
@@ -345,8 +345,8 @@ int main()
 		});
 
 	//game logic related routes
-
-	Game game;
+	//testing purposes only initialization
+	Game game(waitingRoomList);
 	//initializing the game
 	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList] {
 		if (!waitingRoomList.empty()) {
@@ -355,6 +355,44 @@ int main()
 		}
 		return crow::response(500); //internal server error
 		});
+
+	CROW_ROUTE(app, "/getnumberquestion")([&game]() {
+		static uint8_t requestCounter = 0;
+		static std::variant<NumberQuestion<int>, NumberQuestion<float>> question;
+		crow::json::wvalue questionJson;
+
+		if (requestCounter == game.GetPlayers().size() || requestCounter == 0) {
+			question = game.GetNumberQuestion();
+			requestCounter = 0;
+		}
+		if (std::holds_alternative<NumberQuestion<int>>(question))
+		{
+			auto qInt = std::get<NumberQuestion<int>>(question);
+			questionJson = crow::json::wvalue{
+				{"question", qInt.GetQuestion()},
+				{"category", qInt.GetCategory()},
+				{"correctAnswer", qInt.GetCorrectAnswer()},
+				{"incorrectAnswer1", qInt.GetIncorrectAnswers()[0]},
+				{"incorrectAnswer2", qInt.GetIncorrectAnswers()[1]},
+				{"incorrectAnswer3", qInt.GetIncorrectAnswers()[2]},
+			};
+		}
+		else {
+			auto qFloat = std::get<NumberQuestion<float>>(question);
+			questionJson = crow::json::wvalue{
+				{"question", qFloat.GetQuestion()},
+				{"category", qFloat.GetCategory()},
+				{"correctAnswer", qFloat.GetCorrectAnswer()},
+				{"incorrectAnswer1", qFloat.GetIncorrectAnswers()[0]},
+				{"incorrectAnswer2", qFloat.GetIncorrectAnswers()[1]},
+				{"incorrectAnswer3", qFloat.GetIncorrectAnswers()[2]},
+			};
+		}
+
+		requestCounter++;
+		return crow::json::wvalue{ questionJson };
+		});
+
 
 	app.port(18080).multithreaded().run();
 
