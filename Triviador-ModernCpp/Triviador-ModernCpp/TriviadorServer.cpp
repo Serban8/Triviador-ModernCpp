@@ -19,6 +19,8 @@
 
 namespace sql = sqlite_orm;
 
+const uint8_t maxPlayersPerGame = 4;
+
 inline auto createStorage(const std::string& filename)
 {
 	return sql::make_storage(
@@ -264,14 +266,33 @@ int main()
 		return crow::response(200);
 			});
 
-	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList]() {
+	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList, &votesToStart]() {
 		std::vector<crow::json::wvalue> waitingRoomList_json;
+		bool startGame = false;
+
+		//check if conditions for starting the game are fulfilled
+		if (waitingRoomList.size() == maxPlayersPerGame || votesToStart.size() == waitingRoomList.size()) {
+			startGame = true;
+		}
+
+		//write the response json
 		for (const auto& player : waitingRoomList) {
+			bool votedToStart = false;
+			//check if current player has voted to start
+			if (std::find(votesToStart.begin(), votesToStart.end(), player) != votesToStart.end()) {
+				votedToStart = true;
+			}
+			//write the json for the current player
 			waitingRoomList_json.push_back(crow::json::wvalue{
-				{"username", player.GetUsername()} //todo: insert here other different stats: w/l ratio, number of games played, etc..
+				{"username", player.GetUsername()}, //todo: insert here other different stats: w/l ratio, number of games played, etc..
+				{"votedToStart", votedToStart ? "true" : "false"}
 				});
 		}
-		//
+		//add the startGame flag to the response
+		waitingRoomList_json.push_back(crow::json::wvalue{
+			{"startGame", startGame ? "true" : "false"}
+			});
+		
 		return crow::json::wvalue{ waitingRoomList_json };
 		});
 

@@ -50,14 +50,32 @@ void AddNewPlayerTest() {
 	} while (responseCode != 200);
 }
 
+void checkWaitingRoomTest() {
+	std::string username, vote;
+	std::cin >> username;
+	std::cout << "Do you want to start the game?\n";
+	std::cin >> vote;
+	if (vote == "yes" || vote == "Yes")
+	{
+		std::cout << "da" << std::endl;
+		auto response8 = cpr::Put(
+			cpr::Url{ "http://localhost:18080/addvote" },
+			cpr::Payload{
+				{ "username", username }
+			});
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);
 	/*TriviadorClient w;
 	w.show();*/
 
-	AddNewPlayerTest();
+	//AddNewPlayerTest();
 	//LoginTest();
+	while(true)
+		checkWaitingRoomTest();
 
 	return a.exec();
 }
