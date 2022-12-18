@@ -54,7 +54,9 @@ void AddNewPlayerTest() {
 
 void checkWaitingRoomTest() {
 	std::string username, vote;
+	std::cout << "username: ";
 	std::cin >> username;
+	std::cout << std::endl;
 	std::cout << "Do you want to start the game?\n";
 	//std::cin >> vote;
 
@@ -65,23 +67,35 @@ void checkWaitingRoomTest() {
 		std::thread t1([&]() {
 			std::cin >> vote;
 			});
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		t1.detach();
 	}
 
-	if (!vote.empty()) {
-
-		if (vote == "yes" || vote == "Yes")
-		{
-			std::cout << "da" << std::endl;
-			auto response8 = cpr::Put(
-				cpr::Url{ "http://localhost:18080/addvote" },
-				cpr::Payload{
-					{ "username", username }
-				});
-		}
+	if (vote == "yes" || vote == "Yes")
+	{
+		std::cout << "da" << std::endl;
+		auto response8 = cpr::Put(
+			cpr::Url{ "http://localhost:18080/addvote" },
+			cpr::Payload{
+				{ "username", username }
+			});
 	}
 
+}
+
+void numberOfVotes() {
+
+	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/checkwaitingroom" });
+	auto waiting = crow::json::load(response.text);
+
+	int nrOfVotes = 0;
+
+	for (int i = 0; i < waiting.size() - 1; i++) {
+		if (waiting[i]["votedToStart"] == "true")
+			nrOfVotes++;
+	}
+
+	std::cout << "There are " << nrOfVotes << " players who voted to start." << std::endl;
 }
 
 int main(int argc, char* argv[])
@@ -101,7 +115,8 @@ int main(int argc, char* argv[])
 
 		std::cout << "1 - Add a new player. " << std::endl;
 		std::cout << "2 - Login " << std::endl;
-		std::cout << "3 - Check waiting room" << std::endl;
+		std::cout << "3 - Check waiting room." << std::endl;
+		std::cout << "4 - Check number of votes." << std::endl;
 		std::cin >> x;
 		std::cout << std::endl;
 
@@ -121,6 +136,10 @@ int main(int argc, char* argv[])
 		}
 		case 3: {
 			checkWaitingRoomTest();
+			break;
+		}
+		case 4: {
+			numberOfVotes();
 			break;
 		}
 		}
