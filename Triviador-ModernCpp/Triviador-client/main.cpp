@@ -3,7 +3,7 @@
 
 void LoginTest() {
 
-	int response;
+	statusCode response;
 	std::string username, password;
 
 	do {
@@ -30,19 +30,24 @@ void LoginTest() {
 void AddNewPlayerTest() {
 
 	std::string username, password;
-	std::cin >> username;
-	std::cin >> password;
+	statusCode responseCode;
 
-	TriviadorClient player;
+	do {
+		std::cout << "Enter username and password\n";
+		std::cin >> username;
+		std::cin >> password;
 
-	statusCode response = player.CreateNewPlayer(username, password);
+		TriviadorClient client;
 
-	if (response == 200) {
-		std::cout << "Action successful!" << std::endl;
-	}
-	else {
-		std::cout << "This username is already taken. Please choose another one." << std::endl;
-	}
+		responseCode = client.CreateNewPlayer(username, password);
+
+		if (responseCode == 200) {
+			std::cout << "Player successfully created!" << std::endl;
+		}
+		else if (responseCode == 409) {
+			std::cout << "This username is already taken. Please choose another one." << std::endl;
+		}
+	} while (responseCode != 200);
 }
 
 int main(int argc, char* argv[])

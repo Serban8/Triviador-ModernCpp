@@ -73,9 +73,9 @@ void databaseTest()
 	}
 
 	//inserting players into database
-	database::insertPlayer(storage, Player("Flo"));
-	database::insertPlayer(storage, Player("Dany"));
-	database::insertPlayer(storage, Player("Jimmy"));
+	storage.replace(PlayerDatabase(Player("Flo")));
+	storage.replace(PlayerDatabase(Player("Dany")));
+	storage.replace(PlayerDatabase(Player("Jimmy")));
 	auto players = storage.get_all<PlayerDatabase>();
 	for (auto& p : players)
 	{
@@ -220,14 +220,14 @@ void mapTest()
 
 int main()
 {
-///TESTS
-	//databaseTest();
-	//playerTest();
-	//questionTest();
-	//mapTest();
-	//gameTest();
-	//connectionTest();
-///
+	///TESTS
+		//databaseTest();
+		//playerTest();
+		//questionTest();
+		//mapTest();
+		//gameTest();
+		//connectionTest();
+	///
 
 	crow::SimpleApp app;
 	auto storage = createStorage("TRIV");
@@ -244,9 +244,9 @@ int main()
 
 	//waiting room & related routes
 	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
-	
+
 	CROW_ROUTE(app, "/addtowaitingroom")
-		.methods(crow::HTTPMethod::PUT)([&waitingRoomList,&storage](const crow::request& req) {
+		.methods(crow::HTTPMethod::PUT)([&waitingRoomList, &storage](const crow::request& req) {
 
 		auto kvStr = req.body;
 		std::string delimiter = "=";
