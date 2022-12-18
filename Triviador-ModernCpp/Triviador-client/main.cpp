@@ -1,5 +1,7 @@
 #include "TriviadorClient.h"
 #include <QtWidgets/QApplication>
+#include<thread>
+#include<chrono>
 
 void LoginTest() {
 
@@ -54,16 +56,32 @@ void checkWaitingRoomTest() {
 	std::string username, vote;
 	std::cin >> username;
 	std::cout << "Do you want to start the game?\n";
-	std::cin >> vote;
-	if (vote == "yes" || vote == "Yes")
-	{
-		std::cout << "da" << std::endl;
-		auto response8 = cpr::Put(
-			cpr::Url{ "http://localhost:18080/addvote" },
-			cpr::Payload{
-				{ "username", username }
+	//std::cin >> vote;
+
+	time_t start = time(NULL);
+	time_t timer = 10; // player has 10 seconds to decide
+
+	while (time(NULL) < start + timer && vote.empty()) {
+		std::thread t1([&]() {
+			std::cin >> vote;
 			});
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		t1.detach();
 	}
+
+	if (!vote.empty()) {
+
+		if (vote == "yes" || vote == "Yes")
+		{
+			std::cout << "da" << std::endl;
+			auto response8 = cpr::Put(
+				cpr::Url{ "http://localhost:18080/addvote" },
+				cpr::Payload{
+					{ "username", username }
+				});
+		}
+	}
+
 }
 
 int main(int argc, char* argv[])
