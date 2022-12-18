@@ -20,7 +20,7 @@ public:
 	~TriviadorClient();
 	statusCode CheckLoginInfo(std::string& username, std::string& password);
 	statusCode CreateNewPlayer(std::string& username, std::string& password);
-	bool checkIfGameCanStart();
+	void checkIfGameCanStart();
 private:
 	Ui::TriviadorclientClass ui;
 };
