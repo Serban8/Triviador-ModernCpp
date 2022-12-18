@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <unordered_map>
+#include <cstdint>
 
 std::vector<std::string> split(const std::string& str, const std::string& delim);
 
