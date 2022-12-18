@@ -247,18 +247,17 @@ int main()
 
 	CROW_ROUTE(app, "/addtowaitingroom")
 		.methods(crow::HTTPMethod::PUT)([&waitingRoomList, &storage](const crow::request& req) {
-
-		auto kvStr = req.body;
-		std::string delimiter = "=";
-
-		size_t pos = 0;
-		std::string token;
-		pos = kvStr.find(delimiter);
-		if (pos != std::string::npos)
+		
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		auto playerIter = bodyArgs.find("username");
+		auto& username = playerIter->second;
+		if (playerIter != bodyEnd)
 		{
-			token = kvStr.substr(pos + 1);
-			waitingRoomList.push_back(Player(token));
+			waitingRoomList.push_back(Player(username));
 		}
+		else
+			return crow::response(400);
 		return crow::response(200);
 			});
 	CROW_ROUTE(app, "/checkwaitingroom")([&waitingRoomList]() {
