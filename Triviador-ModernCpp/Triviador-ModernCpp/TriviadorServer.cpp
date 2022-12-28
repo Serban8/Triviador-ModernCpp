@@ -355,7 +355,17 @@ int main()
 		}
 		return crow::response(500); //internal server error
 		});
-
+	CROW_ROUTE(app, "/getplayers")([&game] {
+		std::vector<crow::json::wvalue> players_json;
+		std::vector<Player> players = game.GetPlayers();
+		for (auto& p : players)
+		{
+			players_json.push_back(crow::json::wvalue{
+				{"username", p.GetUsername()}
+				});
+		}
+		return crow::json::wvalue{ players_json };
+		});
 	CROW_ROUTE(app, "/getnumberquestion")([&game]() {
 		static uint8_t requestCounter = 0;
 		static std::variant<NumberQuestion<int>, NumberQuestion<float>> question;
