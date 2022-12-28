@@ -3,17 +3,6 @@
 #include<thread>
 #include<chrono>
 
-struct compare 
-{
-	bool operator()(std::pair<std::string, std::pair<float, float>>& a, std::pair<std::string, std::pair<float, float>>& b)
-	{
-		if (a.second.first == b.second.first)
-		{
-			return a.second.second > b.second.second;
-		}
-		return a.second.first > b.second.first;
-	}
-};
 
 void LoginTest() {
 
@@ -115,8 +104,7 @@ void getNumberQuestionTest()
 	cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/getplayers" });
 	auto players_json = crow::json::load(response1.text);
 	auto numberQuestion = crow::json::load(response.text);
-	std::priority_queue<std::pair<std::string, std::pair<float, float>>, std::vector<std::pair<std::string, std::pair<float, float>>>, compare> choosingOrderPlayers;
-	
+
 	std::cout << numberQuestion["question"] << std::endl;
 	double time = 1.2;//hardcoded value for time to test it
 	for (const auto& player : players_json) 
@@ -128,14 +116,16 @@ void getNumberQuestionTest()
 		std::cout << std::endl;
 		auto correctAnswer = numberQuestion["correctAnswer"].d();
 		auto dif = abs(stof(res) - correctAnswer);
-		choosingOrderPlayers.push({ player["username"].s(),{dif,time}});
+		auto response = cpr::Put(
+			cpr::Url{ "http://localhost:18080/addresponse" },
+			cpr::Payload{
+				{ "username", (player["username"].s())},
+				{ "response", std::to_string(dif) },
+				{ "time", std::to_string(time) }
+			}
+		);
 	}
-	//printing the order of players to test the function
-	while (!choosingOrderPlayers.empty())
-	{
-		std::cout << choosingOrderPlayers.top().first << " " << choosingOrderPlayers.top().second.first << " " << choosingOrderPlayers.top().second.second << std::endl;
-		choosingOrderPlayers.pop();
-	}
+	
 }
 void getMultipleChoiceQuestionTest()
 {
