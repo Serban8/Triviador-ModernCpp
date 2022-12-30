@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TriviadorclientClass</class>
- <widget class="QMainWindow" name="TriviadorclientClass">
+ <class>RegisterFormClass</class>
+ <widget class="QMainWindow" name="RegisterFormClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1351</width>
+    <width>1361</width>
     <height>560</height>
    </rect>
   </property>
-  <property name="contextMenuPolicy">
-   <enum>Qt::DefaultContextMenu</enum>
-  </property>
   <property name="windowTitle">
-   <string>Triviadorclient</string>
+   <string>Triviador</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Triviadorclient.qrc">
-    <normaloff>:/Triviadorclient/images/triv.png</normaloff>:/Triviadorclient/images/triv.png</iconset>
+   <iconset>
+    <normaloff>images/triv.png</normaloff>images/triv.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget{
@@ -31,10 +28,10 @@ border-image: url(:/Triviadorclient/images/background.jpg);
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>170</y>
-      <width>291</width>
-      <height>201</height>
+      <x>130</x>
+      <y>190</y>
+      <width>381</width>
+      <height>211</height>
      </rect>
     </property>
     <property name="title">
@@ -49,7 +46,6 @@ border-image: url(:/Triviadorclient/images/background.jpg);
           <font>
            <family>Times New Roman</family>
            <pointsize>14</pointsize>
-           <bold>true</bold>
           </font>
          </property>
          <property name="text">
@@ -78,7 +74,6 @@ border-image: url(:/Triviadorclient/images/background.jpg);
           <font>
            <family>Times New Roman</family>
            <pointsize>14</pointsize>
-           <bold>true</bold>
           </font>
          </property>
          <property name="text">
@@ -100,7 +95,7 @@ border-image: url(:/Triviadorclient/images/background.jpg);
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="LoginButton">
+      <widget class="QPushButton" name="RegisterButton">
        <property name="font">
         <font>
          <family>Times New Roman</family>
@@ -109,37 +104,15 @@ border-image: url(:/Triviadorclient/images/background.jpg);
         </font>
        </property>
        <property name="text">
-        <string>Login</string>
+        <string>Register</string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="GoToRegisterButton">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>120</y>
-      <width>251</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>10</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>You do not have an account? Register here!</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="Triviadorclient.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

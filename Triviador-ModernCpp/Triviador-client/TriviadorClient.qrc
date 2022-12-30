@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="Triviadorclient">
+    <qresource prefix="/Triviadorclient">
+        <file>images/background.jpg</file>
+        <file>images/triv.png</file>
     </qresource>
 </RCC>
