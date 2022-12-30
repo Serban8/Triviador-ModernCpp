@@ -90,6 +90,9 @@ border-image: url(:/Triviadorclient/images/background.jpg);
            <bold>true</bold>
           </font>
          </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
         </widget>
        </item>
       </layout>

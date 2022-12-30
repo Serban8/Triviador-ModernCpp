@@ -1,7 +1,7 @@
 #include "RegisterForm.h"
 #include<qmessagebox.h>
 
-RegisterForm::RegisterForm(QWidget *parent)
+RegisterForm::RegisterForm(QWidget* parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -11,7 +11,15 @@ RegisterForm::RegisterForm(QWidget *parent)
 }
 
 RegisterForm::~RegisterForm()
-{}
+{
+	parentWidget()->show();
+}
+
+void RegisterForm::closeEvent(QCloseEvent* ev)
+{
+	parentWidget()->show();
+	ev->accept();
+}
 
 void RegisterForm::on_RegisterButton_clicked() {
 
