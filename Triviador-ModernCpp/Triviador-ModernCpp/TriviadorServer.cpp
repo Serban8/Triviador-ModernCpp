@@ -446,6 +446,27 @@ int main()
 		}
 		return crow::json::wvalue{ mapJson };
 		});
+	CROW_ROUTE(app, "/setmap").methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		//getting the line and column
+		auto lineIter = bodyArgs.find("line");
+		auto columnIter = bodyArgs.find("column");
+
+		//setting the new owner
+		auto ownerIter = bodyArgs.find("owner");
+		game.GetMap()[{std::stoi(lineIter->second), std::stoi(columnIter->second)}].SetOwner(ownerIter->second);
+
+		//setting the new type
+		auto typeIter = bodyArgs.find("type");
+		game.GetMap()[{ std::stoi(lineIter->second), std::stoi(columnIter->second) }].SetType(typeIter->second == "territory" ? Region::Type::Territory : Region::Type::Base);
+
+		//seeting the score
+		auto scoreIter = bodyArgs.find("score");
+		game.GetMap()[{ std::stoi(lineIter->second), std::stoi(columnIter->second) }].SetScore(std::stoi(scoreIter->second));
+
+		return crow::response(200);
+		});
 	app.port(18080).multithreaded().run();
 
 	return 0;
