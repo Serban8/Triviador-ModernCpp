@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <stdexcept>
 #include "Player.h"
 
 class Region
@@ -9,6 +10,35 @@ public:
 		Base,
 		Territory
 	};
+
+	//convert string to Type and vice-versa; maybe move in utils?
+public:
+	static inline Type StringToRegionType(std::string type) {
+		if (type == "Base" || type == "base") {
+			return Type::Base;
+		}
+		if (type == "Territory" || type == "territory") {
+			return Type::Territory;
+		}
+
+		throw std::runtime_error("Undefined type of region");
+	}
+
+	static inline std::string RegionTypeToString(Type type) {
+		switch (type)
+		{
+		case Region::Type::Base:
+			return  "Base";
+			break;
+		case Region::Type::Territory:
+			return "Territory";
+			break;
+		default:
+			throw std::runtime_error("Undefined type of region");
+			return "Error";
+			break;
+		}
+	}
 
 public:
 	//constructor

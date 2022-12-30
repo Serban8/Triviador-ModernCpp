@@ -385,6 +385,7 @@ int main()
 		}
 		return crow::json::wvalue{ players_json };
 		});
+
 	CROW_ROUTE(app, "/getnumberquestion")([&game]() {
 		static uint8_t requestCounter = 0;
 		static std::variant<NumberQuestion<int>, NumberQuestion<float>> question;
@@ -421,6 +422,7 @@ int main()
 		requestCounter++;
 		return crow::json::wvalue{ questionJson };
 		});
+
 	CROW_ROUTE(app, "/getmultiplechoicequestion")([&game]() {
 		static uint8_t requestCounter = 0;
 		static MultipleChoiceQuestion question("", "", "", std::array<std::string, 3>{"", "", ""});
@@ -442,64 +444,170 @@ int main()
 		requestCounter++;
 		return crow::json::wvalue{ questionJson };
 		});
-	CROW_ROUTE(app, "/getmap")([&game](){
+
+	CROW_ROUTE(app, "/getmap")([&game]() {
 		std::vector<crow::json::wvalue> mapJson;
 		Map routeMap = game.GetMap();
 		for (uint8_t i = 0; i < routeMap.GetHeight(); i++)
 		{
 			for (uint8_t j = 0; j < routeMap.GetWidth(); j++)
 			{
-				auto mapType = [](Region::Type regionType) {
-					switch (regionType)
-					{
-					case Region::Type::Base:
-						return  "Base";
-						break;
-					case Region::Type::Territory:
-						return "Territory";
-						break;
-					default:
-						throw std::runtime_error("Undefined type of region");
-						return "Error";
-						break;
-					}
-				};
 				mapJson.push_back(crow::json::wvalue{
 					{"line", i},
 					{"column", j},
 					{"owner", routeMap[{i, j}].GetOwner().GetUsername()},
 					{"score", routeMap[{i, j}].GetScore()},
-					{"type", mapType(routeMap[{i,j}].GetType())}
-				});
+					{"type", Region::RegionTypeToString(routeMap[{i,j}].GetType())}
+					});
 			}
 		}
 		return crow::json::wvalue{ mapJson };
 		});
-	CROW_ROUTE(app, "/setmap").methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
+
+	CROW_ROUTE(app, "/setregionowner")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		auto lineIter = bodyArgs.find("line");
+		auto columnIter = bodyArgs.find("column");
+
+		auto ownerIter = bodyArgs.find("owner");
+		if (lineIter != bodyEnd && columnIter != bodyEnd && ownerIter != bodyEnd) {
+			size_t pos;
+			auto& lineStr = lineIter->second;
+			auto& columnStr = columnIter->second;
+
+			//try to convert line to int
+			int line = std::stoi(lineStr, &pos);
+			if (pos != lineStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert column to int
+			int column = std::stoi(columnStr, &pos);
+			if (pos != columnStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//set region owner
+			//for testing - in future the newOwner parameter should be given a reference to the player stored in the Game object
+			game.ModifyRegion({ line, column }, Player(ownerIter->second));
+			//
+		}
+		else {
+			return crow::response(400, "BAD REQUEST");
+		}
+
+		return crow::response(200);
+			});
+
+	CROW_ROUTE(app, "/setregiontype")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();
 		//getting the line and column
 		auto lineIter = bodyArgs.find("line");
 		auto columnIter = bodyArgs.find("column");
 
-		//setting the new owner
-		auto ownerIter = bodyArgs.find("owner");
-		game.GetMap()[{std::stoi(lineIter->second), std::stoi(columnIter->second)}].SetOwner(ownerIter->second);
-
 		//setting the new type
 		auto typeIter = bodyArgs.find("type");
-		game.GetMap()[{ std::stoi(lineIter->second), std::stoi(columnIter->second) }].SetType(typeIter->second == "territory" ? Region::Type::Territory : Region::Type::Base);
+		if (lineIter != bodyEnd && columnIter != bodyEnd && typeIter != bodyEnd) {
+			size_t pos;
+			auto& lineStr = lineIter->second;
+			auto& columnStr = columnIter->second;
 
-		//seeting the score
-		auto scoreIter = bodyArgs.find("score");
-		game.GetMap()[{ std::stoi(lineIter->second), std::stoi(columnIter->second) }].SetScore(std::stoi(scoreIter->second));
+			//try to convert line to int
+			int line = std::stoi(lineStr, &pos);
+			if (pos != lineStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert column to int
+			int column = std::stoi(columnStr, &pos);
+			if (pos != columnStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//set region type
+			game.ModifyRegion({ line, column }, Region::StringToRegionType(typeIter->second));
+		}
+		else {
+			return crow::response(400, "BAD REQUEST");
+		}
+		return crow::response(200);
+			});
+
+	CROW_ROUTE(app, "/increaseregionscore")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		//getting the line and column
+		auto lineIter = bodyArgs.find("line");
+		auto columnIter = bodyArgs.find("column");
+
+		if (lineIter != bodyEnd && columnIter != bodyEnd) {
+			size_t pos;
+			auto& lineStr = lineIter->second;
+			auto& columnStr = columnIter->second;
+
+			//try to convert line to int
+			int line = std::stoi(lineStr, &pos);
+			if (pos != lineStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert column to int
+			int column = std::stoi(columnStr, &pos);
+			if (pos != columnStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//increase score
+			game.IncreaseRegionScore({ line, column });
+		}
+		else {
+			return crow::response(400, "BAD REQUEST");
+		}
 
 		return crow::response(200);
-		});
-    
+			});
+
+	CROW_ROUTE(app, "/decreaseregionscore")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		auto lineIter = bodyArgs.find("line");
+		auto columnIter = bodyArgs.find("column");
+
+		if (lineIter != bodyEnd && columnIter != bodyEnd) {
+			size_t pos;
+			auto& lineStr = lineIter->second;
+			auto& columnStr = columnIter->second;
+
+			//try to convert line to int
+			int line = std::stoi(lineStr, &pos);
+			if (pos != lineStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert column to int
+			int column = std::stoi(columnStr, &pos);
+			if (pos != columnStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//decrease score
+			game.DecreaseRegionScore({ line, column });
+		}
+		else {
+			return crow::response(400, "BAD REQUEST");
+		}
+		return crow::response(200);
+			});
+
 	std::priority_queue<numericalQuestionResponse, std::vector<numericalQuestionResponse>, compareNumericalQuestionResponses> choosingOrderPlayers;
 	//todo: reset prio queue in getleaderboard route
-	//not properly odered - to investigate
+	//not properly ordered - to investigate
 	CROW_ROUTE(app, "/addnumericalresponse")
 		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
 
@@ -514,14 +622,14 @@ int main()
 			size_t pos;
 			auto& username = usernameIter->second;
 
-			//try to convert response into float
+			//try to convert response to float
 			auto& res = responseIter->second;
 			float response = stof(res, &pos);
 			if (pos != res.size()) {
 				return crow::response(400, "BAD REQUEST");
 			}
 
-			//try to convert time into float
+			//try to convert time to float
 			auto& t = timeIter->second;
 			float time = stof(t, &pos);
 			if (pos != t.size()) {

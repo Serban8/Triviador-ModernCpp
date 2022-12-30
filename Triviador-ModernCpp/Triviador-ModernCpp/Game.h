@@ -18,12 +18,22 @@ public:
 	std::vector<Player> GetPlayers() const;
 	std::variant<NumberQuestion<int>, NumberQuestion<float>> GetNumberQuestion();
 	MultipleChoiceQuestion GetMultipleChoiceQuestion();
+	Map GetMap() const;
+
+	//setters
+	void ModifyRegion(const Map::Position pos, Region::Type newType); //possibly not needed
+	void ModifyRegion(const Map::Position pos, Player newOwner);
+	void ModifyRegion(const Map::Position pos, Region::Type newType, Player newOwner);
+
+	void IncreaseRegionScore(const Map::Position pos);
+	void DecreaseRegionScore(const Map::Position pos);
+
 	//methods
 	void AddInactivePlayer(Player player);
 	void PlayGame();
 	//Here for testing only
 	std::vector<Player> DetermineWinners();
-	Map GetMap() const ;
+	//
 
 private:
 	//the main steps of the game

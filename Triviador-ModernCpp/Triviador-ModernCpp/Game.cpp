@@ -247,7 +247,7 @@ MultipleChoiceQuestion Game::GetMultipleChoiceQuestion()
 	}
 	else {
 		//to do: return empty variant with std::monostate
-		return MultipleChoiceQuestion("", "", "",std::array<std::string,3>{"","",""});
+		return MultipleChoiceQuestion("", "", "", std::array<std::string, 3>{"", "", ""});
 	}
 }
 std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
@@ -312,4 +312,32 @@ std::vector<Player> Game::DetermineWinners()
 Map Game::GetMap() const
 {
 	return m_map;
+}
+
+void Game::ModifyRegion(const Map::Position pos, Region::Type newType)
+{
+	m_map[pos].SetType(newType);
+}
+
+void Game::ModifyRegion(const Map::Position pos, Player newOwner)
+{
+	m_map[pos].SetOwner(newOwner);
+}
+
+void Game::ModifyRegion(const Map::Position pos, Region::Type newType, Player newOwner)
+{
+	m_map[pos].SetType(newType);
+	m_map[pos].SetOwner(newOwner);
+}
+
+void Game::IncreaseRegionScore(const Map::Position pos)
+{
+	const int increaseAmount = 100;
+	m_map[pos].SetScore(m_map[pos].GetScore() + increaseAmount);
+}
+
+void Game::DecreaseRegionScore(const Map::Position pos)
+{
+	const int decreaseAmount = 100;
+	m_map[pos].SetScore(m_map[pos].GetScore() - decreaseAmount);
 }
