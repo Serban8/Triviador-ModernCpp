@@ -17,6 +17,25 @@
 #include "GameDatabase.h"
 #include "PlayerGameDatabase.h"
 
+using numericalQuestionResponse = std::pair < std::string, std::pair<float, float>>;
+struct compareNumericalQuestionResponses
+{
+	bool operator() (numericalQuestionResponse& a, numericalQuestionResponse& b)
+	{
+		auto& [username1, responseParams1] = a;
+		auto& [response1, responseTime1] = responseParams1;
+		auto& [username2, responseParams2] = b;
+		auto& [response2, responseTime2] = responseParams2;
+
+		if (response1 == response2)
+		{
+			return responseTime1 > responseTime2;
+		}
+		return response1 > response2;
+	}
+};
+
+
 namespace sql = sqlite_orm;
 
 const uint8_t maxPlayersPerGame = 4;
@@ -355,7 +374,17 @@ int main()
 		}
 		return crow::response(500); //internal server error
 		});
-
+	CROW_ROUTE(app, "/getplayers")([&game] {
+		std::vector<crow::json::wvalue> players_json;
+		std::vector<Player> players = game.GetPlayers();
+		for (auto& p : players)
+		{
+			players_json.push_back(crow::json::wvalue{
+				{"username", p.GetUsername()}
+				});
+		}
+		return crow::json::wvalue{ players_json };
+		});
 	CROW_ROUTE(app, "/getnumberquestion")([&game]() {
 		static uint8_t requestCounter = 0;
 		static std::variant<NumberQuestion<int>, NumberQuestion<float>> question;
@@ -467,6 +496,46 @@ int main()
 
 		return crow::response(200);
 		});
+    
+	std::priority_queue<numericalQuestionResponse, std::vector<numericalQuestionResponse>, compareNumericalQuestionResponses> choosingOrderPlayers;
+	//todo: reset prio queue in getleaderboard route
+	//not properly odered - to investigate
+	CROW_ROUTE(app, "/addnumericalresponse")
+		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
+
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		auto usernameIter = bodyArgs.find("username");
+		auto responseIter = bodyArgs.find("response");
+		auto timeIter = bodyArgs.find("time");
+
+		if (usernameIter != bodyEnd && responseIter != bodyEnd && timeIter != bodyEnd)
+		{
+			size_t pos;
+			auto& username = usernameIter->second;
+
+			//try to convert response into float
+			auto& res = responseIter->second;
+			float response = stof(res, &pos);
+			if (pos != res.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert time into float
+			auto& t = timeIter->second;
+			float time = stof(t, &pos);
+			if (pos != t.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+			choosingOrderPlayers.push({ username, {response, time} });
+		}
+		else
+		{
+			return crow::response(400, "BAD REQUEST");
+		}
+		return crow::response(200);
+			});
+
 	app.port(18080).multithreaded().run();
 
 	return 0;

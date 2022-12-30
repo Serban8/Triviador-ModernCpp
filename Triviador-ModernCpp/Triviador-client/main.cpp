@@ -3,6 +3,7 @@
 #include<thread>
 #include<chrono>
 
+
 void LoginTest() {
 
 	statusCode response;
@@ -100,7 +101,34 @@ void numberOfVotes() {
 void getNumberQuestionTest()
 {
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getnumberquestion" });
-	std::cout << response.text << std::endl;
+	cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/getplayers" });
+	auto players_json = crow::json::load(response1.text);
+	auto numberQuestion = crow::json::load(response.text);
+
+	std::cout << numberQuestion["question"] << std::endl;
+	double time = 1.2;//hardcoded value for time to test it
+	for (const auto& player : players_json)
+	{
+		time = time - 0.1;
+		std::string res;
+
+		std::cout << player["username"] << " you can respond:" << std::endl;
+		std::cin >> res;
+		std::cout << std::endl;
+
+		auto correctAnswer = numberQuestion["correctAnswer"].d();
+		//send over the distance to the correct response - lowest distance wins
+		auto dif = abs(stof(res) - correctAnswer);
+		auto response = cpr::Put(
+			cpr::Url{ "http://localhost:18080/addnumericalresponse" },
+			cpr::Payload{
+				{ "username", (player["username"].s())},
+				{ "response", std::to_string(dif) },
+				{ "time", std::to_string(time) }
+			}
+		);
+	}
+
 }
 void getMultipleChoiceQuestionTest()
 {
@@ -126,15 +154,15 @@ void getMap()
 int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);
-	/*TriviadorClient w;
-	w.show();*/
+	TriviadorClient w;
+	w.show();
 
 	//AddNewPlayerTest();
 	//LoginTest();
 	//while (true)
 	//	checkWaitingRoomTest();
 
-	int x = 1;
+	/*int x = 1;
 
 	while (x != 0) {
 
@@ -178,7 +206,7 @@ int main(int argc, char* argv[])
 			break;
 		}
 		}
-	}
+	}*/
 
 	return a.exec();
 }
