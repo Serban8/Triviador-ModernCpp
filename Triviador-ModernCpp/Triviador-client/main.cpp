@@ -135,7 +135,22 @@ void getMultipleChoiceQuestionTest()
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getmultiplechoicequestion" });
 	std::cout << response.text << std::endl;
 }
+void getMap()
+{
+	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getmap" });
+	std::cout << response.text << std::endl;
+	auto map_json = crow::json::load(response.text);
+	for (const auto& region : map_json)
+	{
+		std::cout << "line: " << region["line"].d() << std::endl;
+		std::cout << "column: " << region["column"].d() << std::endl;
+		std::cout << "owner: " << region["owner"].s() << std::endl;
+		std::cout << "score: " << region["score"].d() << std::endl;
+		std::cout << "type: " << region["type"].s() << std::endl;
+		std::cout << "-------------" << std::endl;
 
+	}
+}
 int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);

@@ -442,7 +442,61 @@ int main()
 		requestCounter++;
 		return crow::json::wvalue{ questionJson };
 		});
+	CROW_ROUTE(app, "/getmap")([&game](){
+		std::vector<crow::json::wvalue> mapJson;
+		Map routeMap = game.GetMap();
+		for (uint8_t i = 0; i < routeMap.GetHeight(); i++)
+		{
+			for (uint8_t j = 0; j < routeMap.GetWidth(); j++)
+			{
+				auto mapType = [](Region::Type regionType) {
+					switch (regionType)
+					{
+					case Region::Type::Base:
+						return  "Base";
+						break;
+					case Region::Type::Territory:
+						return "Territory";
+						break;
+					default:
+						throw std::runtime_error("Undefined type of region");
+						return "Error";
+						break;
+					}
+				};
+				mapJson.push_back(crow::json::wvalue{
+					{"line", i},
+					{"column", j},
+					{"owner", routeMap[{i, j}].GetOwner().GetUsername()},
+					{"score", routeMap[{i, j}].GetScore()},
+					{"type", mapType(routeMap[{i,j}].GetType())}
+				});
+			}
+		}
+		return crow::json::wvalue{ mapJson };
+		});
+	CROW_ROUTE(app, "/setmap").methods(crow::HTTPMethod::PUT)([&game](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		//getting the line and column
+		auto lineIter = bodyArgs.find("line");
+		auto columnIter = bodyArgs.find("column");
 
+		//setting the new owner
+		auto ownerIter = bodyArgs.find("owner");
+		game.GetMap()[{std::stoi(lineIter->second), std::stoi(columnIter->second)}].SetOwner(ownerIter->second);
+
+		//setting the new type
+		auto typeIter = bodyArgs.find("type");
+		game.GetMap()[{ std::stoi(lineIter->second), std::stoi(columnIter->second) }].SetType(typeIter->second == "territory" ? Region::Type::Territory : Region::Type::Base);
+
+		//seeting the score
+		auto scoreIter = bodyArgs.find("score");
+		game.GetMap()[{ std::stoi(lineIter->second), std::stoi(columnIter->second) }].SetScore(std::stoi(scoreIter->second));
+
+		return crow::response(200);
+		});
+    
 	std::priority_queue<numericalQuestionResponse, std::vector<numericalQuestionResponse>, compareNumericalQuestionResponses> choosingOrderPlayers;
 	//todo: reset prio queue in getleaderboard route
 	//not properly odered - to investigate
