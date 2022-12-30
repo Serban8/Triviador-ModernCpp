@@ -115,6 +115,26 @@ border-image: url(:/Triviadorclient/images/background.jpg);
      </item>
     </layout>
    </widget>
+   <widget class="QPushButton" name="GoToRegisterButton">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>120</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>10</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>You do not have an account? Register here!</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

@@ -25,6 +25,9 @@
     <ClCompile Include="Region.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RegisterForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -41,9 +44,15 @@
     <QtMoc Include="TriviadorClient.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="RegisterForm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TriviadorClient.ui">
+      <Filter>Qt Files</Filter>
+    </QtUic>
+    <QtUic Include="RegisterForm.ui">
       <Filter>Qt Files</Filter>
     </QtUic>
   </ItemGroup>

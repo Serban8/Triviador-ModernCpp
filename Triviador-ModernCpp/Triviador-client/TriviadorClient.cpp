@@ -65,6 +65,15 @@ void TriviadorClient::checkIfGameCanStart()
     } while (resBody[resBody.size() - 1]["startGame"] != "true");
 }
 
+void TriviadorClient::on_GoToRegisterButton_clicked()
+{
+
+    regForm = new RegisterForm(this);
+
+    regForm->show();
+
+}
+
 void TriviadorClient::on_LoginButton_clicked() {
 
     QString username = ui.username->text();

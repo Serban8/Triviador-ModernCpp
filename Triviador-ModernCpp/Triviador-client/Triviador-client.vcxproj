@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="TriviadorClient.qrc" />
+    <QtUic Include="RegisterForm.ui" />
     <QtUic Include="TriviadorClient.ui" />
     <QtMoc Include="TriviadorClient.h" />
     <ClCompile Include="Map.cpp" />
@@ -95,6 +96,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="Region.cpp" />
+    <ClCompile Include="RegisterForm.cpp" />
     <ClCompile Include="TriviadorClient.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -105,6 +107,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Region.h" />
+    <QtMoc Include="RegisterForm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
