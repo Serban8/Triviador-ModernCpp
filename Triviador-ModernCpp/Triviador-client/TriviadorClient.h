@@ -23,4 +23,6 @@ public:
 	void checkIfGameCanStart();
 private:
 	Ui::TriviadorclientClass ui;
+private slots:
+	void on_LoginButton_clicked();
 };

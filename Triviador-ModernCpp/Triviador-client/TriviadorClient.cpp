@@ -1,9 +1,13 @@
 #include "TriviadorClient.h"
+#include <qmessagebox.h>
 
 TriviadorClient::TriviadorClient(QWidget* parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+
+    ui.username->setPlaceholderText("Enter your username");
+    ui.password->setPlaceholderText("Enter your password");
 }
 
 TriviadorClient::~TriviadorClient()
@@ -59,4 +63,20 @@ void TriviadorClient::checkIfGameCanStart()
         }
     //if the flag is set to true then the game can start
     } while (resBody[resBody.size() - 1]["startGame"] != "true");
+}
+
+void TriviadorClient::on_LoginButton_clicked() {
+
+    QString username = ui.username->text();
+    QString password = ui.password->text();
+
+    //testing purposes
+
+    if (username == "admin" && password == "admin") {
+        QMessageBox::information(this, "Login", "Login successful!");
+    }
+    else {
+        QMessageBox::warning(this, "Login", "Login not successful!");
+    }
+
 }
