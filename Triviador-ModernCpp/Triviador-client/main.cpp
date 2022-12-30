@@ -107,17 +107,20 @@ void getNumberQuestionTest()
 
 	std::cout << numberQuestion["question"] << std::endl;
 	double time = 1.2;//hardcoded value for time to test it
-	for (const auto& player : players_json) 
+	for (const auto& player : players_json)
 	{
 		time = time - 0.1;
 		std::string res;
+
 		std::cout << player["username"] << " you can respond:" << std::endl;
-		std::cin >> res; 
+		std::cin >> res;
 		std::cout << std::endl;
+
 		auto correctAnswer = numberQuestion["correctAnswer"].d();
+		//send over the distance to the correct response - lowest distance wins
 		auto dif = abs(stof(res) - correctAnswer);
 		auto response = cpr::Put(
-			cpr::Url{ "http://localhost:18080/addresponse" },
+			cpr::Url{ "http://localhost:18080/addnumericalresponse" },
 			cpr::Payload{
 				{ "username", (player["username"].s())},
 				{ "response", std::to_string(dif) },
@@ -125,7 +128,7 @@ void getNumberQuestionTest()
 			}
 		);
 	}
-	
+
 }
 void getMultipleChoiceQuestionTest()
 {

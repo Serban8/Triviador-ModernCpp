@@ -17,15 +17,21 @@
 #include "GameDatabase.h"
 #include "PlayerGameDatabase.h"
 
-struct compare
+using numericalQuestionResponse = std::pair < std::string, std::pair<float, float>>;
+struct compareNumericalQuestionResponses
 {
-	bool operator()(std::pair<std::string, std::pair<float, float>>& a, std::pair<std::string, std::pair<float, float>>& b)
+	bool operator() (numericalQuestionResponse& a, numericalQuestionResponse& b)
 	{
-		if (a.second.first == b.second.first)
+		auto& [username1, responseParams1] = a;
+		auto& [response1, responseTime1] = responseParams1;
+		auto& [username2, responseParams2] = b;
+		auto& [response2, responseTime2] = responseParams2;
+
+		if (response1 == response2)
 		{
-			return a.second.second > b.second.second;
+			return responseTime1 > responseTime2;
 		}
-		return a.second.first > b.second.first;
+		return response1 > response2;
 	}
 };
 
@@ -260,7 +266,7 @@ int main()
 	//waiting room & related routes
 	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
 	std::vector<Player> votesToStart;
-	
+
 	CROW_ROUTE(app, "/addtowaitingroom")
 		.methods(crow::HTTPMethod::PUT)([&waitingRoomList, &storage](const crow::request& req) {
 
@@ -436,8 +442,11 @@ int main()
 		requestCounter++;
 		return crow::json::wvalue{ questionJson };
 		});
-	std::priority_queue<std::pair<std::string, std::pair<float, float>>, std::vector<std::pair<std::string, std::pair<float, float>>>, compare> choosingOrderPlayers;
-	CROW_ROUTE(app, "/addresponse")
+
+	std::priority_queue<numericalQuestionResponse, std::vector<numericalQuestionResponse>, compareNumericalQuestionResponses> choosingOrderPlayers;
+	//todo: reset prio queue in getleaderboard route
+	//not properly odered - to investigate
+	CROW_ROUTE(app, "/addnumericalresponse")
 		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
 
 		auto bodyArgs = parseRequestBody(req.body);
@@ -445,21 +454,33 @@ int main()
 		auto usernameIter = bodyArgs.find("username");
 		auto responseIter = bodyArgs.find("response");
 		auto timeIter = bodyArgs.find("time");
-		auto &username = usernameIter->second;
-		auto &res = responseIter->second;
-		float response = stof(res);
-		auto &t = timeIter->second;
-		float time = stof(t);
-		if (usernameIter != bodyEnd && responseIter!=bodyEnd && timeIter!=bodyEnd)
+
+		if (usernameIter != bodyEnd && responseIter != bodyEnd && timeIter != bodyEnd)
 		{
-			choosingOrderPlayers.push(std::make_pair(username,std::make_pair(response,time)));
+			size_t pos;
+			auto& username = usernameIter->second;
+
+			//try to convert response into float
+			auto& res = responseIter->second;
+			float response = stof(res, &pos);
+			if (pos != res.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert time into float
+			auto& t = timeIter->second;
+			float time = stof(t, &pos);
+			if (pos != t.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+			choosingOrderPlayers.push({ username, {response, time} });
 		}
 		else
 		{
 			return crow::response(400, "BAD REQUEST");
 		}
 		return crow::response(200);
-	    });
+			});
 
 	app.port(18080).multithreaded().run();
 
