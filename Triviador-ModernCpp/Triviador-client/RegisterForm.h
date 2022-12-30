@@ -13,4 +13,6 @@ public:
 
 private:
 	Ui::RegisterFormClass ui;
+private slots:
+	void on_RegisterButton_clicked();
 };
