@@ -413,7 +413,39 @@ int main()
 		requestCounter++;
 		return crow::json::wvalue{ questionJson };
 		});
-
+	CROW_ROUTE(app, "/getmap")([&game](){
+		std::vector<crow::json::wvalue> mapJson;
+		Map routeMap = game.GetMap();
+		for (uint8_t i = 0; i < routeMap.GetHeight(); i++)
+		{
+			for (uint8_t j = 0; j < routeMap.GetWidth(); j++)
+			{
+				auto mapType = [](Region::Type regionType) {
+					switch (regionType)
+					{
+					case Region::Type::Base:
+						return  "Base";
+						break;
+					case Region::Type::Territory:
+						return "Territory";
+						break;
+					default:
+						throw std::runtime_error("Undefined type of region");
+						return "Error";
+						break;
+					}
+				};
+				mapJson.push_back(crow::json::wvalue{
+					{"line", i},
+					{"column", j},
+					{"owner", routeMap[{i, j}].GetOwner().GetUsername()},
+					{"score", routeMap[{i, j}].GetScore()},
+					{"type", mapType(routeMap[{i,j}].GetType())}
+				});
+			}
+		}
+		return crow::json::wvalue{ mapJson };
+		});
 	app.port(18080).multithreaded().run();
 
 	return 0;

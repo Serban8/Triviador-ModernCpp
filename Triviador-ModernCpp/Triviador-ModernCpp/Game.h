@@ -23,7 +23,7 @@ public:
 	void PlayGame();
 	//Here for testing only
 	std::vector<Player> DetermineWinners();
-	//
+	Map GetMap() const ;
 
 private:
 	//the main steps of the game

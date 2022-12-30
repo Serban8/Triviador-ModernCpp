@@ -308,3 +308,8 @@ std::vector<Player> Game::DetermineWinners()
 	losers.insert(losers.end(), m_activePlayers.begin(), m_activePlayers.end());
 	return winners;
 }
+
+Map Game::GetMap() const
+{
+	return m_map;
+}
