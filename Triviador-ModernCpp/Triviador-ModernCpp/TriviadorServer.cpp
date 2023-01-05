@@ -17,21 +17,20 @@
 #include "GameDatabase.h"
 #include "PlayerGameDatabase.h"
 
-using numericalQuestionResponse = std::pair < std::string, std::pair<float, float>>;
+using numericalQuestionResponse = std::pair<float, float>;
+
 struct compareNumericalQuestionResponses
 {
-	bool operator() (numericalQuestionResponse& a, numericalQuestionResponse& b)
+	bool operator() (const numericalQuestionResponse& a, const numericalQuestionResponse& b) const
 	{
-		auto& [username1, responseParams1] = a;
-		auto& [response1, responseTime1] = responseParams1;
-		auto& [username2, responseParams2] = b;
-		auto& [response2, responseTime2] = responseParams2;
+		auto& [response1, responseTime1] = a;
+		auto& [response2, responseTime2] = b;
 
 		if (response1 == response2)
 		{
-			return responseTime1 > responseTime2;
+			return responseTime1 < responseTime2;
 		}
-		return response1 > response2;
+		return response1 < response2;
 	}
 };
 
@@ -264,7 +263,7 @@ int main()
 			});
 
 	//waiting room & related routes
-	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
+	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci"), Player("Cici")}; //initialization list for testing only
 	std::vector<Player> votesToStart;
 
 	CROW_ROUTE(app, "/addtowaitingroom")
@@ -605,9 +604,8 @@ int main()
 		return crow::response(200);
 			});
 
-	std::priority_queue<numericalQuestionResponse, std::vector<numericalQuestionResponse>, compareNumericalQuestionResponses> choosingOrderPlayers;
+	std::map<numericalQuestionResponse, std::unique_ptr<Player>, compareNumericalQuestionResponses> choosingOrderPlayers;
 	//todo: reset prio queue in getleaderboard route
-	//not properly ordered - to investigate
 	CROW_ROUTE(app, "/addnumericalresponse")
 		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
 
@@ -635,12 +633,24 @@ int main()
 			if (pos != t.size()) {
 				return crow::response(400, "BAD REQUEST");
 			}
-			choosingOrderPlayers.push({ username, {response, time} });
+			CROW_LOG_INFO << "Receieved answer from player: " << username << "; distance from the correct response: " << response << "; time took to answer: " << time;
+			//TESTING
+			Player p = Player(username);
+			//
+			choosingOrderPlayers.emplace(std::make_pair(response, time), std::make_unique<Player>(p));
 		}
 		else
 		{
 			return crow::response(400, "BAD REQUEST");
 		}
+
+		//TESTING
+		for (const auto& player : choosingOrderPlayers) {
+			auto& [key, value] = player;
+			auto& [response, time] = key;
+			CROW_LOG_INFO << "RESPONSE: " << response << " TIME: " << time << " USERNAME: " << value.get()->GetUsername();
+		}
+		//
 		return crow::response(200);
 			});
 
