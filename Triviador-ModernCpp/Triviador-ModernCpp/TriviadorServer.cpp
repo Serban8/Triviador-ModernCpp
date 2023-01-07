@@ -75,7 +75,6 @@ inline auto createStorage(const std::string& filename)
 	);
 }
 
-
 void databaseTest()
 {
 	//creating the database
@@ -365,6 +364,16 @@ int main()
 	//game logic related routes
 	//testing purposes only initialization
 	Game game(waitingRoomList);
+
+	//TESTING FOR unordered_map() in game;
+	//game.printPlayerMap();
+	//game["Marci"].SetPoints(1000);
+	//game.printPlayerMap();
+	//game.AddInactivePlayer("Marci");
+	//std::cout << std::endl;
+	//game.printPlayerMap(); 
+	//
+
 	//initializing the game
 	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList] {
 		if (!waitingRoomList.empty()) {
@@ -375,7 +384,7 @@ int main()
 		});
 	CROW_ROUTE(app, "/getplayers")([&game] {
 		std::vector<crow::json::wvalue> players_json;
-		std::vector<Player> players = game.GetPlayers();
+		std::vector<Player> players = game.GetActivePlayers();
 		for (auto& p : players)
 		{
 			players_json.push_back(crow::json::wvalue{
@@ -390,7 +399,7 @@ int main()
 		static std::variant<NumberQuestion<int>, NumberQuestion<float>> question;
 		crow::json::wvalue questionJson;
 
-		if (requestCounter == game.GetPlayers().size() || requestCounter == 0) {
+		if (requestCounter == game.GetActivePlayers().size() || requestCounter == 0) {
 			question = game.GetNumberQuestion();
 			requestCounter = 0;
 		}
@@ -427,7 +436,7 @@ int main()
 		static MultipleChoiceQuestion question("", "", "", std::array<std::string, 3>{"", "", ""});
 		crow::json::wvalue questionJson;
 
-		if (requestCounter == game.GetPlayers().size() || requestCounter == 0) {
+		if (requestCounter == game.GetActivePlayers().size() || requestCounter == 0) {
 			question = game.GetMultipleChoiceQuestion();
 			requestCounter = 0;
 		}

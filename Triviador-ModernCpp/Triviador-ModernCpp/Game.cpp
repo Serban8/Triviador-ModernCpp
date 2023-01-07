@@ -2,11 +2,13 @@
 #include "QuestionGenerator.h"
 
 Game::Game(std::vector<Player>& players) :
-	m_activePlayers(players),
-	m_map(Map(players.size()))
+	m_activePlayers(std::move(players)),
+	m_map(Map(m_activePlayers.size()))
 {
-	//the game is initialized with a vector of players. We should have a function which handles player login - finding players
-	//
+	for (const Player& player : m_activePlayers) {
+		m_playersMap.emplace(player.GetUsername(), std::make_unique<Player>(player));
+	}
+
 	//getting questions directly from online database;
 	//in future we need to change this to get them from our database;
 	QuestionGenerator qg;
@@ -30,21 +32,39 @@ Game::Game(std::vector<Player>& players) :
 	//}
 }
 
+const Player& Game::operator[](const std::string& username) const
+{
+	return *m_playersMap.at(username).get();
+}
 
-std::vector<Player> Game::GetPlayers() const
+Player& Game::operator[](const std::string& username)
+{
+	return *m_playersMap.at(username).get();
+}
+
+
+std::vector<Player> Game::GetActivePlayers() const
 {
 	return m_activePlayers;
 }
 
-void Game::AddInactivePlayer(Player player)
+size_t Game::GetNumberOfActivePlayers() const
+{
+	return m_activePlayers.size();
+}
+
+size_t Game::GetNumberOfPlayers() const
+{
+	return m_playersMap.size();
+}
+
+void Game::AddInactivePlayer(const std::string player)
 {
 	auto playerIt = std::find(m_activePlayers.begin(), m_activePlayers.end(), player);
 
 	if (playerIt != m_activePlayers.end()) {
-		m_activePlayers.erase(playerIt);
+		m_inactivePlayers.push_back(std::move(*playerIt));
 	}
-
-	m_inactivePlayers.push_back(player);
 }
 
 void Game::PlayGame()
@@ -280,6 +300,18 @@ std::vector<Player> Game::AskNumberQuestion(std::vector<Player> players)
 	}
 
 	return sortedPlayers;
+}
+
+void Game::printPlayerMap()
+{
+	for (const auto& pair : m_playersMap) {
+		std::cout << "Key: " << pair.first << "; Username: " << pair.second.get()->GetUsername() << "; Score: " << pair.second.get()->GetPoints() << std::endl;
+	}
+
+	std::cout << "INACTIVE PLAYERS SIZE: " << m_inactivePlayers.size() << std::endl;
+	for (const auto& player : m_inactivePlayers) {
+		std::cout << "Inactive player: " << player.GetUsername() << std::endl;
+	}
 }
 
 //Should also send the leaderboard to the client
