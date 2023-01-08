@@ -75,6 +75,8 @@ inline auto createStorage(const std::string& filename)
 	);
 }
 
+using Storage = decltype(createStorage(""));
+
 void databaseTest()
 {
 	//creating the database
@@ -237,6 +239,37 @@ void mapTest()
 	std::cout << m3;
 }
 
+bool checkIfDBExists(Storage storage)
+{
+	//to define a value when we update the database questioons.
+	if (storage.count<QuestionDatabase>() < 15)
+	{
+		storage.remove_all<QuestionDatabase>();
+		database::insertQuestions(storage);
+		storage.sync_schema();
+		return true;
+	}
+	return false;
+}
+std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestionsFromDB(Storage storage)
+{
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> resultedNQ;
+	auto tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+	tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+	return resultedNQ;
+}
+std::vector<MultipleChoiceQuestion> getMultipleChoiceQuestionsFromDB(Storage storage)
+{
+	std::vector<MultipleChoiceQuestion> resultedQ;
+	auto tmpQ = database::getMultipleChoiceQuestions(storage);
+	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
+	tmpQ = database::getMultipleChoiceQuestions(storage);
+	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
+	return resultedQ;
+}
+
 int main()
 {
 	///TESTS
@@ -251,6 +284,8 @@ int main()
 	crow::SimpleApp app;
 	auto storage = createStorage("TRIV");
 	storage.sync_schema();
+	checkIfDBExists(storage);
+
 	//login-related routes
 	CROW_ROUTE(app, "/addnewplayer")
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
