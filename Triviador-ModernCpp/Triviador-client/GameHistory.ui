@@ -1,55 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HomescreenClass</class>
- <widget class="QMainWindow" name="HomescreenClass">
+ <class>GameHistoryClass</class>
+ <widget class="QMainWindow" name="GameHistoryClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1059</width>
-    <height>626</height>
+    <width>1124</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Homescreen</string>
+   <string>GameHistory</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="playButton">
+   <widget class="QListWidget" name="listWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>230</y>
-      <width>331</width>
-      <height>121</height>
+      <x>100</x>
+      <y>20</y>
+      <width>751</width>
+      <height>531</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>26</pointsize>
-      <bold>true</bold>
+      <pointsize>20</pointsize>
      </font>
-    </property>
-    <property name="text">
-     <string>Play</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="GameHistoryButton">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>230</y>
-      <width>331</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>26</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Game History</string>
     </property>
    </widget>
   </widget>
@@ -58,7 +35,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1059</width>
+     <width>1124</width>
      <height>26</height>
     </rect>
    </property>

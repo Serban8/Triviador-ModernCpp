@@ -12,6 +12,12 @@ void Homescreen::setUsername(std::string username)
 {
     this->username = username;
 }
+void Homescreen::on_GameHistoryButton_clicked()
+{
+    gameHistory = new GameHistory(this);
+    gameHistory->show();
+    this->hide();
+}
 void Homescreen::on_playButton_clicked() 
 {
     auto response1 = cpr::Put(

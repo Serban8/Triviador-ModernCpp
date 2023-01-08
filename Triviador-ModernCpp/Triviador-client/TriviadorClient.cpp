@@ -79,13 +79,13 @@ void TriviadorClient::on_LoginButton_clicked() {
 
 	QString username = ui.username->text();
 	QString password = ui.password->text();
-	std::string x = username.toUtf8().toStdString();
+	//std::string x = username.toUtf8().toStdString();
 	//testing purposes
 
 	if (username == "admin" && password == "admin") {
 		QMessageBox::information(this, "Login", "Login successful!");
 		homescreen = new Homescreen(this);
-		homescreen->setUsername(x);
+		//homescreen->setUsername(x);
 		homescreen->show();
 		this->hide();
 	}

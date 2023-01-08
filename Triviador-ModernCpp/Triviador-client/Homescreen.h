@@ -4,7 +4,7 @@
 #include "ui_Homescreen.h"
 #include "cpr/cpr.h"
 #include "crow.h"
-
+#include "GameHistory.h"
 
 class Homescreen : public QMainWindow
 {
@@ -17,6 +17,8 @@ public:
 private:
 	std::string username = "gigel";
 	Ui::HomescreenClass ui;
+	GameHistory *gameHistory;
 private slots:
 	void on_playButton_clicked();
+	void on_GameHistoryButton_clicked();
 };
