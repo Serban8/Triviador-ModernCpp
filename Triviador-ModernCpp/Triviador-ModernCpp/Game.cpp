@@ -1,9 +1,11 @@
 #include "Game.h"
 #include "QuestionGenerator.h"
 
-Game::Game(std::vector<Player>& players) :
-	m_activePlayers(std::move(players)),
-	m_map(Map(m_activePlayers.size()))
+Game::Game(std::vector<Player>& players, std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> numberQuestions,std::vector<MultipleChoiceQuestion> multipleChoiceQuestions) :
+	m_activePlayers(players),
+	m_map(Map(players.size())),
+	m_multipleChoiceQuestions(multipleChoiceQuestions),
+	m_numberQuestions(numberQuestions)
 {
 	for (const Player& player : m_activePlayers) {
 		m_playersMap.emplace(player.GetUsername(), std::make_unique<Player>(player));
@@ -11,9 +13,9 @@ Game::Game(std::vector<Player>& players) :
 
 	//getting questions directly from online database;
 	//in future we need to change this to get them from our database;
-	QuestionGenerator qg;
-	m_multipleChoiceQuestions = qg.GenerateMultipleChoiceQuestions(50);
-	m_numberQuestions = qg.GenerateNumberAnswerQuestions();
+	//QuestionGenerator qg;
+	//m_multipleChoiceQuestions = qg.GenerateMultipleChoiceQuestions(50);
+	//m_numberQuestions = qg.GenerateNumberAnswerQuestions();
 
 	//for testing purposes
 	//for (auto& q : m_numberQuestions)

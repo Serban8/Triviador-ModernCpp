@@ -12,7 +12,7 @@ class Game
 {
 public:
 	Game() = default;
-	Game(std::vector<Player>& players);
+	Game(std::vector<Player>& players, std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> m_numberQuestions,std::vector<MultipleChoiceQuestion> m_multipleChoiceQuestions);
 
 	//operators
 	//getter - takes an username as param and returns the constant reference to it
@@ -55,7 +55,6 @@ private:
 	std::vector<std::pair<Player, T>> GetNumberAnswers(std::vector<Player> players) const; //asks the players given as parameter to input an answer
 	template<typename T>
 	std::vector<Player> SortPlayersByAnswers(std::vector<Player> players, T correctAnswer) const; //gets the answers from players and then sorts them
-
 private:
 	std::unordered_map<std::string, std::unique_ptr<Player>> m_playersMap;
 private:

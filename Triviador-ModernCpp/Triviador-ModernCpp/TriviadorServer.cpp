@@ -175,9 +175,9 @@ void gameTest() {
 	p3.SetPoints(500);
 	p4.SetPoints(800);
 	std::vector<Player> player = { p1,p2,p3,p4 };
-	Game topG(player);
+	/*Game topG(player);
 	topG.PlayGame();
-	topG.DetermineWinners();
+	topG.DetermineWinners();*/
 }
 
 void questionTest()
@@ -398,21 +398,16 @@ int main()
 
 	//game logic related routes
 	//testing purposes only initialization
-	Game game(waitingRoomList);
-
-	//TESTING FOR unordered_map() in game;
-	//game.printPlayerMap();
-	//game["Marci"].SetPoints(1000);
-	//game.printPlayerMap();
-	//game.AddInactivePlayer("Marci");
-	//std::cout << std::endl;
-	//game.printPlayerMap(); 
-	//
+	
 
 	//initializing the game
-	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList] {
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> numberQuestions = getNumberQuestionsFromDB(storage);
+	std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = getMultipleChoiceQuestionsFromDB(storage);
+
+	Game game(waitingRoomList, numberQuestions, multipleChoiceQuestions);
+	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList, &numberQuestions, &multipleChoiceQuestions] {
 		if (!waitingRoomList.empty()) {
-			game = Game(waitingRoomList); //to be initialized with waiting players list
+			game = Game(waitingRoomList,numberQuestions,multipleChoiceQuestions); //to be initialized with waiting players list
 			return crow::response(200); //OK
 		}
 		return crow::response(500); //internal server error
@@ -650,7 +645,7 @@ int main()
 
 	std::map<numericalQuestionResponse, std::unique_ptr<Player>, compareNumericalQuestionResponses> choosingOrderPlayers;
 	//todo: reset prio queue in getleaderboard route
-	CROW_ROUTE(app, "/addnumericalresponse")
+	CROW_ROUTE(app, "/addresponse")
 		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
 
 		auto bodyArgs = parseRequestBody(req.body);
