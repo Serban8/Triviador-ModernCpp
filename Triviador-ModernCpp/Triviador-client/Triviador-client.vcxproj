@@ -86,10 +86,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="WaitingRoom.cpp" />
     <QtRcc Include="TriviadorClient.qrc" />
+    <QtUic Include="GameHistory.ui" />
+    <QtUic Include="Homescreen.ui" />
     <QtUic Include="RegisterForm.ui" />
     <QtUic Include="TriviadorClient.ui" />
     <QtMoc Include="TriviadorClient.h" />
+    <ClCompile Include="GameHistory.cpp" />
+    <ClCompile Include="Homescreen.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="NumberQuestion.cpp" />
@@ -99,8 +104,12 @@
     <ClCompile Include="RegisterForm.cpp" />
     <ClCompile Include="TriviadorClient.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="WaitingRoom.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="WaitingRoom.h" />
+    <QtMoc Include="Homescreen.h" />
+    <QtMoc Include="GameHistory.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="NumberQuestion.h" />

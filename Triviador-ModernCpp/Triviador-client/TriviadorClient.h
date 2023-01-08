@@ -9,6 +9,7 @@
 #include <thread>
 #include <chrono>
 #include "RegisterForm.h"
+#include "Homescreen.h"
 
 using statusCode = decltype(cpr::Response::status_code);
 
@@ -25,6 +26,7 @@ public:
 private:
 	Ui::TriviadorclientClass ui;
 	RegisterForm *regForm;
+	Homescreen* homescreen;
 private slots:
 	void on_LoginButton_clicked();
 	void on_GoToRegisterButton_clicked();

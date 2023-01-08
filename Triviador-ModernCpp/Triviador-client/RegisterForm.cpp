@@ -25,5 +25,8 @@ void RegisterForm::on_RegisterButton_clicked() {
 
 	//testing
 	QMessageBox::information(this, "Register", "Registration successful!");
+	homescreen = new Homescreen(this);
+	homescreen->show();
+	this->hide();
 
 }

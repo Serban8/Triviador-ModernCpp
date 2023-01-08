@@ -28,6 +28,15 @@
     <ClCompile Include="RegisterForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Homescreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHistory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitingRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -47,12 +56,30 @@
     <QtMoc Include="RegisterForm.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Homescreen.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GameHistory.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="WaitingRoom.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TriviadorClient.ui">
       <Filter>Qt Files</Filter>
     </QtUic>
     <QtUic Include="RegisterForm.ui">
+      <Filter>Qt Files</Filter>
+    </QtUic>
+    <QtUic Include="Homescreen.ui">
+      <Filter>Qt Files</Filter>
+    </QtUic>
+    <QtUic Include="GameHistory.ui">
+      <Filter>Qt Files</Filter>
+    </QtUic>
+    <QtUic Include="WaitingRoom.ui">
       <Filter>Qt Files</Filter>
     </QtUic>
   </ItemGroup>
