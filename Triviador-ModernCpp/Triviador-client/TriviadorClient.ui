@@ -138,6 +138,19 @@ border-image: url(:/Triviadorclient/images/background.jpg);
      <string>You do not have an account? Register here!</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="mergiInMOrtiiMati">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>420</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

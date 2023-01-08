@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <qscreen.h>
 #include "ui_FourPlayersMap.h"
 
 class FourPlayersMap : public QMainWindow
