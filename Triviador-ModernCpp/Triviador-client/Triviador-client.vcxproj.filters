@@ -35,6 +35,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WaitingRoom.cpp">
+    <ClCompile Include="TwoPlayersMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,6 +64,7 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="WaitingRoom.h">
+    <QtMoc Include="TwoPlayersMap.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -80,6 +82,7 @@
       <Filter>Qt Files</Filter>
     </QtUic>
     <QtUic Include="WaitingRoom.ui">
+    <QtUic Include="TwoPlayersMap.ui">
       <Filter>Qt Files</Filter>
     </QtUic>
   </ItemGroup>
