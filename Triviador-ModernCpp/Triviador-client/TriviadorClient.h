@@ -10,6 +10,7 @@
 #include <chrono>
 #include "RegisterForm.h"
 #include "Homescreen.h"
+#include "ThreePlayersMap.h"
 
 using statusCode = decltype(cpr::Response::status_code);
 
@@ -27,7 +28,9 @@ private:
 	Ui::TriviadorclientClass ui;
 	RegisterForm *regForm;
 	Homescreen* homescreen;
+	ThreePlayersMap* th;
 private slots:
 	void on_LoginButton_clicked();
 	void on_GoToRegisterButton_clicked();
+	void on_mergiInMOrtiiMati_clicked();
 };

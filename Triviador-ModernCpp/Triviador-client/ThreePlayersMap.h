@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <qscreen.h>
 #include "ui_ThreePlayersMap.h"
 
 class ThreePlayersMap : public QMainWindow
@@ -13,4 +14,5 @@ public:
 
 private:
 	Ui::ThreePlayersMapClass ui;
+	std::vector<QPushButton> Territories;
 };

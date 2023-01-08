@@ -3,5 +3,7 @@
         <file>images/background.jpg</file>
         <file>images/triv.png</file>
         <file>images/2playersMap.png</file>
+        <file>images/3playersMap.png</file>
+        <file>images/4playersMap.png</file>
     </qresource>
 </RCC>

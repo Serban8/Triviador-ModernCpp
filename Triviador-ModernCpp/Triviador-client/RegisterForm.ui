@@ -116,6 +116,8 @@ border-image: url(:/Triviadorclient/images/background.jpg);
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="TriviadorClient.qrc"/>
+ </resources>
  <connections/>
 </ui>

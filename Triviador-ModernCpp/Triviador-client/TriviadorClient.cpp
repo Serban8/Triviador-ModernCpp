@@ -75,6 +75,13 @@ void TriviadorClient::on_GoToRegisterButton_clicked()
 
 }
 
+void TriviadorClient::on_mergiInMOrtiiMati_clicked()
+{
+	th = new ThreePlayersMap(this);
+
+	th->show();
+}
+
 void TriviadorClient::on_LoginButton_clicked() {
 
 	QString username = ui.username->text();
