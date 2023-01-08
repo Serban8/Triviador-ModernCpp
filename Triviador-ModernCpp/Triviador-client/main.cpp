@@ -120,7 +120,7 @@ void getNumberQuestionTest()
 		//send over the distance to the correct response - lowest distance wins
 		auto dif = abs(stof(res) - correctAnswer);
 		auto response = cpr::Put(
-			cpr::Url{ "http://localhost:18080/addnumericalresponse" },
+			cpr::Url{ "http://localhost:18080/addresponse" },
 			cpr::Payload{
 				{ "username", (player["username"].s())},
 				{ "response", std::to_string(dif) },
@@ -130,10 +130,41 @@ void getNumberQuestionTest()
 	}
 
 }
-void getMultipleChoiceQuestionTest()
+
+void  getMultipleChoiceQuestionTest()
 {
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getmultiplechoicequestion" });
-	std::cout << response.text << std::endl;
+	cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/getplayers" });
+	auto players_json = crow::json::load(response1.text);
+	auto numberQuestion = crow::json::load(response.text);
+	std::cin.get();
+	std::cout << numberQuestion["question"] << std::endl;
+	std::cout << "A)" << numberQuestion["correctAnswer"] << std::endl;
+	std::cout << "B)" << numberQuestion["incorrectAnswer1"] << std::endl;
+	std::cout << "C)" << numberQuestion["incorrectAnswer2"] << std::endl;
+	std::cout << "D)" << numberQuestion["incorrectAnswer3"] << std::endl;
+	double time = 1.2;//hardcoded value for time to test it
+	for (const auto& player : players_json)
+	{
+		time = time - 0.1;
+		std::string res;
+
+		std::cout << player["username"] << " you can respond:" << std::endl;
+		std::getline(std::cin, res);
+
+		auto correctAnswer = numberQuestion["correctAnswer"].s();
+		std::string dif = (res == correctAnswer ? "1" : "0");
+		qInfo() << (res == correctAnswer ? "1" : "0");
+		auto response = cpr::Put(
+			cpr::Url{ "http://localhost:18080/addresponse" },
+			cpr::Payload{
+				{ "username", (player["username"].s())},
+				{ "response", dif },
+				{ "time", std::to_string(time) }
+			}
+		);
+	}
+
 }
 void getMap()
 {

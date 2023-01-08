@@ -75,6 +75,8 @@ inline auto createStorage(const std::string& filename)
 	);
 }
 
+using Storage = decltype(createStorage(""));
+
 void databaseTest()
 {
 	//creating the database
@@ -173,9 +175,9 @@ void gameTest() {
 	p3.SetPoints(500);
 	p4.SetPoints(800);
 	std::vector<Player> player = { p1,p2,p3,p4 };
-	Game topG(player);
+	/*Game topG(player);
 	topG.PlayGame();
-	topG.DetermineWinners();
+	topG.DetermineWinners();*/
 }
 
 void questionTest()
@@ -237,6 +239,37 @@ void mapTest()
 	std::cout << m3;
 }
 
+bool checkIfDBExists(Storage storage)
+{
+	//to define a value when we update the database questioons.
+	if (storage.count<QuestionDatabase>() < 15)
+	{
+		storage.remove_all<QuestionDatabase>();
+		database::insertQuestions(storage);
+		storage.sync_schema();
+		return true;
+	}
+	return false;
+}
+std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestionsFromDB(Storage storage)
+{
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> resultedNQ;
+	auto tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+	tmpNQ = database::getNumberQuestions(storage);
+	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
+	return resultedNQ;
+}
+std::vector<MultipleChoiceQuestion> getMultipleChoiceQuestionsFromDB(Storage storage)
+{
+	std::vector<MultipleChoiceQuestion> resultedQ;
+	auto tmpQ = database::getMultipleChoiceQuestions(storage);
+	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
+	tmpQ = database::getMultipleChoiceQuestions(storage);
+	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
+	return resultedQ;
+}
+
 int main()
 {
 	///TESTS
@@ -251,6 +284,8 @@ int main()
 	crow::SimpleApp app;
 	auto storage = createStorage("TRIV");
 	storage.sync_schema();
+	checkIfDBExists(storage);
+
 	//login-related routes
 	CROW_ROUTE(app, "/addnewplayer")
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
@@ -363,21 +398,16 @@ int main()
 
 	//game logic related routes
 	//testing purposes only initialization
-	Game game(waitingRoomList);
-
-	//TESTING FOR unordered_map() in game;
-	//game.printPlayerMap();
-	//game["Marci"].SetPoints(1000);
-	//game.printPlayerMap();
-	//game.AddInactivePlayer("Marci");
-	//std::cout << std::endl;
-	//game.printPlayerMap(); 
-	//
+	
 
 	//initializing the game
-	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList] {
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> numberQuestions = getNumberQuestionsFromDB(storage);
+	std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = getMultipleChoiceQuestionsFromDB(storage);
+
+	Game game(waitingRoomList, numberQuestions, multipleChoiceQuestions);
+	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList, &numberQuestions, &multipleChoiceQuestions] {
 		if (!waitingRoomList.empty()) {
-			game = Game(waitingRoomList); //to be initialized with waiting players list
+			game = Game(waitingRoomList,numberQuestions,multipleChoiceQuestions); //to be initialized with waiting players list
 			return crow::response(200); //OK
 		}
 		return crow::response(500); //internal server error
@@ -615,7 +645,7 @@ int main()
 
 	std::map<numericalQuestionResponse, std::unique_ptr<Player>, compareNumericalQuestionResponses> choosingOrderPlayers;
 	//todo: reset prio queue in getleaderboard route
-	CROW_ROUTE(app, "/addnumericalresponse")
+	CROW_ROUTE(app, "/addresponse")
 		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
 
 		auto bodyArgs = parseRequestBody(req.body);
