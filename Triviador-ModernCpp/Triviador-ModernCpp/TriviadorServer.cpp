@@ -692,6 +692,17 @@ int main()
 		//
 		return crow::response(200);
 			});
+	
+	CROW_ROUTE(app, "/getplayerorder")([&choosingOrderPlayers] {
+		std::vector<crow::json::wvalue> players_json;
+	    for (const auto& player : choosingOrderPlayers)
+		{
+			players_json.push_back(crow::json::wvalue{
+				{"username", player.second.get()->GetUsername()}
+				});
+		}
+		return crow::json::wvalue{ players_json };
+		});
 
 	app.port(18080).multithreaded().run();
 
