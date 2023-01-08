@@ -1,111 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="TriviadorClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MultipleChoiceQuestion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NumberQuestion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Question.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Region.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RegisterForm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Homescreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameHistory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WaitingRoom.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="WaitingRoom.cpp" />
+    <ClCompile Include="TwoPlayersMap.cpp" />
+    <ClCompile Include="GameHistory.cpp" />
+    <ClCompile Include="Homescreen.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MultipleChoiceQuestion.cpp" />
+    <ClCompile Include="NumberQuestion.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Question.cpp" />
+    <ClCompile Include="Region.cpp" />
+    <ClCompile Include="RegisterForm.cpp" />
+    <ClCompile Include="TriviadorClient.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ThreePlayersMap.cpp" />
+    <ClCompile Include="FourPlayersMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{a13a16ba-195f-4f26-829a-1783de90be9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{6d7f3c8c-6a85-488f-9217-ba015cb2fe89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Qt Files">
-      <UniqueIdentifier>{5056826d-bfbd-4d03-8f04-deae579c2454}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="MultipleChoiceQuestion.h" />
+    <ClInclude Include="NumberQuestion.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Question.h" />
+    <ClInclude Include="Region.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="TriviadorClient.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="RegisterForm.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Homescreen.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GameHistory.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="WaitingRoom.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
+    <QtMoc Include="TriviadorClient.h" />
+    <QtMoc Include="WaitingRoom.h" />
+    <QtMoc Include="Homescreen.h" />
+    <QtMoc Include="GameHistory.h" />
+    <QtMoc Include="TwoPlayersMap.h" />
+    <QtMoc Include="RegisterForm.h" />
+    <QtMoc Include="ThreePlayersMap.h" />
+    <QtMoc Include="FourPlayersMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="TriviadorClient.ui">
-      <Filter>Qt Files</Filter>
-    </QtUic>
-    <QtUic Include="RegisterForm.ui">
-      <Filter>Qt Files</Filter>
-    </QtUic>
-    <QtUic Include="Homescreen.ui">
-      <Filter>Qt Files</Filter>
-    </QtUic>
-    <QtUic Include="GameHistory.ui">
-      <Filter>Qt Files</Filter>
-    </QtUic>
-    <QtUic Include="WaitingRoom.ui">
-      <Filter>Qt Files</Filter>
-    </QtUic>
+    <QtRcc Include="TriviadorClient.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="TriviadorClient.qrc">
-      <Filter>Qt Files</Filter>
-    </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MultipleChoiceQuestion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NumberQuestion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Question.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Region.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <QtUic Include="GameHistory.ui" />
+    <QtUic Include="Homescreen.ui" />
+    <QtUic Include="RegisterForm.ui" />
+    <QtUic Include="TriviadorClient.ui" />
+    <QtUic Include="WaitingRoom.ui" />
+    <QtUic Include="TwoPlayersMap.ui" />
+    <QtUic Include="ThreePlayersMap.ui" />
+    <QtUic Include="FourPlayersMap.ui" />
   </ItemGroup>
 </Project>

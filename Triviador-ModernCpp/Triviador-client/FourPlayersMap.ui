@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FourPlayersMapClass</class>
+ <widget class="QMainWindow" name="FourPlayersMapClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1226</width>
+    <height>508</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FourPlayersMap</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/triv.png</normaloff>images/triv.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#centralWidget{
+
+image: url(:/Triviadorclient/images/4playersMap.png);
+border-image: none;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
