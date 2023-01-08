@@ -25,4 +25,7 @@ void Homescreen::on_playButton_clicked()
         cpr::Payload{
             { "username", username }
         });
+    waitingRoom = new WaitingRoom(this);
+    waitingRoom->show();
+    this->hide();
 }
