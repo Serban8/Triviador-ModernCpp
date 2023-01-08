@@ -184,16 +184,16 @@ void getMap()
 }
 int main(int argc, char* argv[])
 {
-	//QApplication a(argc, argv);
-	//TriviadorClient w;
-	//w.show();
+	QApplication a(argc, argv);
+	TriviadorClient w;
+	w.show();
 
 	//AddNewPlayerTest();
 	//LoginTest();
 	//while (true)
 	//	checkWaitingRoomTest();
 
-	int x = 1;
+	/*int x = 1;
 
 	while (x != 0) {
 
@@ -237,7 +237,7 @@ int main(int argc, char* argv[])
 			break;
 		}
 		}
-	}
+	}*/
 
-	//return a.exec();
+	return a.exec();
 }
