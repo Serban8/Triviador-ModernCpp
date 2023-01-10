@@ -185,7 +185,7 @@ int main()
 			});
 
 	//waiting room & related routes
-	std::vector<Player> waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci"), Player("Cici")}; //initialization list for testing only
+	std::vector<Player> waitingRoomList /*= { Player("Gigi"), Player("Marci"), Player("Luci"), Player("Cici")}*/; //initialization list for testing only
 	std::vector<Player> votesToStart;
 
 	CROW_ROUTE(app, "/addtowaitingroom")
