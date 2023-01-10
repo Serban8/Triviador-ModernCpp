@@ -1,6 +1,7 @@
 #include "TriviadorClient.h"
 #include <qmessagebox.h>
-
+#include <qgraphicsview.h>
+#include <qsizepolicy.h>
 TriviadorClient::TriviadorClient(QWidget* parent)
 	: QMainWindow(parent)
 {
@@ -8,6 +9,18 @@ TriviadorClient::TriviadorClient(QWidget* parent)
 
 	ui.username->setPlaceholderText("Enter your username");
 	ui.password->setPlaceholderText("Enter your password");
+
+	bool notResized = true;
+
+	//ui.stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	ui.stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	ui.centralWidget->resize(QGuiApplication::primaryScreen()->availableGeometry().size() /** 0.9*/);
+	//QRect graphicsViewGeometry = ui.centralWidget->geometry();
+	//ui.groupBox->setGeometry({ graphicsViewGeometry.width() - ui.groupBox->geometry().width()/10 - 25, graphicsViewGeometry.height() - ui.groupBox->geometry().height()/10 - 25, ui.groupBox->geometry().width(), ui.groupBox->geometry().height()});
+
+	ui.stackedWidget->insertWidget(1, &regForm);
+	
 }
 
 TriviadorClient::~TriviadorClient()
@@ -65,21 +78,23 @@ void TriviadorClient::checkIfGameCanStart()
 	} while (resBody[resBody.size() - 1]["startGame"] != "true");
 }
 
+void TriviadorClient::updatePosition()
+{
+	QRect graphicsViewGeometry = ui.centralWidget->geometry();
+	//ui.groupBox->setGeometry({ graphicsViewGeometry.height()/2, graphicsViewGeometry.width()/2 + 200,ui.groupBox->geometry().width(), ui.groupBox->geometry().height()});
+	//ui.groupBox->move({ graphicsViewGeometry.width() / 2 + 600, graphicsViewGeometry.height() / 2});
+	ui.groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
 void TriviadorClient::on_GoToRegisterButton_clicked()
 {
 
-	regForm = new RegisterForm(this);
+	//regForm = new RegisterForm(this);
 
-	regForm->show();
-	this->hide();
+	//regForm.show();
+	//this->hide();
 
-}
-
-void TriviadorClient::on_mergiInMOrtiiMati_clicked()
-{
-	th = new ThreePlayersMap(this);
-
-	th->show();
+	ui.stackedWidget->setCurrentIndex(1);
 }
 
 void TriviadorClient::on_LoginButton_clicked() {
@@ -94,7 +109,7 @@ void TriviadorClient::on_LoginButton_clicked() {
 		homescreen = new Homescreen(this);
 		//homescreen->setUsername(x);
 		homescreen->show();
-		this->hide();
+		//this->hide();
 	}
 	else {
 		QMessageBox::warning(this, "Login", "Login not successful!");
