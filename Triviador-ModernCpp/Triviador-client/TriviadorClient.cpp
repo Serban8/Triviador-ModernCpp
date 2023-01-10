@@ -20,6 +20,7 @@ TriviadorClient::TriviadorClient(QWidget* parent)
 	//ui.groupBox->setGeometry({ graphicsViewGeometry.width() - ui.groupBox->geometry().width()/10 - 25, graphicsViewGeometry.height() - ui.groupBox->geometry().height()/10 - 25, ui.groupBox->geometry().width(), ui.groupBox->geometry().height()});
 
 	ui.stackedWidget->insertWidget(1, &regForm);
+	ui.stackedWidget->insertWidget(2, &homescreen);
 	
 }
 
@@ -78,14 +79,6 @@ void TriviadorClient::checkIfGameCanStart()
 	} while (resBody[resBody.size() - 1]["startGame"] != "true");
 }
 
-void TriviadorClient::updatePosition()
-{
-	QRect graphicsViewGeometry = ui.centralWidget->geometry();
-	//ui.groupBox->setGeometry({ graphicsViewGeometry.height()/2, graphicsViewGeometry.width()/2 + 200,ui.groupBox->geometry().width(), ui.groupBox->geometry().height()});
-	//ui.groupBox->move({ graphicsViewGeometry.width() / 2 + 600, graphicsViewGeometry.height() / 2});
-	ui.groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
-
 void TriviadorClient::on_GoToRegisterButton_clicked()
 {
 
@@ -105,11 +98,8 @@ void TriviadorClient::on_LoginButton_clicked() {
 	//testing purposes
 
 	if (username == "admin" && password == "admin") {
-		QMessageBox::information(this, "Login", "Login successful!");
-		homescreen = new Homescreen(this);
-		//homescreen->setUsername(x);
-		homescreen->show();
-		//this->hide();
+		QMessageBox::information(this, "Login", "Login successful! You will be directed to homescreen.");
+		ui.stackedWidget->setCurrentIndex(2);
 	}
 	else {
 		QMessageBox::warning(this, "Login", "Login not successful!");

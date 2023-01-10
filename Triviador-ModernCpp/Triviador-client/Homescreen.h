@@ -18,7 +18,7 @@ private:
 	std::string username = "gigel";
 	Ui::HomescreenClass ui;
 	GameHistory *gameHistory;
-	WaitingRoom *waitingRoom;
+	WaitingRoom waitingRoom;
 private slots:
 	void on_playButton_clicked();
 	void on_GameHistoryButton_clicked();

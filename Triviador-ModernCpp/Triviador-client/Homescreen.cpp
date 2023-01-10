@@ -4,6 +4,7 @@ Homescreen::Homescreen(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+    ui.stackedWidget->insertWidget(1, &waitingRoom);
 }
 
 Homescreen::~Homescreen()
@@ -16,7 +17,6 @@ void Homescreen::on_GameHistoryButton_clicked()
 {
     gameHistory = new GameHistory(this);
     gameHistory->show();
-    this->hide();
 }
 void Homescreen::on_playButton_clicked() 
 {
@@ -25,7 +25,5 @@ void Homescreen::on_playButton_clicked()
         cpr::Payload{
             { "username", username }
         });
-    waitingRoom = new WaitingRoom(this);
-    waitingRoom->show();
-    this->hide();
+    ui.stackedWidget->setCurrentIndex(1);
 }

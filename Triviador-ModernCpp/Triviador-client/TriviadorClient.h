@@ -26,8 +26,7 @@ public:
 private:
 	Ui::TriviadorclientClass ui;
 	RegisterForm regForm;
-	Homescreen* homescreen;
-	void updatePosition();
+	Homescreen homescreen;
 private slots:
 	void on_LoginButton_clicked();
 	void on_GoToRegisterButton_clicked();
