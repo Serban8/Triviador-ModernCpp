@@ -1,6 +1,7 @@
 #include "TriviadorClient.h"
 #include <qmessagebox.h>
-
+#include <qgraphicsview.h>
+#include <qsizepolicy.h>
 TriviadorClient::TriviadorClient(QWidget* parent)
 	: QMainWindow(parent)
 {
@@ -8,6 +9,19 @@ TriviadorClient::TriviadorClient(QWidget* parent)
 
 	ui.username->setPlaceholderText("Enter your username");
 	ui.password->setPlaceholderText("Enter your password");
+
+	bool notResized = true;
+
+	//ui.stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	ui.stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	ui.centralWidget->resize(QGuiApplication::primaryScreen()->availableGeometry().size() /** 0.9*/);
+	//QRect graphicsViewGeometry = ui.centralWidget->geometry();
+	//ui.groupBox->setGeometry({ graphicsViewGeometry.width() - ui.groupBox->geometry().width()/10 - 25, graphicsViewGeometry.height() - ui.groupBox->geometry().height()/10 - 25, ui.groupBox->geometry().width(), ui.groupBox->geometry().height()});
+
+	ui.stackedWidget->insertWidget(1, &regForm);
+	ui.stackedWidget->insertWidget(2, &homescreen);
+	
 }
 
 TriviadorClient::~TriviadorClient()
@@ -68,18 +82,12 @@ void TriviadorClient::checkIfGameCanStart()
 void TriviadorClient::on_GoToRegisterButton_clicked()
 {
 
-	regForm = new RegisterForm(this);
+	//regForm = new RegisterForm(this);
 
-	regForm->show();
-	this->hide();
+	//regForm.show();
+	//this->hide();
 
-}
-
-void TriviadorClient::on_mergiInMOrtiiMati_clicked()
-{
-	th = new ThreePlayersMap(this);
-
-	th->show();
+	ui.stackedWidget->setCurrentIndex(1);
 }
 
 void TriviadorClient::on_LoginButton_clicked() {
@@ -90,11 +98,8 @@ void TriviadorClient::on_LoginButton_clicked() {
 	//testing purposes
 
 	if (username == "admin" && password == "admin") {
-		QMessageBox::information(this, "Login", "Login successful!");
-		homescreen = new Homescreen(this);
-		//homescreen->setUsername(x);
-		homescreen->show();
-		this->hide();
+		QMessageBox::information(this, "Login", "Login successful! You will be directed to homescreen.");
+		ui.stackedWidget->setCurrentIndex(2);
 	}
 	else {
 		QMessageBox::warning(this, "Login", "Login not successful!");

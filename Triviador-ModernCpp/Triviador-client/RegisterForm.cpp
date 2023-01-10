@@ -8,6 +8,9 @@ RegisterForm::RegisterForm(QWidget* parent)
 
 	ui.username->setPlaceholderText("Enter your username");
 	ui.password->setPlaceholderText("Enter your password");
+
+	ui.stackedWidget->insertWidget(1, &homescreen);
+
 }
 
 RegisterForm::~RegisterForm()
@@ -24,9 +27,7 @@ void RegisterForm::closeEvent(QCloseEvent* ev)
 void RegisterForm::on_RegisterButton_clicked() {
 
 	//testing
-	QMessageBox::information(this, "Register", "Registration successful!");
-	homescreen = new Homescreen(this);
-	homescreen->show();
-	this->hide();
+	QMessageBox::information(this, "Register", "Registration successful! You will now be directed to the homescreen.");
+	ui.stackedWidget->setCurrentIndex(1);
 
 }
