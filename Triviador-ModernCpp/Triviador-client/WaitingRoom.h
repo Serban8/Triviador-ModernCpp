@@ -15,5 +15,5 @@ public:
 private:
 	Ui::WaitingRoomClass ui;
 private slots:
-	void on_pushButton_clicked();
+	void on_vote_pushButton_clicked();
 };

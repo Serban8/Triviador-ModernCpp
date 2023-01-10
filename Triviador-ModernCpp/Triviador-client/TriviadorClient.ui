@@ -57,7 +57,7 @@ border-image: url(:/Triviadorclient/images/background.jpg);
      <number>0</number>
     </property>
     <widget class="QWidget" name="page">
-     <widget class="QPushButton" name="GoToRegisterButton">
+     <widget class="QPushButton" name="register_pushButton">
       <property name="geometry">
        <rect>
         <x>730</x>
@@ -158,7 +158,7 @@ border-image: url(:/Triviadorclient/images/background.jpg);
         </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="LoginButton">
+        <widget class="QPushButton" name="login_pushButton">
          <property name="font">
           <font>
            <family>Times New Roman</family>

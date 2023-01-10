@@ -6,20 +6,23 @@
 #include "crow.h"
 #include "GameHistory.h"
 #include "WaitingRoom.h"
-class Homescreen : public QMainWindow
+#include "Player.h"
+class Homescreen : public QMainWindow, private Player
 {
 	Q_OBJECT
 
 public:
 	Homescreen(QWidget *parent = nullptr);
 	~Homescreen();
-	void setUsername(std::string username);
+	//void SetUsername(std::string username);
 private:
-	std::string username = "gigel";
+	//std::string m_username = "gigel";
 	Ui::HomescreenClass ui;
 	GameHistory *gameHistory;
 	WaitingRoom waitingRoom;
+	std::string m_playerUsername;
 private slots:
-	void on_playButton_clicked();
-	void on_GameHistoryButton_clicked();
+	void on_play_pushButton_clicked();
+	void on_GameHistory_pushButton_clicked();
+
 };
