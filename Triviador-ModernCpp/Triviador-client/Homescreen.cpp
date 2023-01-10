@@ -9,21 +9,21 @@ Homescreen::Homescreen(QWidget *parent)
 
 Homescreen::~Homescreen()
 {}
-void Homescreen::setUsername(std::string username)
-{
-    this->username = username;
-}
-void Homescreen::on_GameHistoryButton_clicked()
+//void Homescreen::SetUsername(std::string username)
+//{
+//    this->m_username = username;
+//}
+void Homescreen::on_GameHistory_pushButton_clicked()
 {
     gameHistory = new GameHistory(this);
     gameHistory->show();
 }
-void Homescreen::on_playButton_clicked() 
+void Homescreen::on_play_pushButton_clicked()
 {
     auto response1 = cpr::Put(
         cpr::Url{ "http://localhost:18080/addtowaitingroom" },
         cpr::Payload{
-            { "username", username }
+            { "username", "Gigi"}
         });
     ui.stackedWidget->setCurrentIndex(1);
 }

@@ -19,5 +19,5 @@ private:
 	Homescreen homescreen;
 	Ui::RegisterFormClass ui;
 private slots:
-	void on_RegisterButton_clicked();
+	void on_register_pushButton_clicked();
 };

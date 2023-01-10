@@ -36,7 +36,7 @@
      <string notr="true">border-image:url(:/Triviadorclient/images/background.jpg)</string>
     </property>
     <widget class="QWidget" name="page">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="vote_pushButton">
       <property name="geometry">
        <rect>
         <x>810</x>

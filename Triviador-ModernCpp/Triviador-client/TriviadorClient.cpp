@@ -79,7 +79,7 @@ void TriviadorClient::checkIfGameCanStart()
 	} while (resBody[resBody.size() - 1]["startGame"] != "true");
 }
 
-void TriviadorClient::on_GoToRegisterButton_clicked()
+void TriviadorClient::on_register_pushButton_clicked()
 {
 
 	//regForm = new RegisterForm(this);
@@ -90,11 +90,14 @@ void TriviadorClient::on_GoToRegisterButton_clicked()
 	ui.stackedWidget->setCurrentIndex(1);
 }
 
-void TriviadorClient::on_LoginButton_clicked() {
+void TriviadorClient::on_login_pushButton_clicked() {
 
-	QString username = ui.username->text();
-	QString password = ui.password->text();
-	//std::string x = username.toUtf8().toStdString();
+	std::string username = ui.username->text().toUtf8().constData();
+	std::string password = ui.password->text().toUtf8().constData();
+
+	Player p(username);
+	std::swap(m_player, p);
+
 	//testing purposes
 
 	if (username == "admin" && password == "admin") {

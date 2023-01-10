@@ -33,7 +33,7 @@
      <string notr="true">border-image:url(:/Triviadorclient/images/background.jpg)</string>
     </property>
     <widget class="QWidget" name="page">
-     <widget class="QPushButton" name="playButton">
+     <widget class="QPushButton" name="play_pushButton">
       <property name="geometry">
        <rect>
         <x>310</x>
@@ -56,7 +56,7 @@
        <string>Play</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="GameHistoryButton">
+     <widget class="QPushButton" name="GameHistory_pushButton">
       <property name="geometry">
        <rect>
         <x>1280</x>

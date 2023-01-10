@@ -28,7 +28,7 @@ WaitingRoom::WaitingRoom(QWidget *parent)
 WaitingRoom::~WaitingRoom()
 {}
 
-void WaitingRoom::on_pushButton_clicked() {
+void WaitingRoom::on_vote_pushButton_clicked() {
 
 	auto response8 = cpr::Put(
 		cpr::Url{ "http://localhost:18080/addvote" },
