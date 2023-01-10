@@ -5,26 +5,12 @@
 #include "Player.h"
 #include "utils.h"
 
+#include "Database.h"
+
 namespace sql = sqlite_orm;
 
-struct PlayerDatabase
-{
-	PlayerDatabase() = default;
-
-	PlayerDatabase(Player p) :
-		m_username(p.GetUsername())
-	{
-		//empty
-	}
-
-	std::string m_username;
-	std::string m_password;
-
-};
-
 namespace database {
-	template<class T>
-	crow::response static addNewPlayer(T& storage, const crow::request& req)
+	crow::response addNewPlayer(Storage& storage, const crow::request& req)
 	{
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();
@@ -52,8 +38,8 @@ namespace database {
 		}
 		return crow::response(200); // row was created and added
 	}
-	template<class T>
-	crow::response static checkPlayer(T& storage, const crow::request& req)
+
+	crow::response checkPlayer(Storage& storage, const crow::request& req)
 	{
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();

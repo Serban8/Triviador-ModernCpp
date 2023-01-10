@@ -147,6 +147,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Database.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDatabase.h" />

@@ -92,5 +92,8 @@
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Database.h">
+      <Filter>Header Files\Database Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

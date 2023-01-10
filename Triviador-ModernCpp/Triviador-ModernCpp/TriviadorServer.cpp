@@ -6,22 +6,27 @@
 #include <iostream>
 
 #include "utils.h"
+
 #include "MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
-#include "PlayerDatabase.h"
 #include "NumberQuestion.h"
+
 #include "Game.h"
 #include "Player.h"
 #include "Map.h"
-#include "GameDatabase.h"
-#include "PlayerGameDatabase.h"
 
-using numericalQuestionResponse = std::pair<float, float>;
+#include "Database.h"
+#include "PlayerDatabase.h"
+#include "QuestionDatabase.h"
 
-struct compareNumericalQuestionResponses
+const uint8_t maxPlayersPerGame = 4;
+
+using numberQuestionResponse = std::pair<float, float>;
+
+struct compareNumberQuestionResponses
 {
-	bool operator() (const numericalQuestionResponse& a, const numericalQuestionResponse& b) const
+	bool operator() (const numberQuestionResponse& a, const numberQuestionResponse& b) const
 	{
 		auto& [response1, responseTime1] = a;
 		auto& [response2, responseTime2] = b;
@@ -34,59 +39,15 @@ struct compareNumericalQuestionResponses
 	}
 };
 
-
-namespace sql = sqlite_orm;
-
-const uint8_t maxPlayersPerGame = 4;
-
-inline auto createStorage(const std::string& filename)
-{
-	return sql::make_storage(
-		filename,
-		sql::make_table("Players",
-			sql::make_column("username", &PlayerDatabase::m_username, sql::primary_key()),//or player, need to see
-			sql::make_column("password", &PlayerDatabase::m_password)
-			//instead of an column we will make a query to get no. of  games played
-		),
-		sql::make_table("Questions",
-			sql::make_column("id", &QuestionDatabase::m_id, sql::autoincrement(), sql::primary_key()),
-			sql::make_column("question", &QuestionDatabase::m_question),
-			sql::make_column("category", &QuestionDatabase::m_category),
-			sql::make_column("type", &QuestionDatabase::m_type),
-			sql::make_column("correctAnswer", &QuestionDatabase::m_correctAnswer),
-			sql::make_column("incorrectAnswer1", &QuestionDatabase::m_incorrectAnswer1),
-			sql::make_column("incorrectAnswer2", &QuestionDatabase::m_incorrectAnswer2),
-			sql::make_column("incorrectAnswer3", &QuestionDatabase::m_incorrectAnswer3)
-		),
-		sql::make_table("Game",
-			sql::make_column("id", &GameDatabase::m_id, sql::autoincrement(), sql::primary_key()),
-			sql::make_column("winner", &GameDatabase::m_winner),
-			sql::make_column("rounds", &GameDatabase::m_rounds),
-			sql::make_column("date", &GameDatabase::m_date),
-			sql::foreign_key(&GameDatabase::m_winner).references(&PlayerDatabase::m_username)
-		),
-		sql::make_table("PlayerGames",
-			sql::make_column("game", &PlayerGameDatabase::m_gameId),
-			sql::make_column("username", &PlayerGameDatabase::m_playerId),
-			sql::primary_key(&PlayerGameDatabase::m_gameId, &PlayerGameDatabase::m_playerId),
-			sql::foreign_key(&PlayerGameDatabase::m_gameId).references(&GameDatabase::m_id),
-			sql::foreign_key(&PlayerGameDatabase::m_playerId).references(&PlayerDatabase::m_username)
-		)
-	);
-}
-
-using Storage = decltype(createStorage(""));
-
 void databaseTest()
 {
 	//creating the database
-	using namespace sqlite_orm;
 	auto storage = createStorage("TRIV");
 	storage.sync_schema();
 	storage.remove_all<QuestionDatabase>();
 
 	//inserting questions in the database
-	database::insertQuestions(storage);
+	database::generateAndInsertQuestions(storage);
 	auto questions = storage.get_all<QuestionDatabase>();
 	for (auto& q : questions)
 	{
@@ -110,8 +71,6 @@ void databaseTest()
 	storage.insert(GameDatabase("Jimmy", 6));
 	storage.insert(GameDatabase("Flo", 4));
 
-	//database::game::getAllGames(storage);
-	//
 	auto g1 = storage.get<GameDatabase>(1);
 	auto g2 = storage.get<GameDatabase>(2);
 	auto g3 = storage.get<GameDatabase>(3);
@@ -147,39 +106,6 @@ void databaseTest()
 	}
 	storage.sync_schema();
 }
-
-void playerTest() {
-	Player p("marcel");
-	//use debugger
-	p.UseAdvantage(Player::Advantage::FiftyFifty);
-}
-
-void gameTest() {
-
-	QuestionGenerator qg;
-	std::vector<MultipleChoiceQuestion> mq = qg.GenerateMultipleChoiceQuestions(10);
-
-	std::vector<Question*> aq;
-
-	for (auto& question : mq) {
-
-		aq.push_back(static_cast<Question*>(&question));
-	}
-
-	Player p1("marcel");
-	Player p2("gigel");
-	Player p3("costel");
-	Player p4("cosmeenel");
-	p1.SetPoints(400);
-	p2.SetPoints(100);
-	p3.SetPoints(500);
-	p4.SetPoints(800);
-	std::vector<Player> player = { p1,p2,p3,p4 };
-	/*Game topG(player);
-	topG.PlayGame();
-	topG.DetermineWinners();*/
-}
-
 void questionTest()
 {
 	QuestionGenerator qg;
@@ -231,49 +157,11 @@ void connectionTest()
 
 	app.port(18080).multithreaded().run();
 }
-void mapTest()
-{
-	Map m1(2);
-	Map m2(3);
-	Map m3(4);
-	std::cout << m3;
-}
-
-bool checkIfDBExists(Storage storage)
-{
-	//to define a value when we update the database questioons.
-	if (storage.count<QuestionDatabase>() < 15)
-	{
-		storage.remove_all<QuestionDatabase>();
-		database::insertQuestions(storage);
-		storage.sync_schema();
-		return true;
-	}
-	return false;
-}
-std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestionsFromDB(Storage storage)
-{
-	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> resultedNQ;
-	auto tmpNQ = database::getNumberQuestions(storage);
-	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
-	tmpNQ = database::getNumberQuestions(storage);
-	resultedNQ.insert(resultedNQ.end(), tmpNQ.begin(), tmpNQ.end());
-	return resultedNQ;
-}
-std::vector<MultipleChoiceQuestion> getMultipleChoiceQuestionsFromDB(Storage storage)
-{
-	std::vector<MultipleChoiceQuestion> resultedQ;
-	auto tmpQ = database::getMultipleChoiceQuestions(storage);
-	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
-	tmpQ = database::getMultipleChoiceQuestions(storage);
-	resultedQ.insert(resultedQ.end(), tmpQ.begin(), tmpQ.end());
-	return resultedQ;
-}
 
 int main()
 {
 	///TESTS
-		//databaseTest();
+		databaseTest();
 		//playerTest();
 		//questionTest();
 		//mapTest();
@@ -281,10 +169,10 @@ int main()
 		//connectionTest();
 	///
 
-	crow::SimpleApp app;
+	crow::SimpleApp app; //transmis si retinut in camp prinn referinta in clasa cu rutele
 	auto storage = createStorage("TRIV");
 	storage.sync_schema();
-	checkIfDBExists(storage);
+	database::populateDatabaseWithQuestions(storage);
 
 	//login-related routes
 	CROW_ROUTE(app, "/addnewplayer")
@@ -397,20 +285,15 @@ int main()
 		});
 
 	//game logic related routes
-	//testing purposes only initialization
-	
 
 	//initializing the game
-	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> numberQuestions = getNumberQuestionsFromDB(storage);
-	std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = getMultipleChoiceQuestionsFromDB(storage);
-
-	Game game(waitingRoomList, numberQuestions, multipleChoiceQuestions);
-	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList, &numberQuestions, &multipleChoiceQuestions] {
+	Game game;
+	CROW_ROUTE(app, "/startgame")([&game, &waitingRoomList, &storage] {
 		if (!waitingRoomList.empty()) {
-			game = Game(waitingRoomList,numberQuestions,multipleChoiceQuestions); //to be initialized with waiting players list
-			return crow::response(200); //OK
+			game = Game(waitingRoomList, database::getNumberQuestions(storage, 15), database::getMultipleChoiceQuestions(storage, 30)); //to be initialized with waiting players list
+			return crow::response(200);
 		}
-		return crow::response(500); //internal server error
+		return crow::response(500, "INTERNAL SERVER ERROR");
 		});
 	CROW_ROUTE(app, "/getplayers")([&game] {
 		std::vector<crow::json::wvalue> players_json;
@@ -463,9 +346,10 @@ int main()
 
 	CROW_ROUTE(app, "/getmultiplechoicequestion")([&game]() {
 		static uint8_t requestCounter = 0;
-		static MultipleChoiceQuestion question("", "", "", std::array<std::string, 3>{"", "", ""});
+		static MultipleChoiceQuestion question;
 		crow::json::wvalue questionJson;
 
+		//if all players have received the question (or is first question) get the next question.
 		if (requestCounter == game.GetActivePlayers().size() || requestCounter == 0) {
 			question = game.GetMultipleChoiceQuestion();
 			requestCounter = 0;
@@ -486,10 +370,8 @@ int main()
 	CROW_ROUTE(app, "/getmap")([&game]() {
 		std::vector<crow::json::wvalue> mapJson;
 		Map routeMap = game.GetMap();
-		for (uint8_t i = 0; i < routeMap.GetHeight(); i++)
-		{
-			for (uint8_t j = 0; j < routeMap.GetWidth(); j++)
-			{
+		for (uint8_t i = 0; i < routeMap.GetHeight(); i++) {
+			for (uint8_t j = 0; j < routeMap.GetWidth(); j++) {
 				mapJson.push_back(crow::json::wvalue{
 					{"line", i},
 					{"column", j},
@@ -508,8 +390,8 @@ int main()
 		auto bodyEnd = bodyArgs.end();
 		auto lineIter = bodyArgs.find("line");
 		auto columnIter = bodyArgs.find("column");
-
 		auto ownerIter = bodyArgs.find("owner");
+
 		if (lineIter != bodyEnd && columnIter != bodyEnd && ownerIter != bodyEnd) {
 			size_t pos;
 			auto& lineStr = lineIter->second;
@@ -528,8 +410,7 @@ int main()
 			}
 
 			//set region owner
-			//for testing - in future the newOwner parameter should be given a reference to the player stored in the Game object
-			game.ModifyRegion({ line, column }, Player(ownerIter->second));
+			game.ModifyRegion({ line, column }, game[ownerIter->second]);
 			//
 		}
 		else {
@@ -643,10 +524,10 @@ int main()
 		return crow::response(200);
 			});
 
-	std::map<numericalQuestionResponse, std::unique_ptr<Player>, compareNumericalQuestionResponses> choosingOrderPlayers;
-	//todo: reset prio queue in getleaderboard route
+	std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses> leaderboard;
+	
 	CROW_ROUTE(app, "/addresponse")
-		.methods(crow::HTTPMethod::PUT)([&choosingOrderPlayers, &game](const crow::request& req) {
+		.methods(crow::HTTPMethod::PUT)([&leaderboard, &game](const crow::request& req) {
 
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();
@@ -673,10 +554,7 @@ int main()
 				return crow::response(400, "BAD REQUEST");
 			}
 			CROW_LOG_INFO << "Receieved answer from player: " << username << "; distance from the correct response: " << response << "; time took to answer: " << time;
-			//TESTING
-			Player p = Player(username);
-			//
-			choosingOrderPlayers.emplace(std::make_pair(response, time), std::make_unique<Player>(p));
+			leaderboard.emplace(std::make_pair(response, time), std::make_unique<Player>(game[username]));
 		}
 		else
 		{
@@ -684,7 +562,7 @@ int main()
 		}
 
 		//TESTING
-		for (const auto& player : choosingOrderPlayers) {
+		for (const auto& player : leaderboard) {
 			auto& [key, value] = player;
 			auto& [response, time] = key;
 			CROW_LOG_INFO << "RESPONSE: " << response << " TIME: " << time << " USERNAME: " << value.get()->GetUsername();
@@ -693,16 +571,63 @@ int main()
 		return crow::response(200);
 			});
 	
-	CROW_ROUTE(app, "/getplayerorder")([&choosingOrderPlayers] {
+	CROW_ROUTE(app, "/getleaderboard")([&leaderboard]() {
 		std::vector<crow::json::wvalue> players_json;
-	    for (const auto& player : choosingOrderPlayers)
+	    for (const auto& player : leaderboard)
 		{
 			players_json.push_back(crow::json::wvalue{
 				{"username", player.second.get()->GetUsername()}
 				});
 		}
+		//Reset leaderboard
+		leaderboard.clear();
 		return crow::json::wvalue{ players_json };
 		});
+
+	//make player order
+	////route that gives the player all available territories to attack
+	//get the territory that the player chose to attack
+	
+	//set attacking player here
+	std::shared_ptr<Region> attackedRegion;
+	CROW_ROUTE(app, "/setattackedterritory")
+		.methods(crow::HTTPMethod::PUT)([&game, &attackedRegion](const crow::request& req) {
+		auto bodyArgs = parseRequestBody(req.body);
+		auto bodyEnd = bodyArgs.end();
+		auto lineIter = bodyArgs.find("line");
+		auto columnIter = bodyArgs.find("column");
+
+		if (lineIter != bodyEnd && columnIter != bodyEnd) {
+			size_t pos;
+			auto& lineStr = lineIter->second;
+			auto& columnStr = columnIter->second;
+
+			//try to convert line to int
+			uint8_t line = std::stoi(lineStr, &pos);
+			if (pos != lineStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//try to convert column to int
+			uint8_t column = std::stoi(columnStr, &pos);
+			if (pos != columnStr.size()) {
+				return crow::response(400, "BAD REQUEST");
+			}
+
+			//why?
+			attackedRegion = game.GetRegion({ line, column });
+			if (!attackedRegion) {
+				return crow::response(400, "BAD REQUEST");
+			}
+		}
+		//compilarea pe alt calculator? - nu cai absolute
+		//toate rutele in main - clasa separata
+			});
+
+	//DUEL
+	//get duel region and players
+	//make route that determines if duel has started - and if yes, send the players that are in the duel
+	//
 
 	app.port(18080).multithreaded().run();
 

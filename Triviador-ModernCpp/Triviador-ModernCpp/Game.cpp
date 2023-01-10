@@ -348,6 +348,11 @@ Map Game::GetMap() const
 	return m_map;
 }
 
+std::shared_ptr<Region> Game::GetRegion(Map::Position regionIndex) const
+{
+	return std::make_shared<Region>(m_map[regionIndex]);
+}
+
 void Game::ModifyRegion(const Map::Position pos, Region::Type newType)
 {
 	m_map[pos].SetType(newType);

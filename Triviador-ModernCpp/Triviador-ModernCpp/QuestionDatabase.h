@@ -3,72 +3,17 @@
 #include <random>
 #include <unordered_set>
 
+#include "Database.h"
+
+#include "utils.h"
+
 #include "MultipleChoiceQuestion.h"
 #include "NumberQuestion.h"
 #include "QuestionGenerator.h"
 
-struct QuestionDatabase
-{
-
-	QuestionDatabase() = default;
-	QuestionDatabase(MultipleChoiceQuestion q) :
-		m_question(q.GetQuestion()),
-		m_category(q.GetCategory()),
-		m_type("MultipleChoice"),
-		m_correctAnswer(q.GetCorrectAnswer()),
-		m_incorrectAnswer1(q.GetIncorrectAnswers()[0]),
-		m_incorrectAnswer2(q.GetIncorrectAnswers()[1]),
-		m_incorrectAnswer3(q.GetIncorrectAnswers()[2])
-	{
-	}
-	QuestionDatabase(std::variant<NumberQuestion<int>, NumberQuestion<float>> nq) :
-		m_type("Number")
-	{
-		if (std::holds_alternative<NumberQuestion<int>>(nq))
-		{
-			m_question = std::get<NumberQuestion<int>>(nq).GetQuestion();
-			m_category = std::get<NumberQuestion<int>>(nq).GetCategory();
-			m_correctAnswer = std::to_string(std::get<NumberQuestion<int>>(nq).GetCorrectAnswer());
-			std::array<int, 3> auxArray = std::get<NumberQuestion<int>>(nq).GetIncorrectAnswers();
-			m_incorrectAnswer1 = std::to_string(auxArray[0]);
-			m_incorrectAnswer3 = std::to_string(auxArray[1]);
-			m_incorrectAnswer2 = std::to_string(auxArray[2]);
-
-		}
-		else {
-			m_question = std::get<NumberQuestion<float>>(nq).GetQuestion();
-			m_category = std::get<NumberQuestion<float>>(nq).GetCategory();
-			m_correctAnswer = std::to_string(std::get<NumberQuestion<float>>(nq).GetCorrectAnswer());
-			std::array<float, 3> auxArray = std::get<NumberQuestion<float>>(nq).GetIncorrectAnswers();
-			m_incorrectAnswer1 = std::to_string(auxArray[0]);
-			m_incorrectAnswer3 = std::to_string(auxArray[1]);
-			m_incorrectAnswer2 = std::to_string(auxArray[2]);
-		}
-	}
-
-	int m_id;
-	std::string m_question;
-	std::string m_category;
-	std::string m_type;
-	std::string m_correctAnswer;
-	std::string m_incorrectAnswer1;
-	std::string m_incorrectAnswer2;
-	std::string m_incorrectAnswer3;
-
-};
-
-//maybe to move into an utils namespace/class
-int getRandNum(int min, int max) {
-	std::random_device rd;
-	std::mt19937 eng(rd());
-	std::uniform_int_distribution<> distr(min, max);
-	return distr(eng);
-}
-//
-
 namespace database {
-	template<class T>
-	void static insertQuestions(T& storage)
+	//Generate 100 multiple choice questions and 100 number answear questions and insert them into the DB
+	void generateAndInsertQuestions(Storage& storage)
 	{
 		QuestionGenerator qGen;
 		std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
@@ -91,8 +36,20 @@ namespace database {
 		}
 	}
 
-	template<class T>
-	std::vector<MultipleChoiceQuestion>  getMultipleChoiceQuestions(T& storage, int numberOfQuestions = 5)
+	bool populateDatabaseWithQuestions(Storage& storage)
+	{
+		//value should be defined according to the requirements - something like 100 multiple choice & 30 number answer questions should be the minimum
+		if (storage.count<QuestionDatabase>() < 15)
+		{
+			storage.remove_all<QuestionDatabase>();
+			database::generateAndInsertQuestions(storage);
+			storage.sync_schema();
+			return true;
+		}
+		return false;
+	}
+
+	std::vector<MultipleChoiceQuestion> getMultipleChoiceQuestions(Storage& storage, int numberOfQuestions = 5)
 	{
 		namespace sql = sqlite_orm;
 		static std::unordered_set<int> usedIndexes;
@@ -142,8 +99,7 @@ namespace database {
 		return resultedQuestions;
 	}
 
-	template<class T>
-	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestions(T& storage, int numberOfQuestions = 5)
+	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestions(Storage& storage, int numberOfQuestions = 5)
 	{
 		namespace sql = sqlite_orm;
 		static std::unordered_set<int> usedIndexes;

@@ -27,11 +27,12 @@ public:
 	std::variant<NumberQuestion<int>, NumberQuestion<float>> GetNumberQuestion();
 	MultipleChoiceQuestion GetMultipleChoiceQuestion();
 	Map GetMap() const;
+	std::shared_ptr<Region> GetRegion(Map::Position regionIndex) const;
 
 	//setters
-	void ModifyRegion(const Map::Position pos, Region::Type newType); //possibly not needed
+	void ModifyRegion(const Map::Position pos, Region::Type newType);
 	void ModifyRegion(const Map::Position pos, Player newOwner);
-	void ModifyRegion(const Map::Position pos, Region::Type newType, Player newOwner);
+	void ModifyRegion(const Map::Position pos, Region::Type newType, Player newOwner); //possibly not needed
 
 	void IncreaseRegionScore(const Map::Position pos);
 	void DecreaseRegionScore(const Map::Position pos);

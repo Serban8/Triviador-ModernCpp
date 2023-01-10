@@ -7,6 +7,7 @@
 class MultipleChoiceQuestion : public Question
 {
 public:
+	MultipleChoiceQuestion() = default;
 	MultipleChoiceQuestion(std::string question, std::string category, std::string correctAnswer, std::array<std::string, 3> incorrectAnswers) :
 		Question(question, category),
 		m_correctAnswer(correctAnswer),
