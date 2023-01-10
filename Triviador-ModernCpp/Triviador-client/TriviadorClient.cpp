@@ -98,6 +98,8 @@ void TriviadorClient::on_login_pushButton_clicked() {
 	Player p(username);
 	std::swap(m_player, p);
 
+	homescreen.SetUsername(username);
+
 	//testing purposes
 
 	if (username == "admin" && password == "admin") {

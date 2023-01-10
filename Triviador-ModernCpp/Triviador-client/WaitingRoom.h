@@ -11,9 +11,12 @@ class WaitingRoom : public QMainWindow
 public:
 	WaitingRoom(QWidget *parent = nullptr);
 	~WaitingRoom();
-
+	void SetUsername(std::string username);
+	bool CheckingWaitingRoom();
 private:
 	Ui::WaitingRoomClass ui;
+	std::string m_playerUsername;
+	
 private slots:
 	void on_vote_pushButton_clicked();
 };
