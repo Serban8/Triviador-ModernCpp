@@ -22,22 +22,16 @@
     <ClCompile Include="Region.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FourPlayersMap.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameHistory.cpp">
       <Filter>Source Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Homescreen.cpp">
       <Filter>Source Files\Qt Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThreePlayersMap.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RegisterForm.cpp">
       <Filter>Source Files\Qt Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TwoPlayersMap.cpp">
+    <ClCompile Include="MapWindow.cpp">
       <Filter>Source Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WaitingRoom.cpp">
@@ -65,9 +59,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="FourPlayersMap.h">
-      <Filter>Header Files\Qt Headers</Filter>
-    </QtMoc>
     <QtMoc Include="GameHistory.h">
       <Filter>Header Files\Qt Headers</Filter>
     </QtMoc>
@@ -77,13 +68,10 @@
     <QtMoc Include="WaitingRoom.h">
       <Filter>Header Files\Qt Headers</Filter>
     </QtMoc>
-    <QtMoc Include="TwoPlayersMap.h">
+    <QtMoc Include="MapWindow.h">
       <Filter>Header Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="TriviadorClient.h">
-      <Filter>Header Files\Qt Headers</Filter>
-    </QtMoc>
-    <QtMoc Include="ThreePlayersMap.h">
       <Filter>Header Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="RegisterForm.h">
