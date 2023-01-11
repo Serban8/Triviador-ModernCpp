@@ -19,6 +19,18 @@
     <Filter Include="Header Files\Database Files">
       <UniqueIdentifier>{5496e8fa-69e7-41e5-9644-3352f13338a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App Files">
+      <UniqueIdentifier>{b230600e-7657-470d-b057-01c098ee4868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App Files\Header Files">
+      <UniqueIdentifier>{ecc0cb0a-5cfa-4309-a947-26555c3a4c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App Files\Source Files">
+      <UniqueIdentifier>{c758c8f4-0289-430b-96b9-14b9660f46c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ad5c9b4a-aeb3-4093-a6c9-f90c69b1cc43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TriviadorServer.cpp">
@@ -45,8 +57,20 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PregameRoutes.cpp">
+      <Filter>App Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppManager.cpp">
+      <Filter>App Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapRoutes.cpp">
+      <Filter>App Files\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="utils.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRoutes.cpp">
+      <Filter>App Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,11 +113,23 @@
     <ClInclude Include="json.hpp">
       <Filter>Header Files\JSON</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Database.h">
       <Filter>Header Files\Database Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapRoutes.h">
+      <Filter>App Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppManager.h">
+      <Filter>App Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PregameRoutes.h">
+      <Filter>App Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRoutes.h">
+      <Filter>App Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

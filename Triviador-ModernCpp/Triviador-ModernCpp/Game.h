@@ -27,7 +27,7 @@ public:
 	std::variant<NumberQuestion<int>, NumberQuestion<float>> GetNumberQuestion();
 	MultipleChoiceQuestion GetMultipleChoiceQuestion();
 	Map GetMap() const;
-	std::shared_ptr<Region> GetRegion(Map::Position regionIndex) const;
+	std::shared_ptr<Region> GetRegion(Map::Position regionIndex);
 
 	//setters
 	void ModifyRegion(const Map::Position pos, Region::Type newType);

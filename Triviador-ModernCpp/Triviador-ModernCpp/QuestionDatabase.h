@@ -7,13 +7,11 @@
 
 #include "utils.h"
 
-#include "MultipleChoiceQuestion.h"
-#include "NumberQuestion.h"
 #include "QuestionGenerator.h"
 
 namespace database {
 	//Generate 100 multiple choice questions and 100 number answear questions and insert them into the DB
-	void generateAndInsertQuestions(Storage& storage)
+	static void generateAndInsertQuestions(Storage& storage)
 	{
 		QuestionGenerator qGen;
 		std::vector<MultipleChoiceQuestion> multipleChoiceQuestions = qGen.GenerateMultipleChoiceQuestions();
@@ -36,7 +34,7 @@ namespace database {
 		}
 	}
 
-	bool populateDatabaseWithQuestions(Storage& storage)
+	static bool populateDatabaseWithQuestions(Storage& storage)
 	{
 		//value should be defined according to the requirements - something like 100 multiple choice & 30 number answer questions should be the minimum
 		if (storage.count<QuestionDatabase>() < 15)
@@ -49,7 +47,7 @@ namespace database {
 		return false;
 	}
 
-	std::vector<MultipleChoiceQuestion> getMultipleChoiceQuestions(Storage& storage, int numberOfQuestions = 5)
+	static std::vector<MultipleChoiceQuestion> getMultipleChoiceQuestions(Storage& storage, int numberOfQuestions = 5)
 	{
 		namespace sql = sqlite_orm;
 		static std::unordered_set<int> usedIndexes;
@@ -99,7 +97,7 @@ namespace database {
 		return resultedQuestions;
 	}
 
-	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestions(Storage& storage, int numberOfQuestions = 5)
+	static std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> getNumberQuestions(Storage& storage, int numberOfQuestions = 5)
 	{
 		namespace sql = sqlite_orm;
 		static std::unordered_set<int> usedIndexes;

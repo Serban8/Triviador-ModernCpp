@@ -348,7 +348,7 @@ Map Game::GetMap() const
 	return m_map;
 }
 
-std::shared_ptr<Region> Game::GetRegion(Map::Position regionIndex) const
+std::shared_ptr<Region> Game::GetRegion(Map::Position regionIndex)
 {
 	return std::make_shared<Region>(m_map[regionIndex]);
 }

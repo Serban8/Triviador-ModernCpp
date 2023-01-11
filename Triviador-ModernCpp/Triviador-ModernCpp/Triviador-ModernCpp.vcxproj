@@ -136,6 +136,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppManager.cpp" />
+    <ClCompile Include="GameRoutes.cpp" />
+    <ClCompile Include="MapRoutes.cpp" />
+    <ClCompile Include="PregameRoutes.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -147,7 +151,11 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppManager.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="GameRoutes.h" />
+    <ClInclude Include="MapRoutes.h" />
+    <ClInclude Include="PregameRoutes.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDatabase.h" />

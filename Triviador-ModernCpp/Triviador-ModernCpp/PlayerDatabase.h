@@ -10,7 +10,7 @@
 namespace sql = sqlite_orm;
 
 namespace database {
-	crow::response addNewPlayer(Storage& storage, const crow::request& req)
+	static crow::response addNewPlayer(Storage& storage, const crow::request& req)
 	{
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();
@@ -39,7 +39,7 @@ namespace database {
 		return crow::response(200); // row was created and added
 	}
 
-	crow::response checkPlayer(Storage& storage, const crow::request& req)
+	static crow::response checkPlayer(Storage& storage, const crow::request& req)
 	{
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();

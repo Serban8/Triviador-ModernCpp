@@ -153,7 +153,7 @@ void  getMultipleChoiceQuestionTest()
 		std::getline(std::cin, res);
 
 		auto correctAnswer = numberQuestion["correctAnswer"].s();
-		std::string dif = (res == correctAnswer ? "1" : "0");
+		std::string dif = (res != correctAnswer || res == "A" ? "1" : "0");
 		qInfo() << (res == correctAnswer ? "1" : "0");
 		auto response = cpr::Put(
 			cpr::Url{ "http://localhost:18080/addresponse" },
@@ -184,17 +184,17 @@ void getMap()
 }
 int main(int argc, char* argv[])
 {
-	QApplication a(argc, argv);
-	TriviadorClient w;
-	w.resize(1920, 1080);
-	w.show();
+	//QApplication a(argc, argv);
+	//TriviadorClient w;
+	//w.resize(1920, 1080);
+	//w.show();
 
 	//AddNewPlayerTest();
 	//LoginTest();
 	//while (true)
 	//	checkWaitingRoomTest();
 
-	/*int x = 1;
+	int x = 1;
 
 	while (x != 0) {
 
@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
 			break;
 		}
 		}
-	}*/
+	}
 
-	return a.exec();
+	//return a.exec();
 }
