@@ -7,6 +7,8 @@ WaitingRoom::WaitingRoom(QWidget* parent)
 
 	m_waitingRoomTimer = new QTimer(this);
 	connect(m_waitingRoomTimer, SIGNAL(timeout()), this, SLOT(UpdateWaitingRoom()));
+	ui.listWidget->move(this->width() / 2 - ui.listWidget->geometry().width() / 2, this->height() / 2 - ui.listWidget->geometry().height() / 3);
+	ui.vote_pushButton->move(this->width() / 2 - ui.vote_pushButton->geometry().width() / 2, ui.listWidget->pos().y() - ui.vote_pushButton->geometry().height() * 1.5);
 }
 
 WaitingRoom::~WaitingRoom()

@@ -16,4 +16,6 @@ public:
 
 private:
 	Ui::GameHistoryClass ui;
+private slots:
+	void on_close_pushButton_clicked();
 };
