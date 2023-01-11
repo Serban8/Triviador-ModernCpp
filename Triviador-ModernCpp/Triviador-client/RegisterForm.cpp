@@ -10,7 +10,7 @@ RegisterForm::RegisterForm(QWidget* parent)
 	ui.password->setPlaceholderText("Enter your password");
 
 	ui.stackedWidget->insertWidget(1, &homescreen);
-
+	ui.groupBox->move(this->width() / 2 - ui.groupBox->geometry().width() / 2, this->height() / 2 - ui.groupBox->geometry().height() / 2);
 }
 
 RegisterForm::~RegisterForm()
@@ -36,6 +36,7 @@ void RegisterForm::closeEvent(QCloseEvent* ev)
 	parentWidget()->show();
 	ev->accept();
 }
+
 
 void RegisterForm::on_register_pushButton_clicked() {
 

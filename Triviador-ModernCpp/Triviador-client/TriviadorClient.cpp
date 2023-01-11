@@ -2,6 +2,7 @@
 #include <qmessagebox.h>
 #include <qgraphicsview.h>
 #include <qsizepolicy.h>
+#include <qgraphicseffect.h>
 TriviadorClient::TriviadorClient(QWidget* parent)
 	: QMainWindow(parent)
 {
@@ -11,10 +12,21 @@ TriviadorClient::TriviadorClient(QWidget* parent)
 	ui.password->setPlaceholderText("Enter your password");
 
 	ui.centralWidget->resize(QGuiApplication::primaryScreen()->availableGeometry().size() /** 0.9*/);
-	
+
+	/*ui.groupBox->setAlignment(Qt::AlignHCenter);
+	ui.groupBox->setAlignment(Qt::AlignVCenter);*/
+	ui.groupBox->move(this->width() / 2 - ui.groupBox->geometry().width() / 2, this->height() / 2 - ui.groupBox->geometry().height() / 2);
+	ui.register_pushButton->move(this->width() / 2 - ui.register_pushButton->geometry().width() / 2, ui.groupBox->pos().y() - ui.register_pushButton->geometry().height() * 1.5);
+
 	ui.stackedWidget->insertWidget(1, &regForm);
 	ui.stackedWidget->insertWidget(2, &homescreen);
-	
+	/*QGraphicsBlurEffect* blur = new QGraphicsBlurEffect;
+	blur->setBlurRadius(8);
+	ui.stackedWidget->setGraphicsEffect(blur);*/
+	/*QGraphicsBlurEffect* blurr = new QGraphicsBlurEffect;
+	blurr->setBlurRadius(0);
+	ui.username->setGraphicsEffect(blurr);*/
+	//ui.groupBox->setStyleSheet("background-image: transparent");
 }
 
 TriviadorClient::~TriviadorClient()
@@ -47,9 +59,9 @@ void TriviadorClient::on_login_pushButton_clicked() {
 		QMessageBox::warning(this, "Login", "Please enter a username and password.");
 		return;
 	}
-	
+
 	statusCode status = CheckLoginInfo(username, password);
-	
+
 	if (status == 200) {
 		homescreen.SetUsername(username);
 		ui.stackedWidget->setCurrentIndex(2);

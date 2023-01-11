@@ -18,7 +18,17 @@ GameHistory::GameHistory(QWidget *parent)
     }
     else
         ui.listWidget->addItem("No games played");
+
+    ui.close_pushButton->move(50, 50);
+    ui.listWidget->move(this->width() / 2 - ui.listWidget->geometry().width() / 2, this->height() / 2 - ui.listWidget->geometry().height() / 2);
+
 }
 
 GameHistory::~GameHistory()
 {}
+
+void GameHistory::on_close_pushButton_clicked() {
+
+    this->close();
+
+}

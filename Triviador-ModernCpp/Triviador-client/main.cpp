@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);
 	TriviadorClient w;
-	w.resize(1920, 1080);
+	w.resize(1366,768);
 	w.show();
 
 	//AddNewPlayerTest();

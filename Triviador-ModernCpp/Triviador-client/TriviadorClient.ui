@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1366</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1366</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1366</width>
+    <height>768</height>
    </size>
   </property>
   <property name="font">
@@ -39,10 +45,10 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>-1</x>
       <y>-1</y>
-      <width>1921</width>
-      <height>1081</height>
+      <width>1371</width>
+      <height>771</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -60,8 +66,8 @@ border-image: url(:/Triviadorclient/images/background.jpg);
      <widget class="QPushButton" name="register_pushButton">
       <property name="geometry">
        <rect>
-        <x>730</x>
-        <y>340</y>
+        <x>490</x>
+        <y>130</y>
         <width>411</width>
         <height>71</height>
        </rect>
@@ -74,7 +80,13 @@ border-image: url(:/Triviadorclient/images/background.jpg);
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image:white;</string>
+       <string notr="true">#register_pushButton{
+
+border-radius: 10px;
+background: white;
+border-image: white;
+
+}</string>
       </property>
       <property name="text">
        <string>You do not have an account? Register here!</string>
@@ -83,14 +95,15 @@ border-image: url(:/Triviadorclient/images/background.jpg);
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>800</x>
-        <y>420</y>
+        <x>400</x>
+        <y>230</y>
         <width>271</width>
         <height>251</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image:white;</string>
+       <string notr="true">border-image: transparent ;
+</string>
       </property>
       <property name="title">
        <string/>
@@ -107,6 +120,9 @@ border-image: url(:/Triviadorclient/images/background.jpg);
              <bold>true</bold>
             </font>
            </property>
+           <property name="styleSheet">
+            <string notr="true">border-image: white;</string>
+           </property>
            <property name="text">
             <string>Username</string>
            </property>
@@ -120,6 +136,14 @@ border-image: url(:/Triviadorclient/images/background.jpg);
              <pointsize>12</pointsize>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#username{
+border-image: white;
+border: 0.5 solid rgb(255, 255, 255);
+border-radius: 10px;
+
+}</string>
            </property>
           </widget>
          </item>
@@ -136,6 +160,9 @@ border-image: url(:/Triviadorclient/images/background.jpg);
              <bold>true</bold>
             </font>
            </property>
+           <property name="styleSheet">
+            <string notr="true">border-image: white;</string>
+           </property>
            <property name="text">
             <string>Password</string>
            </property>
@@ -149,6 +176,14 @@ border-image: url(:/Triviadorclient/images/background.jpg);
              <pointsize>12</pointsize>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#password{
+border-image: white;
+border: 0.5 solid rgb(255, 255, 255);
+border-radius: 10px;
+
+}</string>
            </property>
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
@@ -165,6 +200,14 @@ border-image: url(:/Triviadorclient/images/background.jpg);
            <pointsize>16</pointsize>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#login_pushButton{
+border-image: white;
+border-radius: 10px;
+background: white;
+
+}</string>
          </property>
          <property name="text">
           <string>Login</string>

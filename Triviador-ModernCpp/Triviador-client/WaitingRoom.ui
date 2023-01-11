@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1366</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1366</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1366</width>
+    <height>768</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -26,10 +32,10 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1921</width>
-      <height>1081</height>
+      <x>-1</x>
+      <y>-1</y>
+      <width>1371</width>
+      <height>771</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -52,7 +58,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image : white;</string>
+       <string notr="true">#vote_pushButton{
+
+border-image: white;
+border-radius: 10px;
+background: white;
+
+}</string>
       </property>
       <property name="text">
        <string>Vote to start!</string>
@@ -73,7 +85,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image:white;</string>
+       <string notr="true">#listWidget{
+
+border-image: white;
+border: 0.5 solid rgb(255, 255, 255);
+border-radius: 10px;
+
+}</string>
       </property>
      </widget>
     </widget>
