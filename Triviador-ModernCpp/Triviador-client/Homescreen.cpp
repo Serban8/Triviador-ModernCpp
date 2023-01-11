@@ -9,10 +9,7 @@ Homescreen::Homescreen(QWidget *parent)
 
 Homescreen::~Homescreen()
 {}
-//void Homescreen::SetUsername(std::string username)
-//{
-//    this->m_username = username;
-//}
+
 void Homescreen::on_GameHistory_pushButton_clicked()
 {
     gameHistory = new GameHistory(this);
@@ -21,7 +18,7 @@ void Homescreen::on_GameHistory_pushButton_clicked()
 
 void Homescreen::SetUsername(std::string username) {
     
-    m_playerUsername = username;
+    this->m_playerUsername = username;
 }
 
 void Homescreen::on_play_pushButton_clicked()
@@ -33,21 +30,8 @@ void Homescreen::on_play_pushButton_clicked()
         cpr::Payload{
             { "username", m_playerUsername}
         });
-
-    QThread* thread = new QThread;
-    waitingRoom.moveToThread(thread);
-    
-    thread->start();
-
-    while (!thread->isInterruptionRequested()) {
-
-   
-        if (waitingRoom.CheckingWaitingRoom() == true)
-            thread->requestInterruption();
-    }
-
-    thread->quit();
-
+	
+    waitingRoom.SetTimer();
     ui.stackedWidget->setCurrentIndex(1);
 
 }

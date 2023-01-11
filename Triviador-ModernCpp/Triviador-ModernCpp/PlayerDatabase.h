@@ -15,14 +15,14 @@ namespace database {
 		auto bodyArgs = parseRequestBody(req.body);
 		auto bodyEnd = bodyArgs.end();
 
-		PlayerDatabase pDB;
 		auto userIter = bodyArgs.find("username");
-		pDB.m_username = userIter->second;
 		auto passwordIter = bodyArgs.find("password");
-		pDB.m_password = passwordIter->second;
 
 		//check for bad request
 		if (userIter != bodyEnd && passwordIter != bodyEnd) {
+			PlayerDatabase pDB;
+			pDB.m_username = userIter->second;
+			pDB.m_password = passwordIter->second;
 			//check if username already exists in DB, and 
 			//	return 409 conflict if yes 
 			//	insert new player if no
@@ -45,13 +45,13 @@ namespace database {
 		auto bodyEnd = bodyArgs.end();
 
 		auto userIter = bodyArgs.find("username");
-		auto& username = userIter->second;
 		auto passwordIter = bodyArgs.find("password");
-		auto& password = passwordIter->second;
 
 		//check for bad request
 		if (userIter != bodyEnd && passwordIter != bodyEnd)
 		{
+			std::string username = userIter->second;
+			std::string password = passwordIter->second;
 			//get all players with username that matches and
 			//	if player.size() != 1 return 404 NOT FOUND
 			//	if player.size() == 1 but players[0].m_password != password return 401 UNAUTHORIZED

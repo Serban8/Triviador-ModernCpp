@@ -31,11 +31,11 @@ crow::response AddVoteHandler::operator()(const crow::request& req) const
 	auto bodyEnd = bodyArgs.end();
 
 	auto usernameIter = bodyArgs.find("username");
-	auto& username = usernameIter->second;
 
 	//check if it is a bad request
 	if (usernameIter != bodyEnd)
 	{
+		auto username = usernameIter->second;
 		auto playerIter = std::find(waitingRoomList.begin(), waitingRoomList.end(), Player(username));
 		//check if the player is in the waiting room
 		if (playerIter != waitingRoomList.end())
@@ -82,12 +82,18 @@ crow::json::wvalue CheckWaitingRoomHandler::operator() () const
 			{"username", player.GetUsername()}, //todo: insert here other different stats: w/l ratio, number of games played, etc..
 			{"votedToStart", votedToStart ? "true" : "false"}
 			});
+
 	}
 	//add the startGame flag to the response
 	waitingRoomList_json.push_back(crow::json::wvalue{
 		{"startGame", startGame ? "true" : "false"}
 		});
 
+	if (startGame)
+		CROW_LOG_INFO << "StartGame true. Game can start";
+	else
+		CROW_LOG_INFO << "StartGame false. Waiting for more players";
+	
 	return crow::json::wvalue{ waitingRoomList_json };
 }
 //
@@ -101,9 +107,10 @@ crow::response AddToWaitingRoomHandler::operator()(const crow::request& req) con
 	auto bodyArgs = parseRequestBody(req.body);
 	auto bodyEnd = bodyArgs.end();
 	auto usernameIter = bodyArgs.find("username");
-	auto& username = usernameIter->second;
+	
 	if (usernameIter != bodyEnd)
 	{
+		auto username = usernameIter->second;
 		waitingRoomList.push_back(Player(username));
 	}
 	else

@@ -1,9 +1,13 @@
 #pragma once
-
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <cpr/cpr.h>
+#include <crow.h>
+
 #include "ui_RegisterForm.h"
 #include "Homescreen.h"
+
+using statusCode = decltype(cpr::Response::status_code);
 
 class RegisterForm : public QMainWindow
 {
@@ -14,6 +18,8 @@ public:
 	~RegisterForm();
 
 private:
+	statusCode CreateNewPlayer(std::string username, std::string password);
+
 	void closeEvent(QCloseEvent* ev) override;
 private:
 	Homescreen homescreen;

@@ -16,7 +16,6 @@ public:
 	Homescreen(QWidget *parent = nullptr);
 	~Homescreen();
 	void SetUsername(std::string username);
-	//void SetUsername(std::string username);
 private:
 	//std::string m_username = "gigel";
 	Ui::HomescreenClass ui;

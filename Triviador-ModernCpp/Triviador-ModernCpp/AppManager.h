@@ -15,7 +15,7 @@ public:
 	AppManager(crow::SimpleApp& app, Storage& storage);
 
 private:
-	std::vector<Player> m_waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci"), Player("Cici") }; //initialization list for testing only
+	std::vector<Player> m_waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
 	std::vector<Player> m_votesToStart;
 	std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses> m_leaderboard;
 

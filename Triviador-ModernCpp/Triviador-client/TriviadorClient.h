@@ -12,8 +12,6 @@
 #include "Homescreen.h"
 #include "Player.h"
 
-using statusCode = decltype(cpr::Response::status_code);
-
 class TriviadorClient : public QMainWindow
 {
 	Q_OBJECT
@@ -21,14 +19,13 @@ class TriviadorClient : public QMainWindow
 public:
 	TriviadorClient(QWidget* parent = nullptr);
 	~TriviadorClient();
-	statusCode CheckLoginInfo(std::string& username, std::string& password);
-	statusCode CreateNewPlayer(std::string& username, std::string& password);
-	void checkIfGameCanStart();
+	statusCode CheckLoginInfo(std::string username, std::string password);
+
 private:
 	Ui::TriviadorclientClass ui;
 	RegisterForm regForm;
 	Homescreen homescreen;
-	Player m_player;
+	
 private slots:
 	void on_login_pushButton_clicked();
 	void on_register_pushButton_clicked();
