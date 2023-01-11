@@ -24,10 +24,11 @@ void RegisterForm::closeEvent(QCloseEvent* ev)
 	ev->accept();
 }
 
-void RegisterForm::on_RegisterButton_clicked() {
+void RegisterForm::on_register_pushButton_clicked() {
 
 	//testing
 	QMessageBox::information(this, "Register", "Registration successful! You will now be directed to the homescreen.");
+
 	ui.stackedWidget->setCurrentIndex(1);
 
 }

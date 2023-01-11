@@ -51,28 +51,6 @@
        <string notr="true">border-image:white;</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>570</x>
-        <y>30</y>
-        <width>191</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Times New Roman</family>
-        <pointsize>18</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-image: white;</string>
-      </property>
-      <property name="text">
-       <string>To Homescreen</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="page_2"/>
    </widget>

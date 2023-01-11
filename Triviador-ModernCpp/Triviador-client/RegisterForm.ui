@@ -116,7 +116,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="RegisterButton">
+        <widget class="QPushButton" name="register_pushButton">
          <property name="font">
           <font>
            <family>Times New Roman</family>
