@@ -86,10 +86,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FourPlayersMap.cpp" />
-    <ClCompile Include="ThreePlayersMap.cpp" />
     <ClCompile Include="WaitingRoom.cpp" />
-    <ClCompile Include="TwoPlayersMap.cpp" />
+    <ClCompile Include="MapWindow.cpp" />
     <QtRcc Include="TriviadorClient.qrc" />
     <QtUic Include="FourPlayersMap.ui" />
     <QtUic Include="GameHistory.ui" />
@@ -113,18 +111,16 @@
     <QtUic Include="TwoPlayersMap.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ThreePlayersMap.h" />
     <QtMoc Include="WaitingRoom.h" />
     <QtMoc Include="Homescreen.h" />
     <QtMoc Include="GameHistory.h" />
-    <QtMoc Include="FourPlayersMap.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="NumberQuestion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Region.h" />
-    <QtMoc Include="TwoPlayersMap.h" />
+    <QtMoc Include="MapWindow.h" />
     <QtMoc Include="RegisterForm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
