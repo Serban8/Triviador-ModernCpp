@@ -18,11 +18,11 @@
     <normaloff>images/triv.png</normaloff>images/triv.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">#centralWidget{
-
+   <string notr="true">
 image: url(:/Triviadorclient/images/4playersMap.png);
-border-image: none;
-}</string>
+background-color: white;
+
+</string>
   </property>
   <widget class="QWidget" name="centralWidget"/>
  </widget>

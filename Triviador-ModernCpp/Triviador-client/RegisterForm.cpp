@@ -11,6 +11,12 @@ RegisterForm::RegisterForm(QWidget* parent)
 
 	ui.stackedWidget->insertWidget(1, &homescreen);
 	ui.groupBox->move(this->width() / 2 - ui.groupBox->geometry().width() / 2, this->height() / 2 - ui.groupBox->geometry().height() / 2);
+
+	m_WarningMsgBox.setWindowIcon(QIcon(pixmap));
+	m_WarningMsgBox.setIcon(QMessageBox::Warning);
+
+	m_InformationMsgBox.setWindowIcon(QIcon(pixmap));
+	m_InformationMsgBox.setIcon(QMessageBox::Information);
 }
 
 RegisterForm::~RegisterForm()
@@ -44,22 +50,39 @@ void RegisterForm::on_register_pushButton_clicked() {
 	std::string password = ui.password->text().toUtf8().constData();
 
 	if (username.empty() || password.empty()) {
-		QMessageBox::warning(this, "Warning", "Username or password cannot be empty!");
+	
+		m_WarningMsgBox.setText("Username or password cannot be empty!");
+		m_WarningMsgBox.exec();
+
+		//QMessageBox::warning(this, "Warning", "Username or password cannot be empty!");
 		return;
 	}
 
 	statusCode status = CreateNewPlayer(username, password);
 
 	if (status == 200) {
-		QMessageBox::information(this, "Success", "You have successfully registered!");
+
+		m_InformationMsgBox.setText("You have successfully registered!");
+		m_InformationMsgBox.exec();
+
+		//QMessageBox::information(this, "Success", "You have successfully registered!");
 		homescreen.SetUsername(username);
 		ui.stackedWidget->setCurrentIndex(1);
 	}
-	else if (status == 409)
-		QMessageBox::warning(this, "Warning", "Username already exists!");
+	else if (status == 409) {
+
+		m_WarningMsgBox.setText("Username already exists!");
+		m_WarningMsgBox.exec();
+
+	}
+		//QMessageBox::warning(this, "Warning", "Username already exists!");
 	else {
 		std::string message = "Something went wrong! Error code: " + std::to_string(status);
-		QMessageBox::warning(this, "Warning", QString::fromUtf8(message));
+
+		m_WarningMsgBox.setText(QString::fromUtf8(message));
+		m_WarningMsgBox.exec();
+
+		//QMessageBox::warning(this, "Warning", QString::fromUtf8(message));
 	}
 
 }

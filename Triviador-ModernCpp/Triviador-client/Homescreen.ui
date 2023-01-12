@@ -36,7 +36,9 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/Triviadorclient/images/background.jpg)</string>
+     <string notr="true">
+border-image:url(:/Triviadorclient/images/background.jpg)
+</string>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QPushButton" name="play_pushButton">

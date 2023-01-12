@@ -24,6 +24,9 @@ private:
 private:
 	Homescreen homescreen;
 	Ui::RegisterFormClass ui;
+	QMessageBox m_WarningMsgBox;
+	QMessageBox m_InformationMsgBox;
+	QPixmap pixmap = QPixmap(":/Triviadorclient/images/triv.png");
 private slots:
 	void on_register_pushButton_clicked();
 };
