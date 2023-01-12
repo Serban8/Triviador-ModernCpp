@@ -658,7 +658,7 @@ background: white;
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_11">
+   <widget class="QGroupBox" name="groupBox_Territory18">
     <property name="geometry">
      <rect>
       <x>790</x>
@@ -1092,7 +1092,7 @@ background: white;
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_Territory14_2">
+   <widget class="QGroupBox" name="groupBox_Territory4">
     <property name="geometry">
      <rect>
       <x>840</x>
