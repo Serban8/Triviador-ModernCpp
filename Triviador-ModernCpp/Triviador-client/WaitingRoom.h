@@ -25,6 +25,8 @@ private:
 	Ui::WaitingRoomClass ui;
 	std::string m_playerUsername;
 	QTimer* m_waitingRoomTimer;
+	QMessageBox m_InformationMsgBox;
+	QPixmap pixmap = QPixmap(":/Triviadorclient/images/triv.png");
 	
 private slots:
 	void on_vote_pushButton_clicked();

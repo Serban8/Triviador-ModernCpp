@@ -10,6 +10,10 @@ WaitingRoom::WaitingRoom(QWidget* parent)
 	ui.listWidget->move(this->width() / 2 - ui.listWidget->geometry().width() / 2, this->height() / 2 - ui.listWidget->geometry().height() / 3);
 	ui.vote_pushButton->move(this->width() / 2 - ui.vote_pushButton->geometry().width() / 2, ui.listWidget->pos().y() - ui.vote_pushButton->geometry().height() * 1.5);
 	ui.stackedWidget->insertWidget(1, &map);
+	//ui.stackedWidget->widget(0)->setStyleSheet("#stackedWidget{border-image:url(:/Triviadorclient/images/background.jpg)}");
+
+	m_InformationMsgBox.setWindowIcon(QIcon(pixmap));
+	m_InformationMsgBox.setIcon(QMessageBox::Information);
 }
 
 WaitingRoom::~WaitingRoom()
@@ -34,7 +38,10 @@ void WaitingRoom::UpdateWaitingRoom()
 	resBody = crow::json::load(response.text);
 	if (resBody[resBody.size() - 1]["startGame"] == "true")
 	{
-		QMessageBox::information(this,"information", "The game will start soon!");
+		m_InformationMsgBox.setText("The game will start soon!");
+		m_InformationMsgBox.exec();
+
+		//QMessageBox::information(this,"information", "The game will start soon!");
 		cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/startgame" });
 		m_waitingRoomTimer->stop();
 		map.SetUI(resBody.size() - 1);

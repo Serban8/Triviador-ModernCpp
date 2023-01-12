@@ -21,7 +21,7 @@
    <string notr="true">#centralWidget{
 
 image: url(:/Triviadorclient/images/3playersMap.png);
-border-image: none;
+border-image: white;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
