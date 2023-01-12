@@ -151,6 +151,7 @@ crow::response StartGameHandler::operator() () const
 {
 	if (!waitingRoomList.empty()) {
 		game = Game(waitingRoomList, database::getNumberQuestions(storage, 15), database::getMultipleChoiceQuestions(storage, 30));
+		waitingRoomList.clear();
 		return crow::response(200);
 	}
 	return crow::response(500, "INTERNAL SERVER ERROR");

@@ -6,8 +6,10 @@
 #include <qfuture.h>
 
 #include "ui_WaitingRoom.h"
+#include "MapWindow.h"
 #include "crow.h"
 #include "cpr/cpr.h"
+#include <qmessagebox.h>
 class WaitingRoom : public QMainWindow
 {
 	Q_OBJECT
@@ -19,6 +21,7 @@ public:
 	void SetTimer();
 	
 private:
+	MapWindow map;
 	Ui::WaitingRoomClass ui;
 	std::string m_playerUsername;
 	QTimer* m_waitingRoomTimer;
