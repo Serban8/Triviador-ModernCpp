@@ -66,7 +66,7 @@ crow::json::wvalue CheckWaitingRoomHandler::operator() () const
 	bool startGame = false;
 
 	//check if conditions for starting the game are fulfilled
-	if (waitingRoomList.size() == maxPlayersPerGame || votesToStart.size() == waitingRoomList.size()) {
+	if (waitingRoomList.size() == maxPlayersPerGame || (votesToStart.size() == waitingRoomList.size() && waitingRoomList.size()>1)) {
 		startGame = true;
 	}
 
