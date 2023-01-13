@@ -29,7 +29,6 @@ void MapWindow::SetUI(int numberOfPlayers)
 			{
 				fourPlayersMap_ui.setupUi(this);
 				setFourPlayersRegions();
-				qDebug()<<Regions[2]->children()[0]->children()[0]->children()[0];
 			}
 }
 
