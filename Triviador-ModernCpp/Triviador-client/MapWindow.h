@@ -14,10 +14,13 @@ public:
 	MapWindow(QWidget *parent = nullptr);
 	~MapWindow();
 	void SetUI(int numberOfPlayers);
+	void setTwoPlayersRegions();
+	void setThreePlayersRegions();
+	void setFourPlayersRegions();
 private:
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
 	Ui::ThreePlayersMapClass threePlayersMap_ui;
 	Ui::FourPlayersMapClass fourPlayersMap_ui;
-	std::vector<QPushButton> Territories;
+	std::vector<QGroupBox*> Regions;
 
 };
