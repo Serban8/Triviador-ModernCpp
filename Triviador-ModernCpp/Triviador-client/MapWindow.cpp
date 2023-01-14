@@ -112,7 +112,7 @@ void MapWindow::ShowQuestions() {
 	//firstChoice_pushButton->move(question_widget->width() / 2  - firstChoice_pushButton->geometry().width() * 3, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	firstChoice_pushButton->resize(question_widget->width(), 30);
 	firstChoice_pushButton->move(question_widget->width() / 2 - firstChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
-	//firstChoice_pushButton->hide();
+	firstChoice_pushButton->hide();
 
 	secondChoice_pushButton = new QPushButton(question_widget);
 	secondChoice_pushButton->setText("secondChoice");
@@ -120,7 +120,7 @@ void MapWindow::ShowQuestions() {
 	//secondChoice_pushButton->move(question_widget->width() / 2 - secondChoice_pushButton->geometry().width() * 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	secondChoice_pushButton->resize(question_widget->width(), 30);
 	secondChoice_pushButton->move(question_widget->width() / 2 - secondChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height());
-	//secondChoice_pushButton->hide();
+	secondChoice_pushButton->hide();
 
 	thirdChoice_pushButton = new QPushButton(question_widget);
 	thirdChoice_pushButton->setText("thirdChoice");
@@ -128,22 +128,27 @@ void MapWindow::ShowQuestions() {
 	//thirdChoice_pushButton->move(question_widget->width() / 2 + thirdChoice_pushButton->geometry().width(), question_widget->height() / 2 + question_label->geometry().height() / 2);
 	thirdChoice_pushButton->resize(question_widget->width(), 30);
 	thirdChoice_pushButton->move(question_widget->width() / 2 - thirdChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height() + thirdChoice_pushButton->geometry().height());
-	//thirdChoice_pushButton->hide();
+	thirdChoice_pushButton->hide();
 
 	fourthChoice_pushButton = new QPushButton(question_widget);
 	fourthChoice_pushButton->setText("fourthChoice");
 	fourthChoice_pushButton->setStyleSheet("border-image: white;");
-	//fourthChoice_pushButton->move(question_widget->width() / 2 + fourthChoice_pushButton->geometry().width() * 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
+	fourthChoice_pushButton->move(question_widget->width() / 2 + fourthChoice_pushButton->geometry().width() * 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	fourthChoice_pushButton->resize(question_widget->width(), 30);
 	fourthChoice_pushButton->move(question_widget->width() / 2 - fourthChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height() + thirdChoice_pushButton->geometry().height() + fourthChoice_pushButton->geometry().height());
+	fourthChoice_pushButton->hide();
 
-	//fourthChoice_pushButton->hide();
-
-	/*answer_lineEdit = new QLineEdit(question_widget);
+	answer_lineEdit = new QLineEdit(question_widget);
 	answer_lineEdit->resize(300, 50);
 	answer_lineEdit->setPlaceholderText("Here you can write your answer!");
 	answer_lineEdit->setStyleSheet("font-size : 15pt; border-image: white;");
-	answer_lineEdit->move(question_widget->width() / 2 - answer_label->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 4);
-	answer_lineEdit->hide();*/
+	answer_lineEdit->move(question_widget->width() / 2 - answer_lineEdit->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 4);
+	//answer_lineEdit->hide();
+
+	numericAnswer_pushButton = new QPushButton(question_widget);
+	numericAnswer_pushButton->setText("Submit answer!");
+	numericAnswer_pushButton->setStyleSheet("border-image: white;");
+	numericAnswer_pushButton->resize(question_widget->width() / 2, 30);
+	numericAnswer_pushButton->move(question_widget->width() / 2 - numericAnswer_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() + numericAnswer_pushButton->geometry().height() /2);
 
 }

@@ -20,7 +20,7 @@ public:
 	void setThreePlayersRegions();
 	void setFourPlayersRegions();
 	void ShowQuestions();
-	
+
 private:
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
 	Ui::ThreePlayersMapClass threePlayersMap_ui;
@@ -33,5 +33,7 @@ private:
 	QPushButton* secondChoice_pushButton;
 	QPushButton* thirdChoice_pushButton;
 	QPushButton* fourthChoice_pushButton;
+	QTimer* m_ShowQuestionsTimer;
+	QPushButton* numericAnswer_pushButton;
 
 };
