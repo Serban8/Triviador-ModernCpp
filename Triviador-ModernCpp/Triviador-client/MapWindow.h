@@ -19,6 +19,9 @@ public:
 	void setTwoPlayersRegions();
 	void setThreePlayersRegions();
 	void setFourPlayersRegions();
+	void setTwoPlayersNeighbors();
+	void setThreePlayersNeighbors();
+	void setFourPlayersNeighbors();
 	void ShowQuestions();
 
 private:
@@ -26,6 +29,7 @@ private:
 	Ui::ThreePlayersMapClass threePlayersMap_ui;
 	Ui::FourPlayersMapClass fourPlayersMap_ui;
 	std::vector<QGroupBox*> Regions;
+	std::unordered_map<QGroupBox*, std::vector<QGroupBox*>> RegionNeighbors;
 	QLabel* question_label;
 	QLineEdit* answer_lineEdit;
 	QWidget* question_widget;
