@@ -25,8 +25,8 @@ void WaitingRoom::SetUsername(std::string username) {
 }
 
 void WaitingRoom::SetTimer() {
-	UpdateWaitingRoom();
 	m_waitingRoomTimer->start(3500);
+	UpdateWaitingRoom();
 }
 
 void WaitingRoom::UpdateWaitingRoom()
@@ -42,8 +42,8 @@ void WaitingRoom::UpdateWaitingRoom()
 		m_InformationMsgBox.exec();
 
 		//QMessageBox::information(this,"information", "The game will start soon!");
-		cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/startgame" });
 		m_waitingRoomTimer->stop();
+		cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/startgame" });
 		map.SetUI(resBody.size() - 1);
 		ui.stackedWidget->setCurrentIndex(1);
 	}
