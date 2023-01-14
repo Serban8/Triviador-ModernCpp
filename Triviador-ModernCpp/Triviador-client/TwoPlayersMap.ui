@@ -43,7 +43,8 @@ border-image: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -57,6 +58,9 @@ border-image: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -69,6 +73,9 @@ border-image: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -108,7 +115,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -122,6 +130,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -134,6 +145,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -172,7 +186,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -186,6 +201,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -198,6 +216,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -235,7 +256,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -249,6 +271,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -261,6 +286,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -300,7 +328,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -314,6 +343,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -326,6 +358,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -362,7 +397,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -376,6 +412,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -388,6 +427,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -424,7 +466,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -438,6 +481,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -450,6 +496,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -487,7 +536,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -501,6 +551,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -513,6 +566,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -549,7 +605,8 @@ background: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 0px</string>
+     <string notr="true">border-image: white;
+border: 0px</string>
     </property>
     <property name="title">
      <string/>
@@ -563,6 +620,9 @@ background: white;
        <height>16</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -575,6 +635,9 @@ background: white;
        <width>49</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: white;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
