@@ -169,6 +169,7 @@
     <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="NumberQuestion.h" />
     <ClInclude Include="Region.h" />
+    <ClInclude Include="ServerStatus.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

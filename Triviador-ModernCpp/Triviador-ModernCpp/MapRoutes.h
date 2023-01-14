@@ -4,13 +4,16 @@
 #include "Game.h"
 #include "utils.h"
 
+#include "ServerStatus.h"
+
 //GetMapHandler
 class GetMapHandler {
 public:
-	GetMapHandler(Game& game);
+	GetMapHandler(ServerStatus& status, Game& game);
 
 	crow::json::wvalue operator() () const;
 private:
+	ServerStatus& status;
 	Game& game;
 };
 //
@@ -27,12 +30,13 @@ private:
 //
 
 //SetRegionTypeHandler
-class SetRegionTypeHandler {
+class InitializeRegionHandler {
 public:
-	SetRegionTypeHandler(Game& game);
+	InitializeRegionHandler(ServerStatus& status, Game& game);
 
 	crow::response operator() (const crow::request& req) const;
 private:
+	ServerStatus& status;
 	Game& game;
 };
 //

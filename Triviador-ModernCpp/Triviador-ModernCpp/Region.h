@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 #include <stdexcept>
 #include "Player.h"
@@ -43,17 +44,20 @@ public:
 public:
 	//constructor
 	Region();
-	Region(Player owner, Type type = Type::Territory, int score = 100);
+	Region(std::shared_ptr<Player> owner, Type type = Type::Territory, int score = 100);
 
 	//setters
 	void SetScore(int score);
-	void SetOwner(Player owner);
+	void SetOwner(std::shared_ptr<Player> owner);
 	void SetType(Type type);
 
 	//getters
 	int GetScore() const;
-	Player GetOwner() const;
+	std::shared_ptr<Player> GetOwner() const;
 	Type GetType() const;
+
+	//methods
+	void UpdateRegion(const std::shared_ptr<Player> winner);
 
 private:
 	static const int s_baseInitialScore = 300;
@@ -61,6 +65,6 @@ private:
 
 private:
 	int m_score;
-	Player m_owner;
+	std::shared_ptr<Player> m_owner; //should be pointer
 	Type m_type;
 };

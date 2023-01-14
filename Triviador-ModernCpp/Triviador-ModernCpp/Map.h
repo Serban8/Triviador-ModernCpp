@@ -21,6 +21,9 @@ public:
 	int GetHeight() const;
 	int GetWidth() const;
 
+	//methods
+	bool AreAllRegionsOwned() const;
+	
 private:
 	int m_height;
 	int m_width;

@@ -6,6 +6,7 @@
 #include "Database.h"
 #include "QuestionDatabase.h"
 #include "utils.h"
+#include "ServerStatus.h"
 
 using numberQuestionResponse = std::pair<float, float>;
 
@@ -29,45 +30,52 @@ struct compareNumberQuestionResponses
 //AddResponseHandler
 class AddResponseHandler {
 public:
-	AddResponseHandler(Game& game, std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses>& leaderboard);
+	AddResponseHandler(ServerStatus& status, Game& game, std::shared_ptr<Region> attackedRegion, std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses>& leaderboard);
 
 	crow::response operator() (const crow::request& req) const;
 private:
+	std::shared_ptr<Region> attackedRegion;
+	ServerStatus& status;
 	Game& game;
-	std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses>& leaderboard;
+	std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses>& leaderboard;
 };
 //
 
 //GetLeaderboardHandler
 class GetLeaderboardHandler {
 public:
-	GetLeaderboardHandler(std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses>& leaderboard);
+	GetLeaderboardHandler(ServerStatus& status, Game& game, std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses>& leaderboard);
 
 	crow::json::wvalue operator() () const;
 private:
-	std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses>& leaderboard;
+	ServerStatus& status;
+	Game& game;
+	std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses>& leaderboard;
 };
 //
 
 //SetAttackedTerritoryHandler
 class SetAttackedTerritoryHandler {
 public:
-	SetAttackedTerritoryHandler(Game& game, std::shared_ptr<Region> attackedRegion);
+	SetAttackedTerritoryHandler(ServerStatus& status, Player& attacked, Game& game, std::shared_ptr<Region>& attackedRegion);
 
 	crow::response operator() (const crow::request& req) const;
 private:
+	ServerStatus& status;
 	Game& game;
-	std::shared_ptr<Region> attackedRegion;
+	Player& attacked;
+	std::shared_ptr<Region>& attackedRegion;
 };
 //
 
 //StartGameHandler
 class StartGameHandler {
 public:
-	StartGameHandler(Game& game, std::vector<Player>& waitingRoomList, Storage& storage);
+	StartGameHandler(ServerStatus& status, Game& game, std::vector<Player>& waitingRoomList, Storage& storage);
 
 	crow::response operator() () const;
 private:
+	ServerStatus& status;
 	Game& game;
 	std::vector<Player>& waitingRoomList;
 	Storage& storage;
@@ -88,10 +96,11 @@ private:
 //GetNumberQuestionHandler
 class GetNumberQuestionHandler {
 public:
-	GetNumberQuestionHandler(Game& game);
+	GetNumberQuestionHandler(ServerStatus& status, Game& game);
 
 	crow::json::wvalue operator() () const;
 private:
+	ServerStatus& status;
 	Game& game;
 };
 //
@@ -99,10 +108,13 @@ private:
 //GetMultipleChoiceQuestionHandler
 class GetMultipleChoiceQuestionHandler {
 public:
-	GetMultipleChoiceQuestionHandler(Game& game);
+	GetMultipleChoiceQuestionHandler(ServerStatus& status, Player& attacker, Player& attacked, Game& game);
 
-	crow::json::wvalue operator() () const;
+	crow::json::wvalue operator() (const crow::request& req) const;
 private:
+	Player& attacker;
+	Player& attacked;
+	ServerStatus& status;
 	Game& game;
 };
 //

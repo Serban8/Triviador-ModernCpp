@@ -1,11 +1,13 @@
 #include "GameRoutes.h"
 
 //AddResponseHandler
-AddResponseHandler::AddResponseHandler(Game& game, std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses>& leaderboard) : game(game), leaderboard(leaderboard)
+AddResponseHandler::AddResponseHandler(ServerStatus& status, Game& game, std::shared_ptr<Region> attackedRegion, std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses>& leaderboard) :
+	status(status), game(game), attackedRegion(attackedRegion), leaderboard(leaderboard)
 {
 }
 crow::response AddResponseHandler::operator()(const crow::request& req) const
 {
+	static uint8_t responseCounter = 0;
 	auto bodyArgs = parseRequestBody(req.body);
 	auto bodyEnd = bodyArgs.end();
 	auto usernameIter = bodyArgs.find("username");
@@ -31,7 +33,7 @@ crow::response AddResponseHandler::operator()(const crow::request& req) const
 			return crow::response(400, "BAD REQUEST");
 		}
 		CROW_LOG_INFO << "Receieved answer from player: " << username << "; distance from the correct response: " << response << "; time took to answer: " << time;
-		leaderboard.emplace(std::make_pair(response, time), std::make_unique<Player>(game[username]));
+		leaderboard.emplace(std::make_pair(response, time), std::make_shared<Player>(game[username]));
 	}
 	else
 	{
@@ -45,55 +47,98 @@ crow::response AddResponseHandler::operator()(const crow::request& req) const
 		CROW_LOG_INFO << "RESPONSE: " << response << " TIME: " << time << " USERNAME: " << value.get()->GetUsername();
 	}
 	//
+
+	++responseCounter;
+	bool resetCounter = false;
+	
+	if (game.GetPhase() == Game::Phase::CHOOSING_BASES || game.GetPhase() == Game::Phase::CHOOSING_REGIONS) {
+		if (responseCounter == game.GetActivePlayers().size()) {
+			resetCounter = true;
+		}
+	}
+	else {
+		if (responseCounter == 2) {
+			attackedRegion.get()->UpdateRegion(leaderboard.begin()->second);
+			resetCounter = true;
+		}
+	}
+	
+	if (resetCounter)
+	{
+		CROW_LOG_INFO << "---";
+		CROW_LOG_INFO << "Status has been set to DISPLAY_LEADERBOARD";
+		CROW_LOG_INFO << "---";
+		status = ServerStatus::DISPLAY_LEADERBOARD;
+		responseCounter = 0;
+	}
+
 	return crow::response(200);
 }
 //
 
 //GetMultipleChoiceQuestionHandler
-GetMultipleChoiceQuestionHandler::GetMultipleChoiceQuestionHandler(Game& game) : game(game)
+GetMultipleChoiceQuestionHandler::GetMultipleChoiceQuestionHandler(ServerStatus& status, Player& attacker, Player& attacked, Game& game) :
+	status(status), attacker(attacker), attacked(attacked), game(game)
 {
 }
 
-crow::json::wvalue GetMultipleChoiceQuestionHandler::operator() () const
+crow::json::wvalue GetMultipleChoiceQuestionHandler::operator() (const crow::request& req) const
 {
+
 	static uint8_t requestCounter = 0;
-	static MultipleChoiceQuestion question;
+	static MultipleChoiceQuestion question = game.GetMultipleChoiceQuestion();
 	crow::json::wvalue questionJson;
+	auto bodyArgs = parseRequestBody(req.body);
+	auto bodyEnd = bodyArgs.end();
+	auto usernameIter = bodyArgs.find("username");
 
-	//if all players have received the question (or is first question) get the next question.
-	if (requestCounter == game.GetActivePlayers().size() || requestCounter == 0) {
-		question = game.GetMultipleChoiceQuestion();
-		requestCounter = 0;
+	if (usernameIter != bodyEnd) {
+		auto& username = usernameIter->second;
+		bool allowAnswer;
+		if (username == attacker.GetUsername() || username == attacked.GetUsername()) {
+			allowAnswer = true;
+		}
+		else {
+			allowAnswer = false;
+		}
+		questionJson = crow::json::wvalue{
+			{"question", question.GetQuestion()},
+			{"category", question.GetCategory()},
+			{"correctAnswer", question.GetCorrectAnswer()},
+			{"incorrectAnswer1", question.GetIncorrectAnswers()[0]},
+			{"incorrectAnswer2", question.GetIncorrectAnswers()[1]},
+			{"incorrectAnswer3", question.GetIncorrectAnswers()[2]},
+			{"allowAnswer", allowAnswer}
+		};
+
+		++requestCounter;
+		if (requestCounter == game.GetActivePlayers().size()) {
+			question = game.GetMultipleChoiceQuestion();
+			CROW_LOG_INFO << "---";
+			CROW_LOG_INFO << "Status has been set to DISPLAY_QUESTION";
+			CROW_LOG_INFO << "---";
+			status = ServerStatus::DISPLAY_QUESTION;
+			requestCounter = 0;
+		}
+		return crow::json::wvalue{ questionJson };
 	}
-	questionJson = crow::json::wvalue{
-		{"question", question.GetQuestion()},
-		{"category", question.GetCategory()},
-		{"correctAnswer", question.GetCorrectAnswer()},
-		{"incorrectAnswer1", question.GetIncorrectAnswers()[0]},
-		{"incorrectAnswer2", question.GetIncorrectAnswers()[1]},
-		{"incorrectAnswer3", question.GetIncorrectAnswers()[2]}
-	};
-
-	requestCounter++;
-	return crow::json::wvalue{ questionJson };
+	else {
+		//return 500 error
+	}
 }
 //
 
 //GetNumberQuestionHandler
-GetNumberQuestionHandler::GetNumberQuestionHandler(Game& game) : game(game)
+GetNumberQuestionHandler::GetNumberQuestionHandler(ServerStatus& status, Game& game) : status(status), game(game)
 {
 }
 
 crow::json::wvalue GetNumberQuestionHandler::operator() () const
 {
 	static uint8_t requestCounter = 0;
-	static std::variant<NumberQuestion<int>, NumberQuestion<float>> question;
+	static std::variant<NumberQuestion<int>, NumberQuestion<float>> question = game.GetNumberQuestion();
 	crow::json::wvalue questionJson;
 
-	if (requestCounter == game.GetActivePlayers().size() || requestCounter == 0) {
-		question = game.GetNumberQuestion();
-		requestCounter = 0;
-	}
 	if (std::holds_alternative<NumberQuestion<int>>(question))
 	{
 		auto qInt = std::get<NumberQuestion<int>>(question);
@@ -118,7 +163,16 @@ crow::json::wvalue GetNumberQuestionHandler::operator() () const
 		};
 	}
 
-	requestCounter++;
+	++requestCounter;
+	if (requestCounter == game.GetActivePlayers().size()) {
+		question = game.GetNumberQuestion();
+		CROW_LOG_INFO << "---";
+		CROW_LOG_INFO << "Status has been set to DISPLAY_QUESTION";
+		CROW_LOG_INFO << "---";
+		status = ServerStatus::DISPLAY_QUESTION;
+		requestCounter = 0;
+	}
+
 	return crow::json::wvalue{ questionJson };
 }
 //
@@ -143,23 +197,43 @@ crow::json::wvalue GetPlayersHandler::operator() () const
 //
 
 //StartGameHandler
-StartGameHandler::StartGameHandler(Game& game, std::vector<Player>& waitingRoomList, Storage& storage) : game(game), waitingRoomList(waitingRoomList), storage(storage)
+StartGameHandler::StartGameHandler(ServerStatus& status, Game& game, std::vector<Player>& waitingRoomList, Storage& storage) :
+	status(status), game(game), waitingRoomList(waitingRoomList), storage(storage)
 {
 }
 
 crow::response StartGameHandler::operator() () const
 {
-	if (!waitingRoomList.empty()) {
+	static uint8_t requestCounter = 0;
+	static bool initDone = false;  //retriving questions from the DB takes some time, so we need to make sure that the game has been propperly initialized
+	++requestCounter;
+	CROW_LOG_INFO << "---";
+	CROW_LOG_INFO << "REQ_C: " << (int)requestCounter;
+	CROW_LOG_INFO << "---";
+	if (!waitingRoomList.empty() && requestCounter == 1) { //only initialize game when the first request is received
 		game = Game(waitingRoomList, database::getNumberQuestions(storage, 15), database::getMultipleChoiceQuestions(storage, 30));
-		waitingRoomList.clear();
+		CROW_LOG_INFO << "---";
+		CROW_LOG_INFO << "Game has been initialized with " << waitingRoomList.size() << " players";
+		CROW_LOG_INFO << "---";
+		initDone = true;
+	}
+
+	if (requestCounter == waitingRoomList.size() && initDone) {
+		CROW_LOG_INFO << "---";
+		CROW_LOG_INFO << "Status has been set to GET_NUMBER_QUESTION";
+		CROW_LOG_INFO << "---";
+		status = ServerStatus::GET_NUMBER_QUESTION;
+		requestCounter = 0;
 		return crow::response(200);
 	}
+
 	return crow::response(500, "INTERNAL SERVER ERROR");
 }
 //
 
 //SetAttackedTerritoryHandler
-SetAttackedTerritoryHandler::SetAttackedTerritoryHandler(Game& game, std::shared_ptr<Region> attackedRegion) : game(game), attackedRegion(attackedRegion)
+SetAttackedTerritoryHandler::SetAttackedTerritoryHandler(ServerStatus& status, Player& attacked, Game& game, std::shared_ptr<Region>& attackedRegion) :
+	status(status), attacked(attacked), game(game), attackedRegion(attackedRegion)
 {
 }
 
@@ -187,30 +261,52 @@ crow::response SetAttackedTerritoryHandler::operator()(const crow::request& req)
 			return crow::response(400, "BAD REQUEST");
 		}
 
-		//attackedRegion = game.GetRegion({ line, column });
+		attackedRegion = game.GetRegion({ line, column });
 		if (!attackedRegion) {
 			return crow::response(400, "BAD REQUEST");
 		}
+		CROW_LOG_INFO << "---";
+		CROW_LOG_INFO << "Status has been set to ATTACKER_CHOSE_REGION";
+		CROW_LOG_INFO << "---";
+		status = ServerStatus::ATTACKER_CHOSE_REGION;
+		attacked = *attackedRegion.get()->GetOwner(); //te be pointer in future
+
+		return crow::response(200);
 	}
 }
 //
 
 //GetLeaderboardHandler
-GetLeaderboardHandler::GetLeaderboardHandler(std::map<numberQuestionResponse, std::unique_ptr<Player>, compareNumberQuestionResponses>& leaderboard) : leaderboard(leaderboard)
+GetLeaderboardHandler::GetLeaderboardHandler(ServerStatus& status, Game& game, std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses>& leaderboard) :
+	status(status), game(game), leaderboard(leaderboard)
 {
 }
 
 crow::json::wvalue GetLeaderboardHandler::operator() () const
 {
+	static uint8_t requestCounter = 0;
+
 	std::vector<crow::json::wvalue> players_json;
+	
+	int place = 1;
 	for (const auto& player : leaderboard)
 	{
 		players_json.push_back(crow::json::wvalue{
-			{"username", player.second.get()->GetUsername()}
+			{"place" + std::to_string(place++), player.second.get()->GetUsername()}
 			});
 	}
+
+	++requestCounter;
+	if (requestCounter == game.GetActivePlayers().size()) {
+		requestCounter = 0;
+		CROW_LOG_INFO << "---";
+		CROW_LOG_INFO << "Status has been set to WAIT";
+		CROW_LOG_INFO << "---";
+		status = ServerStatus::WAIT;
+	}
+
 	//Reset leaderboard
-	leaderboard.clear();
+	//leaderboard.clear();
 	return crow::json::wvalue{ players_json };
 }
 //

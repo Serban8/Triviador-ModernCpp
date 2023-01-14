@@ -11,6 +11,12 @@
 class Game
 {
 public:
+	enum class Phase : uint8_t {
+		CHOOSING_BASES,
+		CHOOSING_REGIONS,
+		DUEL
+	};
+public:
 	Game() = default;
 	Game(std::vector<Player>& players, std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> m_numberQuestions,std::vector<MultipleChoiceQuestion> m_multipleChoiceQuestions);
 
@@ -28,11 +34,13 @@ public:
 	MultipleChoiceQuestion GetMultipleChoiceQuestion();
 	Map GetMap() const;
 	std::shared_ptr<Region> GetRegion(Map::Position regionIndex);
+	Phase GetPhase() const;
 
 	//setters
+	void SetPhase(Phase phase);
 	void ModifyRegion(const Map::Position pos, Region::Type newType);
-	void ModifyRegion(const Map::Position pos, Player newOwner);
-	void ModifyRegion(const Map::Position pos, Region::Type newType, Player newOwner); //possibly not needed
+	void ModifyRegion(const Map::Position pos, std::shared_ptr<Player> newOwner);
+	void ModifyRegion(const Map::Position pos, Region::Type newType, std::shared_ptr<Player> newOwner); //possibly not needed
 
 	void IncreaseRegionScore(const Map::Position pos);
 	void DecreaseRegionScore(const Map::Position pos);
@@ -57,11 +65,12 @@ private:
 	template<typename T>
 	std::vector<Player> SortPlayersByAnswers(std::vector<Player> players, T correctAnswer) const; //gets the answers from players and then sorts them
 private:
-	std::unordered_map<std::string, std::unique_ptr<Player>> m_playersMap;
+	std::unordered_map<std::string, std::shared_ptr<Player>> m_playersMap;
 private:
 	std::vector<Player> m_activePlayers;
 	std::vector<Player> m_inactivePlayers;
 	std::vector<std::variant<NumberQuestion<int>, NumberQuestion<float>>> m_numberQuestions;
 	std::vector<MultipleChoiceQuestion> m_multipleChoiceQuestions;
 	Map m_map;
+	Phase m_phase;
 };

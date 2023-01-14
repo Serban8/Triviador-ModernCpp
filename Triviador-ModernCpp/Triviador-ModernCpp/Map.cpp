@@ -32,13 +32,23 @@ int Map::GetWidth() const
 	return m_width;
 }
 
+bool Map::AreAllRegionsOwned() const 
+{
+	for (const auto& region : m_regions) {
+		if (!region.GetOwner().get()) {
+			return false;
+		}
+	}
+	return true;
+}
+
 std::ostream& operator<<(std::ostream& os, const Map& map)
 {
 	for (uint8_t i = 0; i < map.m_height; i++)
 	{
 		for (uint8_t j = 0; j < map.m_width; j++)
 		{
-			os << map[{i, j}].GetOwner().GetUsername() << " | ";
+			os << map[{i, j}].GetOwner().get()->GetUsername() << " | ";
 		}
 		os << std::endl;
 		for (uint8_t j = 0; j < map.m_width; j++)
