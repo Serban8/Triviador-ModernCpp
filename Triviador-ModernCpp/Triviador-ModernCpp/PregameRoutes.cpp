@@ -10,11 +10,11 @@ crow::json::wvalue PlayerHandler::operator()(std::string username) const
 	auto playerGame = storage.get_all<PlayerGameDatabase>(sqlite_orm::where(sql::c(&PlayerGameDatabase::m_playerId) = username));
 	for (const auto& pg : playerGame)
 	{
-		GameDatabase g = storage.get<GameDatabase>(pg.m_gameId);
+		GameDatabase g = storage.get<GameDatabase>(*pg.m_gameId);
 		games_json.push_back(crow::json::wvalue{
 			{"date", g.m_date },
 			{"rounds", std::to_string(g.m_rounds)},
-			{"winner", g.m_winner}
+			{"winner", *g.m_winner}
 			});
 	}
 	return crow::json::wvalue{ games_json };

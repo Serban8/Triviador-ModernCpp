@@ -44,6 +44,7 @@ void WaitingRoom::UpdateWaitingRoom()
 		//QMessageBox::information(this,"information", "The game will start soon!");
 		m_waitingRoomTimer->stop();
 		cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/startgame" });
+		map.SetUsername(m_playerUsername);
 		map.SetUI(resBody.size() - 1);
 		ui.stackedWidget->setCurrentIndex(1);
 	}

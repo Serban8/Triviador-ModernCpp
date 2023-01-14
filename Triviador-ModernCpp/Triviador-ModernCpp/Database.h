@@ -33,7 +33,7 @@ struct GameDatabase
 
 	//winner is a FK to players table
 	GameDatabase(std::string winner, int rounds) :
-		m_winner(winner),
+		m_winner(std::make_unique<std::string>(winner)),
 		m_rounds(rounds)
 	{
 		//initialize time
@@ -52,7 +52,7 @@ struct GameDatabase
 
 	int m_id;
 	int m_rounds;
-	std::string m_winner;
+	std::unique_ptr<std::string> m_winner;
 	std::string m_date;
 
 };
@@ -61,15 +61,15 @@ struct GameDatabase
 struct PlayerGameDatabase {
 
 	PlayerGameDatabase() = default;
-	PlayerGameDatabase(GameDatabase game, PlayerDatabase player) :
-		m_gameId(game.m_id),
-		m_playerId(player.m_username)
+	PlayerGameDatabase(int game, std::string player) :
+		m_gameId(std::make_unique<int>(game)),
+		m_playerId(std::make_unique<std::string>(player))
 	{
 		//empty
 	}
 
-	int m_gameId;
-	std::string m_playerId;
+	std::unique_ptr<int> m_gameId;
+	std::unique_ptr<std::string> m_playerId;
 };
 
 struct QuestionDatabase

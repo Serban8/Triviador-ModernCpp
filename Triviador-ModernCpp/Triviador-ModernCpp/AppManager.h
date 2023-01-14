@@ -68,7 +68,7 @@ private:
 private:
 	ServerStatus m_status; //maybe should be static
 
-	std::vector<Player> m_waitingRoomList = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
+	std::vector<Player> m_waitingRoomList;// = { Player("Gigi"), Player("Marci"), Player("Luci") }; //initialization list for testing only
 	std::vector<Player> m_votesToStart;
 	std::map<numberQuestionResponse, std::shared_ptr<Player>, compareNumberQuestionResponses> m_leaderboard; //maybe better with queue?
 	//maybe will not work with shared_ptr
