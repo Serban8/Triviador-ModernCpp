@@ -17,12 +17,14 @@ void MapWindow::SetUI(int numberOfPlayers)
 	{
 		twoPlayersMap_ui.setupUi(this);
 		setTwoPlayersRegions();
+		setTwoPlayersNeighbors();
 	}
 	else
 		if (numberOfPlayers == 3)
 		{
 			threePlayersMap_ui.setupUi(this);
-			setTwoPlayersRegions();
+			setThreePlayersRegions();
+			setThreePlayersNeighbors();
 		}
 		else
 			if (numberOfPlayers == 4)
@@ -30,6 +32,7 @@ void MapWindow::SetUI(int numberOfPlayers)
 				fourPlayersMap_ui.setupUi(this);
 				ShowQuestions();
 				setFourPlayersRegions();
+				setFourPlayersNeighbors();
 			}
 }
 
