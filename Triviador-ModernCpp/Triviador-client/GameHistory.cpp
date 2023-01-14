@@ -1,19 +1,30 @@
 #include "GameHistory.h"
-
+#include <qdebug.h>
 GameHistory::GameHistory(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
     std::stringstream urlBuilder;
-    urlBuilder << "http://localhost:18080/player/" << "Flo";
+    urlBuilder << "http://localhost:18080/player/" << "p1";
     cpr::Response response = cpr::Get(cpr::Url{ urlBuilder.str() });
 
     auto games = crow::json::load(response.text);
     if (games.size() != 0)
     {
-        for (const auto& game : games) 
-        {
-            ui.listWidget->addItem(QString::fromStdString(game["date"].s())+" "+QString::fromStdString(game["rounds"].s()) + " " + QString::fromStdString(game["winner"].s()));
+        for (const auto& game : games)
+        { 
+            std::string stringData = game["date"].s();
+            QString message;
+            message.append("Date:");
+            message.append(QString::fromUtf8(stringData.c_str()));
+            message.append(";");
+            message.append("Won in ");
+            stringData = game["rounds"].s();
+            message.append(QString::fromUtf8(stringData.c_str()));
+            message.append("rounds; ");
+            /*stringData = game["winner"].s();
+            message.append(QString::fromUtf8(stringData.c_str()));*/
+            ui.listWidget->addItem(message);
         }
     }
     else

@@ -7,6 +7,8 @@
 #include "ui_TwoPlayersMap.h"
 #include "ui_ThreePlayersMap.h"
 #include "ui_FourPlayersMap.h"
+#include "crow.h"
+#include "cpr/cpr.h"
 
 class MapWindow : public QMainWindow
 {
@@ -22,7 +24,10 @@ public:
 	void setTwoPlayersNeighbors();
 	void setThreePlayersNeighbors();
 	void setFourPlayersNeighbors();
-	void ShowQuestions();
+	void ShowNumberQuestions();
+	void ShowMultipleChoiceQuestions();
+	void UpdateMap();
+	void SetUsername(std::string playerUsername);
 
 private:
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
@@ -39,5 +44,6 @@ private:
 	QPushButton* fourthChoice_pushButton;
 	QTimer* m_ShowQuestionsTimer;
 	QPushButton* numericAnswer_pushButton;
+	std::string m_playerUsername;
 
 };
