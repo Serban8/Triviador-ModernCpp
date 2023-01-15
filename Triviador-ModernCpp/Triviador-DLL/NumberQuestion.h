@@ -16,7 +16,7 @@ public:
 	//getters
 	std::array<N, 3> GetIncorrectAnswers() const;
 	N GetCorrectAnswer() const;
-
+	std::string GetQuestion() const;
 private:
 	N m_correctAnswer;
 	std::array<N, 3> m_incorrectAnswers;
@@ -26,6 +26,12 @@ template<typename N>
 N NumberQuestion<N>::GetCorrectAnswer() const
 {
 	return m_correctAnswer;
+}
+
+template<class N>
+inline std::string NumberQuestion<N>::GetQuestion() const
+{
+	return m_question;
 }
 
 template<typename N>
