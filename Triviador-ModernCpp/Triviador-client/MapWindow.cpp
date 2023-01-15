@@ -114,6 +114,7 @@ void MapWindow::UpdateStatus()
 
 	}
 	else if (status == ServerStatus::DISPLAY_LEADERBOARD) {
+		question_widget->hide();
 		//alreadyDisplayed = false;
 		//auto response = cpr::Get(cpr::Url{ "http://localhost:18080/getleaderboard" });
 		//std::cout << std::endl << "---LEADERBOARD---" << std::endl;
@@ -412,6 +413,493 @@ void MapWindow::on_numericAnswer_pushButton_clicked()
 	}
 }
 
+void MapWindow::SetTwoPlayersRegion()
+{
+	QPushButton* b = qobject_cast<QPushButton*>(sender());
+	if (b == twoPlayersMap_ui.pushButton_Territory1)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory2)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory3)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory4)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory5)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory6)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory7)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory8)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == twoPlayersMap_ui.pushButton_Territory9)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+}
+
+void MapWindow::SetThreePlayersRegion()
+{
+	QPushButton* b = qobject_cast<QPushButton*>(sender());
+	if (b == threePlayersMap_ui.pushButton_Territory1)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory2)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory3)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory4)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory5)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory6)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory7)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory8)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory9)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory10)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory11)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory12)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory13)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory14)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == threePlayersMap_ui.pushButton_Territory15)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+}
+
+void MapWindow::SetFourPlayersRegion()
+{
+	QPushButton* b = qobject_cast<QPushButton*>(sender());
+	if (b == fourPlayersMap_ui.pushButton_Territory1)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory2)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory3)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory4)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "0"},
+				{ "column", "3"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory5)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory6)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory7)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory8)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "1"},
+				{ "column", "3"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory9)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory10)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory11)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory12)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "2"},
+				{ "column", "3"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory13)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory14)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory15)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}
+	if (b == fourPlayersMap_ui.pushButton_Territory16)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "3"},
+				{ "column", "3"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory17)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory18)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory19)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory20)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "4"},
+				{ "column", "3"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory21)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "5"},
+				{ "column", "0"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory22)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "5"},
+				{ "column", "1"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory23)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "5"},
+				{ "column", "2"},
+				{ "owner", m_playerUsername }
+			});
+	}if (b == fourPlayersMap_ui.pushButton_Territory24)
+	{
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/setregionowner" },
+			cpr::Payload{
+				{ "line", "5"},
+				{ "column", "3"},
+				{ "owner", m_playerUsername }
+			});
+	}
+}
+
 void MapWindow::setFourPlayersNeighbors()
 {
 	m_regionNeighbors =
@@ -441,4 +929,46 @@ void MapWindow::setFourPlayersNeighbors()
 		{ { fourPlayersMap_ui.groupBox_Territory23 }, { fourPlayersMap_ui.groupBox_Territory18,fourPlayersMap_ui.groupBox_Territory20,fourPlayersMap_ui.groupBox_Territory21,fourPlayersMap_ui.groupBox_Territory24 } },
 		{ { fourPlayersMap_ui.groupBox_Territory24 }, { fourPlayersMap_ui.groupBox_Territory12, fourPlayersMap_ui.groupBox_Territory18, fourPlayersMap_ui.groupBox_Territory23 } }
 	};
+}
+
+void MapWindow::selectTwoPlayersRegion()
+{
+	for (auto& groupBox : m_regions)
+	{
+		for (auto& obj : groupBox->children())
+		{
+			if (obj->objectName().contains("pushButton"))
+			{
+				connect(obj, SIGNAL(clicked()), this, SLOT(SetTwoPlayersRegion()));
+			}
+		}
+	}
+}
+
+void MapWindow::selectThreePlayersRegion()
+{
+	for (auto& groupBox : m_regions)
+	{
+		for (auto& obj : groupBox->children())
+		{
+			if (obj->objectName().contains("pushButton"))
+			{
+				connect(obj, SIGNAL(clicked()), this, SLOT(SetThreePlayersRegion()));
+			}
+		}
+	}
+}
+
+void MapWindow::selectFourPlayersRegion()
+{
+	for (auto& groupBox : m_regions)
+	{
+		for (auto& obj : groupBox->children())
+		{
+			if (obj->objectName().contains("pushButton"))
+			{
+				connect(obj, SIGNAL(clicked()), this, SLOT(SetFourPlayersRegion()));
+			}
+		}
+	}
 }

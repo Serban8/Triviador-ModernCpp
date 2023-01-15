@@ -41,7 +41,9 @@ public:
 	void setTwoPlayersNeighbors();
 	void setThreePlayersNeighbors();
 	void setFourPlayersNeighbors();
-	
+	void selectTwoPlayersRegion();
+	void selectThreePlayersRegion();
+	void selectFourPlayersRegion();
 	//functions for different actions
 	std::variant<NumberQuestion<int>, NumberQuestion<float>> GetNumberQuestion();
 	MultipleChoiceQuestion GetMultipleChoiceQuestion();
@@ -57,6 +59,9 @@ public:
 private slots:
 	void StopTimer();
 	void on_numericAnswer_pushButton_clicked();
+	void SetTwoPlayersRegion();
+	void SetThreePlayersRegion();
+	void SetFourPlayersRegion();
 
 	void UpdateStatus();
 
@@ -71,7 +76,7 @@ private:
 	//list of regions and neighbors
 	std::vector<QGroupBox*> m_regions;
 	std::unordered_map<QGroupBox*, std::vector<QGroupBox*>> m_regionNeighbors;
-	
+
 	//different uis according to the number of players
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
 	Ui::ThreePlayersMapClass threePlayersMap_ui;
