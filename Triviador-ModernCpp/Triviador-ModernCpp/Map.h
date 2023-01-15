@@ -23,7 +23,7 @@ public:
 
 	//methods
 	bool AreAllRegionsOwned() const;
-	
+
 private:
 	int m_height;
 	int m_width;

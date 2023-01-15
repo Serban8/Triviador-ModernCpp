@@ -2,24 +2,24 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include <QtConcurrent\qtconcurrentrun.h>
-#include <qfuture.h>
+#include <qmessagebox.h>
+
+#include "crow/json.h"
+#include "cpr/cpr.h"
 
 #include "ui_WaitingRoom.h"
 #include "MapWindow.h"
-#include "crow.h"
-#include "cpr/cpr.h"
-#include <qmessagebox.h>
+
 class WaitingRoom : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	WaitingRoom(QWidget *parent = nullptr);
+	WaitingRoom(QWidget* parent = nullptr);
 	~WaitingRoom();
 	void SetUsername(std::string username);
 	void SetTimer();
-	
+
 private:
 	MapWindow map;
 	Ui::WaitingRoomClass ui;
@@ -27,7 +27,7 @@ private:
 	QTimer* m_waitingRoomTimer;
 	QMessageBox m_InformationMsgBox;
 	QPixmap pixmap = QPixmap(":/Triviadorclient/images/triv.png");
-	
+
 private slots:
 	void on_vote_pushButton_clicked();
 	void UpdateWaitingRoom();

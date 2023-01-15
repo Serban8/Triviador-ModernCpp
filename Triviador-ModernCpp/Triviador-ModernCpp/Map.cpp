@@ -32,7 +32,7 @@ int Map::GetWidth() const
 	return m_width;
 }
 
-bool Map::AreAllRegionsOwned() const 
+bool Map::AreAllRegionsOwned() const
 {
 	for (const auto& region : m_regions) {
 		if (!region.GetOwner().get()) {

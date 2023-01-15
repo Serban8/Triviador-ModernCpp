@@ -98,12 +98,6 @@
     <QtMoc Include="TriviadorClient.h" />
     <ClCompile Include="GameHistory.cpp" />
     <ClCompile Include="Homescreen.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MultipleChoiceQuestion.cpp" />
-    <ClCompile Include="NumberQuestion.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Question.cpp" />
-    <ClCompile Include="Region.cpp" />
     <ClCompile Include="RegisterForm.cpp" />
     <ClCompile Include="TriviadorClient.cpp" />
     <ClCompile Include="main.cpp" />
@@ -114,12 +108,6 @@
     <QtMoc Include="WaitingRoom.h" />
     <QtMoc Include="Homescreen.h" />
     <QtMoc Include="GameHistory.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="MultipleChoiceQuestion.h" />
-    <ClInclude Include="NumberQuestion.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Question.h" />
-    <ClInclude Include="Region.h" />
     <QtMoc Include="MapWindow.h" />
     <QtMoc Include="RegisterForm.h" />
   </ItemGroup>

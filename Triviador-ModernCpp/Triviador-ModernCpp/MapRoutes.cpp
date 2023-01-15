@@ -13,14 +13,16 @@ crow::json::wvalue GetMapHandler::operator() () const
 	Map routeMap = game.GetMap();
 	for (uint8_t i = 0; i < routeMap.GetHeight(); i++) {
 		for (uint8_t j = 0; j < routeMap.GetWidth(); j++) {
-			
+
 			std::string owner;
+			//determine if region has owner
 			if (routeMap[{i, j}].GetOwner().get()) {
 				routeMap[{i, j}].GetOwner().get()->GetUsername();
 			}
 			else {
 				owner = "none";
 			}
+
 			mapJson.push_back(crow::json::wvalue{
 				{"line", i},
 				{"column", j},
@@ -70,6 +72,7 @@ crow::response SetRegionOwnerHandler::operator()(const crow::request& req) const
 		size_t pos;
 		auto& lineStr = lineIter->second;
 		auto& columnStr = columnIter->second;
+		auto& ownerStr = ownerIter->second;
 
 		//try to convert line to int
 		int line = std::stoi(lineStr, &pos);
@@ -84,7 +87,7 @@ crow::response SetRegionOwnerHandler::operator()(const crow::request& req) const
 		}
 
 		//set region owner
-		game.ModifyRegion({ line, column }, std::make_shared<Player>(game[ownerIter->second]));
+		game.ModifyRegion({ line, column }, std::make_shared<Player>(game[ownerStr]));
 		//
 	}
 	else {
@@ -103,18 +106,19 @@ crow::response InitializeRegionHandler::operator()(const crow::request& req) con
 {
 	auto bodyArgs = parseRequestBody(req.body);
 	auto bodyEnd = bodyArgs.end();
-	//getting the line and column
 	auto lineIter = bodyArgs.find("line");
 	auto columnIter = bodyArgs.find("column");
 
 	//setting the new type
 	auto typeIter = bodyArgs.find("type");
 	auto usernameIter = bodyArgs.find("username");
+
 	if (lineIter != bodyEnd && columnIter != bodyEnd && typeIter != bodyEnd && usernameIter != bodyEnd) {
 		size_t pos;
 		auto& lineStr = lineIter->second;
 		auto& columnStr = columnIter->second;
 		auto& usernameStr = usernameIter->second;
+		auto& typeStr = typeIter->second;
 
 		//try to convert line to int
 		int line = std::stoi(lineStr, &pos);
@@ -128,12 +132,13 @@ crow::response InitializeRegionHandler::operator()(const crow::request& req) con
 			return crow::response(400, "BAD REQUEST");
 		}
 
+		//set region type & owner
 		game.ModifyRegion(
-			{ line, column }, 
-			Region::StringToRegionType(typeIter->second), 
+			{ line, column },
+			Region::StringToRegionType(typeStr),
 			std::make_shared<Player>(game[usernameStr])
 		);
-		//set region type & owner
+
 		if (game.GetPhase() == Game::Phase::CHOOSING_BASES) {
 			CROW_LOG_INFO << "---";
 			CROW_LOG_INFO << "Status has been set to CHOSE_BASE";
@@ -146,12 +151,10 @@ crow::response InitializeRegionHandler::operator()(const crow::request& req) con
 			CROW_LOG_INFO << "---";
 			status = ServerStatus::CHOSE_REGION;
 		}
+		return crow::response(200);
 	}
-	else {
-		return crow::response(400, "BAD REQUEST");
-	}
-	
-	return crow::response(200);
+
+	return crow::response(400, "BAD REQUEST");
 }
 //
 
@@ -163,7 +166,6 @@ crow::response IncreaseRegionScoreHandler::operator()(const crow::request& req) 
 {
 	auto bodyArgs = parseRequestBody(req.body);
 	auto bodyEnd = bodyArgs.end();
-	//getting the line and column
 	auto lineIter = bodyArgs.find("line");
 	auto columnIter = bodyArgs.find("column");
 

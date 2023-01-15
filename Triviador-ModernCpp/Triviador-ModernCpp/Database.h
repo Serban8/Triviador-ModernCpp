@@ -86,6 +86,7 @@ struct QuestionDatabase
 		m_incorrectAnswer3(q.GetIncorrectAnswers()[2])
 	{
 	}
+
 	QuestionDatabase(std::variant<NumberQuestion<int>, NumberQuestion<float>> nq) :
 		m_type("Number")
 	{
@@ -126,9 +127,8 @@ inline auto createStorage(const std::string& filename)
 	return sql::make_storage(
 		filename,
 		sql::make_table("Players",
-			sql::make_column("username", &PlayerDatabase::m_username, sql::primary_key()),//or player, need to see
+			sql::make_column("username", &PlayerDatabase::m_username, sql::primary_key()),
 			sql::make_column("password", &PlayerDatabase::m_password)
-			//instead of an column we will make a query to get no. of  games played
 		),
 		sql::make_table("Questions",
 			sql::make_column("id", &QuestionDatabase::m_id, sql::autoincrement(), sql::primary_key()),

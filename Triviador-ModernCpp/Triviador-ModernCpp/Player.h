@@ -20,19 +20,16 @@ public:
 	friend bool operator<(const Player& p1, const Player& p2);
 
 	//getters
-	int GetPoints() const;
 	std::string GetUsername() const;
 	bool IsActive() const;
 
 	//setters
-	void SetPoints(int points);
 	void SetActive(bool isActive);
 
 	//methods
 	void UseAdvantage(Advantage advantage);
 
 private:
-	int m_points;
 	bool m_isActive;
 	std::string m_username;
 

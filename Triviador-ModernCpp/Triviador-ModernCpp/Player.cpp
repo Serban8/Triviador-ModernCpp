@@ -3,7 +3,6 @@
 Player::Player(std::string username) :
 	m_username(username)
 {
-	m_points = 0;
 	m_isActive = true;
 	m_advantages =
 	{ {
@@ -11,11 +10,6 @@ Player::Player(std::string username) :
 		{Advantage::ChooseAnswer, false},
 		{Advantage::SuggestAnswer, false}
 	} };
-}
-
-int Player::GetPoints() const
-{
-	return m_points;
 }
 
 std::string Player::GetUsername() const
@@ -26,11 +20,6 @@ std::string Player::GetUsername() const
 bool Player::IsActive() const
 {
 	return m_isActive;
-}
-
-void Player::SetPoints(int points)
-{
-	m_points = points;
 }
 
 void Player::SetActive(bool isActive)
@@ -46,9 +35,4 @@ void Player::UseAdvantage(Advantage advantage)
 bool operator==(const Player& p1, const Player& p2)
 {
 	return p1.m_username == p2.m_username;
-}
-
-bool operator<(const Player& p1, const Player& p2)
-{
-	return p1.GetPoints() < p2.GetPoints();
 }

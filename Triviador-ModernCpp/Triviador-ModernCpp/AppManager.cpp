@@ -3,7 +3,7 @@
 AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_storage(storage)
 {
 	m_status = ServerStatus::WAIT_TO_START;
-	//m_game = Game(m_waitingRoomList, database::getNumberQuestions(storage, 15), database::getMultipleChoiceQuestions(storage, 30));
+
 	//status check
 	CROW_ROUTE(app, "/checkstatus")
 		.methods(crow::HTTPMethod::PUT)([this](const crow::request& req) {
@@ -16,24 +16,26 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 			Player requestingPlayer = m_game[username];
 			//
 
-			//COMMON LOGIC -> do this with leaderboard as well
+			//COMMON LOGIC -> to add DISPLAY_LEADERBARD here leaderboard as well
 			if (m_status == ServerStatus::DISPLAY_QUESTION) {
+				//send the DISPLAY_QUESTION signal only to the players that have not already answered
 				//if we can find the player in the leaderboard then he already answered and needs to be sent the status to wait
 				auto it = std::find_if(
 					m_leaderboard.begin(),
 					m_leaderboard.end(),
-					[&username](const auto& val) {return val.second->GetUsername() == username; });
+					[&username](const auto& val) { return val.second->GetUsername() == username; }
+				);
 
 				if (it != m_leaderboard.end()) {
 					return crow::json::wvalue{ { "status", ConvertStatusToString(ServerStatus::WAIT) } };
 				}
-				else {
-					return crow::json::wvalue{ { "status", ConvertStatusToString(ServerStatus::DISPLAY_QUESTION) } };
-				}
+
+				return crow::json::wvalue{ { "status", ConvertStatusToString(ServerStatus::DISPLAY_QUESTION) } };
+
 			}
 			//
-				//CHOOSING BASES PHASE LOGIC
-				//below state is reached only when all players have submitted answers for the question
+
+			//CHOOSING BASES PHASE LOGIC
 			else if (m_game.GetPhase() == Game::Phase::CHOOSING_BASES) {
 				if (m_status == ServerStatus::WAIT) {
 					if (m_leaderboard.empty()) { //choosing bases is done - start next phase
@@ -44,15 +46,14 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 						CROW_LOG_INFO << "---";
 					}
 					else {
-						//if it is the requesting players' turn to choose the base then return that signal and erase him from the leaderboard
-						const Player intendedChoosingPlayer = *m_leaderboard.begin()->second.get(); //todo: make it a pointer
+						//if it is the requesting players' turn to choose the base then return CHOOSE_REGION and erase him from the leaderboard
+						const Player intendedChoosingPlayer = *m_leaderboard.begin()->second.get();
 						if (requestingPlayer == intendedChoosingPlayer) {
-							//m_leaderboard.erase(m_leaderboard.begin());
 							return crow::json::wvalue{ { "status", ConvertStatusToString(ServerStatus::CHOOSE_REGION) } };
 						}
 					}
 				}
-				else if (m_status == ServerStatus::CHOSE_BASE) {
+				else if (m_status == ServerStatus::CHOSE_BASE) {//check if needed
 					m_status = ServerStatus::UPDATE_MAP;
 					m_leaderboard.erase(m_leaderboard.begin());
 				}
@@ -60,12 +61,13 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 			}
 			//
 
-			//CHOOSING TERRITORIES PHASE LOGIC - check map updates (they may be too often)
+			//CHOOSING TERRITORIES PHASE LOGIC
 			//if current phase is set to choosing territories, then send the players (in the correct order) the signal to choose the territory
 			else if (m_game.GetPhase() == Game::Phase::CHOOSING_REGIONS) {
-				static int numberOfChoicesAllowed;// = m_game.GetActivePlayers().size() - 1;
+				static int numberOfChoicesAllowed;
+
 				if (m_status == ServerStatus::START_CHOOSING_REGIONS) {
-					//make sure that all clients have received the signal to start choosing regions
+					//make sure that all clients have received START_CHOOSING_REGIONS to start choosing regions
 					static uint8_t requestCount = 0;
 					++requestCount;
 					if (requestCount == m_game.GetActivePlayers().size()) {
@@ -81,14 +83,12 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 				else if (m_status == ServerStatus::WAIT || m_status == ServerStatus::UPDATE_MAP) {
 
 					if (m_leaderboard.empty()) { //this loop of choosing regions is done
-						static int cnt = 0;
-						cnt++;
-						if (m_game.GetMap().AreAllRegionsOwned() || cnt == 1) {
+						if (m_game.GetMap().AreAllRegionsOwned()) {
 							m_game.SetPhase(Game::Phase::DUEL);
 							CROW_LOG_INFO << "---";
 							CROW_LOG_INFO << "Status has been set to START_ROUND";
 							CROW_LOG_INFO << "---";
-							GenereatePlayerOrder();
+							GenereatePlayerOrder(); //generate the player order for the DUEL phase and start the first roud
 							m_status = ServerStatus::START_ROUND;
 						}
 						else {
@@ -102,7 +102,7 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 					else {
 						static int numberChoseCounter = 0;
 						//if it is the requesting players' turn to choose the base then update the counter
-						const Player intendedChoosingPlayer = *m_leaderboard.begin()->second.get(); //todo: make it a pointer
+						const Player intendedChoosingPlayer = *m_leaderboard.begin()->second.get();
 						if (requestingPlayer == intendedChoosingPlayer) {
 							//check if the player is done choosing
 							if (numberChoseCounter == numberOfChoicesAllowed) {
@@ -140,17 +140,19 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 						m_status = ServerStatus::GAME_FINISHED;
 						return crow::json::wvalue{ { "status", ConvertStatusToString(m_status) } };
 					}
-					const Player intendedAttackingPlayer = m_game[m_playerOrder.front()]; //initialize it from a queue  that specifies the order
+					const Player intendedAttackingPlayer = m_game[m_playerOrder.front()];
 					if (requestingPlayer == intendedAttackingPlayer) {
 						m_attacker = m_game[username]; //should be pointer
 						CROW_LOG_INFO << "---";
 						CROW_LOG_INFO << "Status has been set to WAIT";
 						CROW_LOG_INFO << "---";
+
+						//only return to the attacker CHOOSE_REGION signal and set the status to WAIT for all other players
 						m_status = ServerStatus::WAIT;
 						return crow::json::wvalue{ { "status", ConvertStatusToString(ServerStatus::CHOOSE_REGION) } };
 					}
 					return crow::json::wvalue{ { "status", ConvertStatusToString(m_status) } };
-					
+
 				}
 
 				//on ATTACKER_CHOSE_REGION
@@ -175,10 +177,6 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 				}
 			}
 
-			//on DISPLAY_QUESTION - display for everybody but only let attacker and attacked to answer - do this in get question
-
-			//on DISPLAY_LEADERBOARD - display for everybody - update m_attackeRegion according to the attacker(done in addresponse)
-
 			//ON UPDATE_MAP - everybody gets the map
 			//
 
@@ -190,16 +188,15 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 			return crow::json::wvalue{ { "status", ConvertStatusToString(m_status) } };
 		}
 
-		//return 500 internal server error
 			});
 	//
 
 	//login related routes
-	CROW_ROUTE(app, "/addnewplayer")
+	CROW_ROUTE(app, "/addnewplayer") //move to functor
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
 		return database::addNewPlayer(storage, req);
 			});
-	CROW_ROUTE(app, "/checkplayer")
+	CROW_ROUTE(app, "/checkplayer") //move to functor
 		.methods(crow::HTTPMethod::PUT)([&storage](const crow::request& req) {
 		return database::checkPlayer(storage, req);
 			});
@@ -220,7 +217,7 @@ AppManager::AppManager(crow::SimpleApp& app, Storage& storage) : m_app(app), m_s
 	//game logic related routes
 	CROW_ROUTE(app, "/startgame")(StartGameHandler(m_status, m_game, m_waitingRoomList, storage));
 	CROW_ROUTE(app, "/getplayers")(GetPlayersHandler(m_game));
-	CROW_ROUTE(app, "/getnumberquestion")(GetNumberQuestionHandler(m_status, m_game)); //maybe renamed into getquestion and pass type as url param
+	CROW_ROUTE(app, "/getnumberquestion")(GetNumberQuestionHandler(m_status, m_game));
 	CROW_ROUTE(app, "/getmultiplechoicequestion")
 		.methods(crow::HTTPMethod::PUT)(GetMultipleChoiceQuestionHandler(m_status, m_attacker, m_attacked, m_game));
 	//map related routes
@@ -250,29 +247,29 @@ void AppManager::GenereatePlayerOrder()
 	const int noOfRoundsFor4Player = 5;
 
 	std::set<int> order;
-	uint8_t counter = m_waitingRoomList.size();
+	uint8_t numberOfPlayers = m_game.GetActivePlayers().size();
 	std::vector<int> intermediatePhase;
 
 	//getting the actual round number
-	int currentNoOfRound;
-	if (counter == 2)
+	int currentNoOfRounds;
+	if (numberOfPlayers == 2)
 	{
-		currentNoOfRound = noOfRoundsFor2Player;
+		currentNoOfRounds = noOfRoundsFor2Player;
 	}
-	else if (counter == 3) {
-		currentNoOfRound = noOfRoundsFor3Player;
+	else if (numberOfPlayers == 3) {
+		currentNoOfRounds = noOfRoundsFor3Player;
 	}
-	else if (counter == 4) {
-		currentNoOfRound = noOfRoundsFor4Player;
+	else if (numberOfPlayers == 4) {
+		currentNoOfRounds = noOfRoundsFor4Player;
 	}
 
-	//initialising a vector with the numbers from interval 0 - number of players-1
-	for (uint8_t i = 0; i < counter; i++) {
+	//initialising a vector with the numbers from interval 0 -> number of players-1
+	for (uint8_t i = 0; i < numberOfPlayers; i++) {
 		intermediatePhase.push_back(i);
 	}
 
 	//inserting in the queue
-	while (m_playerOrder.size() != currentNoOfRound * counter) {
+	while (m_playerOrder.size() != currentNoOfRounds * numberOfPlayers) {
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		//shuffling the indexes
 		shuffle(intermediatePhase.begin(), intermediatePhase.end(), std::default_random_engine(seed));

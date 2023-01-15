@@ -1,16 +1,15 @@
 #pragma once
 
-#include "ui_TriviadorClient.h"
-#include "cpr/cpr.h"
-#include "crow.h"
-
-#include <QtWidgets/QMainWindow>
+#include <QMainWindow>
 #include <QLabel>
-#include <thread>
+
+#include "ui_TriviadorClient.h"
+#include <cpr/cpr.h>
+#include <crow.h>
+
 #include <chrono>
 #include "RegisterForm.h"
 #include "Homescreen.h"
-#include "Player.h"
 
 class TriviadorClient : public QMainWindow
 {
@@ -25,7 +24,7 @@ private:
 	Ui::TriviadorclientClass ui;
 	RegisterForm regForm;
 	Homescreen homescreen;
-	
+
 private slots:
 	void on_login_pushButton_clicked();
 	void on_register_pushButton_clicked();

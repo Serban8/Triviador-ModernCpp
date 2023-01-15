@@ -12,7 +12,6 @@ public:
 		Territory
 	};
 
-	//convert string to Type and vice-versa; maybe move in utils?
 public:
 	static inline Type StringToRegionType(std::string type) {
 		if (type == "Base" || type == "base") {
@@ -42,7 +41,6 @@ public:
 	}
 
 public:
-	//constructor
 	Region();
 	Region(std::shared_ptr<Player> owner, Type type = Type::Territory, int score = 100);
 
@@ -65,6 +63,6 @@ private:
 
 private:
 	int m_score;
-	std::shared_ptr<Player> m_owner; //should be pointer
+	std::shared_ptr<Player> m_owner;
 	Type m_type;
 };

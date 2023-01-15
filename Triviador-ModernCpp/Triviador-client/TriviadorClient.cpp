@@ -2,7 +2,8 @@
 #include <qmessagebox.h>
 #include <qgraphicsview.h>
 #include <qsizepolicy.h>
-#include <qgraphicseffect.h>
+#include <qregularexpression.h>
+
 TriviadorClient::TriviadorClient(QWidget* parent)
 	: QMainWindow(parent)
 {
@@ -11,22 +12,19 @@ TriviadorClient::TriviadorClient(QWidget* parent)
 	ui.username->setPlaceholderText("Enter your username");
 	ui.password->setPlaceholderText("Enter your password");
 
+	//create a regular expression that checks if input is alphanumeric
+	QRegularExpression rxUsername("[a-zA-Z0-9_\\-\\.]+");
+	QValidator* usernameValidator = new QRegularExpressionValidator(rxUsername, this);
+
+	ui.username->setValidator(usernameValidator);
+
 	ui.centralWidget->resize(QGuiApplication::primaryScreen()->availableGeometry().size() /** 0.9*/);
 
-	/*ui.groupBox->setAlignment(Qt::AlignHCenter);
-	ui.groupBox->setAlignment(Qt::AlignVCenter);*/
 	ui.groupBox->move(this->width() / 2 - ui.groupBox->geometry().width() / 2, this->height() / 2 - ui.groupBox->geometry().height() / 2);
 	ui.register_pushButton->move(this->width() / 2 - ui.register_pushButton->geometry().width() / 2, ui.groupBox->pos().y() - ui.register_pushButton->geometry().height() * 1.5);
 
 	ui.stackedWidget->insertWidget(1, &regForm);
 	ui.stackedWidget->insertWidget(2, &homescreen);
-	/*QGraphicsBlurEffect* blur = new QGraphicsBlurEffect;
-	blur->setBlurRadius(8);
-	ui.stackedWidget->setGraphicsEffect(blur);*/
-	/*QGraphicsBlurEffect* blurr = new QGraphicsBlurEffect;
-	blurr->setBlurRadius(0);
-	ui.username->setGraphicsEffect(blurr);*/
-	//ui.groupBox->setStyleSheet("background-image: transparent");
 }
 
 TriviadorClient::~TriviadorClient()

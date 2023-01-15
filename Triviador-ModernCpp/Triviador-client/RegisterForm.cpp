@@ -9,6 +9,12 @@ RegisterForm::RegisterForm(QWidget* parent)
 	ui.username->setPlaceholderText("Enter your username");
 	ui.password->setPlaceholderText("Enter your password");
 
+	//create a regular expression that checks if input is alphanumeric
+	QRegularExpression rxUsername("[a-zA-Z0-9_\\-\\.]+");
+	QValidator* usernameValidator = new QRegularExpressionValidator(rxUsername, this);
+
+	ui.username->setValidator(usernameValidator);
+
 	ui.stackedWidget->insertWidget(1, &homescreen);
 	ui.groupBox->move(this->width() / 2 - ui.groupBox->geometry().width() / 2, this->height() / 2 - ui.groupBox->geometry().height() / 2);
 
@@ -50,7 +56,7 @@ void RegisterForm::on_register_pushButton_clicked() {
 	std::string password = ui.password->text().toUtf8().constData();
 
 	if (username.empty() || password.empty()) {
-	
+
 		m_WarningMsgBox.setText("Username or password cannot be empty!");
 		m_WarningMsgBox.exec();
 
@@ -75,7 +81,7 @@ void RegisterForm::on_register_pushButton_clicked() {
 		m_WarningMsgBox.exec();
 
 	}
-		//QMessageBox::warning(this, "Warning", "Username already exists!");
+	//QMessageBox::warning(this, "Warning", "Username already exists!");
 	else {
 		std::string message = "Something went wrong! Error code: " + std::to_string(status);
 

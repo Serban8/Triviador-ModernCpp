@@ -166,12 +166,10 @@
     <ClInclude Include="MapRoutes.h" />
     <ClInclude Include="PregameRoutes.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameDatabase.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerDatabase.h" />
-    <ClInclude Include="PlayerGameDatabase.h" />
     <ClInclude Include="QuestionDatabase.h" />
     <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="Region.h" />

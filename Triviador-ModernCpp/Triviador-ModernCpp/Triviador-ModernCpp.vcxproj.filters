@@ -28,9 +28,6 @@
     <Filter Include="App Files\Source Files">
       <UniqueIdentifier>{c758c8f4-0289-430b-96b9-14b9660f46c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{ad5c9b4a-aeb3-4093-a6c9-f90c69b1cc43}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TriviadorServer.cpp">
@@ -83,13 +80,7 @@
     <ClInclude Include="PlayerDatabase.h">
       <Filter>Header Files\Database Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerGameDatabase.h">
-      <Filter>Header Files\Database Files</Filter>
-    </ClInclude>
     <ClInclude Include="QuestionDatabase.h">
-      <Filter>Header Files\Database Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameDatabase.h">
       <Filter>Header Files\Database Files</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">

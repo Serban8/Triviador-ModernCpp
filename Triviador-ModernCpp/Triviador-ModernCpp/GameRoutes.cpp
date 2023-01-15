@@ -8,6 +8,7 @@ AddResponseHandler::AddResponseHandler(ServerStatus& status, Game& game, std::sh
 crow::response AddResponseHandler::operator()(const crow::request& req) const
 {
 	static uint8_t responseCounter = 0;
+
 	auto bodyArgs = parseRequestBody(req.body);
 	auto bodyEnd = bodyArgs.end();
 	auto usernameIter = bodyArgs.find("username");
@@ -32,7 +33,9 @@ crow::response AddResponseHandler::operator()(const crow::request& req) const
 		if (pos != t.size()) {
 			return crow::response(400, "BAD REQUEST");
 		}
+		CROW_LOG_INFO << "---";
 		CROW_LOG_INFO << "Receieved answer from player: " << username << "; distance from the correct response: " << response << "; time took to answer: " << time;
+		CROW_LOG_INFO << "---";
 		leaderboard.emplace(std::make_pair(response, time), std::make_shared<Player>(game[username]));
 	}
 	else
@@ -40,17 +43,9 @@ crow::response AddResponseHandler::operator()(const crow::request& req) const
 		return crow::response(400, "BAD REQUEST");
 	}
 
-	//TESTING
-	for (const auto& player : leaderboard) {
-		auto& [key, value] = player;
-		auto& [response, time] = key;
-		CROW_LOG_INFO << "RESPONSE: " << response << " TIME: " << time << " USERNAME: " << value.get()->GetUsername();
-	}
-	//
-
 	++responseCounter;
 	bool resetCounter = false;
-	
+
 	if (game.GetPhase() == Game::Phase::CHOOSING_BASES || game.GetPhase() == Game::Phase::CHOOSING_REGIONS) {
 		if (responseCounter == game.GetActivePlayers().size()) {
 			resetCounter = true;
@@ -62,7 +57,7 @@ crow::response AddResponseHandler::operator()(const crow::request& req) const
 			resetCounter = true;
 		}
 	}
-	
+
 	if (resetCounter)
 	{
 		CROW_LOG_INFO << "---";
@@ -88,12 +83,13 @@ crow::json::wvalue GetMultipleChoiceQuestionHandler::operator() (const crow::req
 	static uint8_t requestCounter = 0;
 	static MultipleChoiceQuestion question = game.GetMultipleChoiceQuestion();
 	crow::json::wvalue questionJson;
+
 	auto bodyArgs = parseRequestBody(req.body);
 	auto bodyEnd = bodyArgs.end();
 	auto usernameIter = bodyArgs.find("username");
 
 	if (usernameIter != bodyEnd) {
-		auto& username = usernameIter->second;
+		const auto& username = usernameIter->second;
 		bool allowAnswer;
 		if (username == attacker.GetUsername() || username == attacked.GetUsername()) {
 			allowAnswer = true;
@@ -122,9 +118,8 @@ crow::json::wvalue GetMultipleChoiceQuestionHandler::operator() (const crow::req
 		}
 		return crow::json::wvalue{ questionJson };
 	}
-	else {
-		//return 500 error
-	}
+
+	//return response 500
 }
 //
 
@@ -207,29 +202,29 @@ StartGameHandler::StartGameHandler(ServerStatus& status, Game& game, std::vector
 crow::response StartGameHandler::operator() () const
 {
 	static uint8_t requestCounter = 0;
-	static bool initDone = false;  //retriving questions from the DB takes some time, so we need to make sure that the game has been propperly initialized
+	static bool initDone = false;  //retriving questions from the DB takes some time, so we need to make sure that the game has been properly initialized
 	++requestCounter;
-	CROW_LOG_INFO << "---";
-	CROW_LOG_INFO << "REQ_C: " << (int)requestCounter;
-	CROW_LOG_INFO << "---";
+
 	if (!waitingRoomList.empty() && requestCounter == 1) { //only initialize game when the first request is received
 		game = Game(waitingRoomList, database::getNumberQuestions(storage, 15), database::getMultipleChoiceQuestions(storage, 30));
 		CROW_LOG_INFO << "---";
-		CROW_LOG_INFO << "Game has been initialized with " << waitingRoomList.size() << " players";
+		CROW_LOG_INFO << "Game has been initialized with " << game.GetNumberOfActivePlayers() << " players";
 		CROW_LOG_INFO << "---";
-		initDone = true;
+		initDone = true; //when done initializing the game, set initDone to true
 	}
 
-	if (requestCounter == waitingRoomList.size() && initDone) {
-		CROW_LOG_INFO << "---";
-		CROW_LOG_INFO << "Status has been set to GET_NUMBER_QUESTION";
-		CROW_LOG_INFO << "---";
-		status = ServerStatus::GET_NUMBER_QUESTION;
-		requestCounter = 0;
-		return crow::response(200);
+	if (initDone) {
+		if (game.GetNumberOfActivePlayers() == requestCounter) {
+			CROW_LOG_INFO << "---";
+			CROW_LOG_INFO << "Status has been set to GET_NUMBER_QUESTION";
+			CROW_LOG_INFO << "---";
+			status = ServerStatus::GET_NUMBER_QUESTION;
+			requestCounter = 0;
+			return crow::response(200);
+		}
 	}
 
-	return crow::response(500, "INTERNAL SERVER ERROR");
+	return crow::response(200);
 }
 //
 
@@ -289,7 +284,7 @@ crow::json::wvalue GetLeaderboardHandler::operator() () const
 	static uint8_t requestCounter = 0;
 
 	std::vector<crow::json::wvalue> players_json;
-	
+
 	int place = 1;
 	for (const auto& player : leaderboard)
 	{
@@ -307,8 +302,6 @@ crow::json::wvalue GetLeaderboardHandler::operator() () const
 		status = ServerStatus::WAIT;
 	}
 
-	//Reset leaderboard
-	//leaderboard.clear();
 	return crow::json::wvalue{ players_json };
 }
 //

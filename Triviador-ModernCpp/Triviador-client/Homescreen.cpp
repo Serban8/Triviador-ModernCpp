@@ -20,8 +20,8 @@ void Homescreen::on_GameHistory_pushButton_clicked()
 	gameHistory->show();
 }
 
-void Homescreen::SetUsername(std::string username) {
-
+void Homescreen::SetUsername(std::string username)
+{
 	this->m_playerUsername = username;
 }
 

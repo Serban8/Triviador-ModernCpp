@@ -17,16 +17,18 @@ public:
 	RegisterForm(QWidget* parent = nullptr);
 	~RegisterForm();
 
+private slots:
+	void on_register_pushButton_clicked();
+
 private:
 	statusCode CreateNewPlayer(std::string username, std::string password);
 
 	void closeEvent(QCloseEvent* ev) override;
+
 private:
 	Homescreen homescreen;
 	Ui::RegisterFormClass ui;
 	QMessageBox m_WarningMsgBox;
 	QMessageBox m_InformationMsgBox;
 	QPixmap pixmap = QPixmap(":/Triviadorclient/images/triv.png");
-private slots:
-	void on_register_pushButton_clicked();
 };
