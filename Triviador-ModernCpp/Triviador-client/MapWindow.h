@@ -4,6 +4,8 @@
 #include <qscreen.h>
 #include <qlineedit.h>
 #include <qgraphicseffect.h>
+#include <qtimer.h>
+#include <QListWidget>
 #include "ui_TwoPlayersMap.h"
 #include "ui_ThreePlayersMap.h"
 #include "ui_FourPlayersMap.h"
@@ -28,6 +30,12 @@ public:
 	void ShowMultipleChoiceQuestions();
 	void UpdateMap();
 	void SetUsername(std::string playerUsername);
+	void HideWidget(QWidget* &widget);
+	void SetTimer();
+	void ShowLeaderboard();
+
+private slots:
+	void StopTimer();
 
 private:
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
@@ -44,6 +52,7 @@ private:
 	QPushButton* fourthChoice_pushButton;
 	QTimer* m_ShowQuestionsTimer;
 	QPushButton* numericAnswer_pushButton;
+	QListWidget* m_leaderboard;
 	std::string m_playerUsername;
 
 };
