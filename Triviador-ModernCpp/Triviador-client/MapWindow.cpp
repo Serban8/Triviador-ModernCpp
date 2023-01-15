@@ -5,6 +5,9 @@ MapWindow::MapWindow(QWidget* parent)
 {
 	twoPlayersMap_ui.setupUi(this);
 	resize(QGuiApplication::primaryScreen()->availableGeometry().size() * 0.9);
+	m_ShowQuestionsTimer = new QTimer(this);
+	m_leaderboard = new QListWidget(this);
+	connect(m_ShowQuestionsTimer, SIGNAL(timeout()), this, SLOT(StopTimer()));
 }
 
 
@@ -16,7 +19,6 @@ void MapWindow::SetUI(int numberOfPlayers)
 	if (numberOfPlayers == 2)
 	{
 		twoPlayersMap_ui.setupUi(this);
-		ShowNumberQuestions();
 		setTwoPlayersRegions();
 		setTwoPlayersNeighbors();
 	}
@@ -24,7 +26,6 @@ void MapWindow::SetUI(int numberOfPlayers)
 		if (numberOfPlayers == 3)
 		{
 			threePlayersMap_ui.setupUi(this);
-			ShowNumberQuestions();
 			setThreePlayersRegions();
 			setThreePlayersNeighbors();
 		}
@@ -32,10 +33,11 @@ void MapWindow::SetUI(int numberOfPlayers)
 			if (numberOfPlayers == 4)
 			{
 				fourPlayersMap_ui.setupUi(this);
-				ShowNumberQuestions();
 				setFourPlayersRegions();
 				setFourPlayersNeighbors();
 			}
+	std::this_thread::sleep_for(std::chrono::seconds(15));
+	ShowNumberQuestions();
 }
 
 void MapWindow::setTwoPlayersRegions()
@@ -173,40 +175,34 @@ void MapWindow::ShowNumberQuestions() {
 	QString qIncorrectAnswer1 = QString::number(incorrectAnswer1);
 	QString qIncorrectAnswer2 = QString::number(incorrectAnswer2);
 	QString qIncorrectAnswer3 = QString::number(incorrectAnswer3);
-	/*for (const auto& player : players_json)
-	{
-		time = time - 0.1;
-		std::string res;
 
-		std::cout << player["username"] << " you can respond:" << std::endl;
-		std::getline(std::cin, res);
+	question_widget = new QWidget(this);
+	question_widget->resize(this->width() / 2, this->height() / 2);
+	question_widget->move(this->width() / 2 - question_widget->geometry().width() / 2, this->height() / 2 - question_widget->geometry().height() / 2);
+	question_widget->setStyleSheet("border-image: url(:/Triviadorclient/images/blankWhiteImage.jpg); border-radius: 10px;");
 
-		auto correctAnswer = numberQuestion["correctAnswer"].s();
-		std::string dif = (res != correctAnswer || res == "A" ? "1" : "0");
-		qInfo() << (res == correctAnswer ? "1" : "0");
-		auto response = cpr::Put(
-			cpr::Url{ "http://localhost:18080/addresponse" },
-			cpr::Payload{
-				{ "username", (player["username"].s())},
-				{ "response", dif },
-				{ "time", std::to_string(time) }
-			}
-		);
-	}*/
+	question_label = new QLabel(question_widget);
+	question_label->move(question_widget->width() / 2 - question_label->geometry().width() * 3, question_widget->height() / 5 - question_label->geometry().height() * 1.5);
+	question_label->setText(qQuestion);
+	question_label->resize(500, 100);
+	//question_label->setScaledContents(true);
+	question_label->setWordWrap(true);
+	question_label->setStyleSheet("font-size : 25pt; border-image: white; border: none ; qproperty-alignment: AlignCenter;");
 
 	answer_lineEdit = new QLineEdit(question_widget);
 	answer_lineEdit->resize(300, 50);
-	answer_lineEdit->setPlaceholderText("Here you can write your answer!");
+	answer_lineEdit->setPlaceholderText("Write your answer here!");
 	answer_lineEdit->setStyleSheet("font-size : 15pt; border-image: white;");
 	answer_lineEdit->move(question_widget->width() / 2 - answer_lineEdit->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 4);
 	//answer_lineEdit->hide();
 
 	numericAnswer_pushButton = new QPushButton(question_widget);
 	numericAnswer_pushButton->setText("Submit answer!");
-	numericAnswer_pushButton->setStyleSheet("border-image: white;");
 	numericAnswer_pushButton->resize(question_widget->width() / 2, 30);
 	numericAnswer_pushButton->move(question_widget->width() / 2 - numericAnswer_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() + numericAnswer_pushButton->geometry().height() /2);
+	numericAnswer_pushButton->setStyleSheet("font-size : 10pt; border-image: white; border: 1px solid black; background-color: darkGray; ");
 
+	m_ShowQuestionsTimer->start(30000);
 }
 
 void MapWindow::ShowMultipleChoiceQuestions()
@@ -233,7 +229,7 @@ void MapWindow::ShowMultipleChoiceQuestions()
 	question_widget = new QWidget(this);
 	question_widget->resize(this->width() / 2, this->height() / 2);
 	question_widget->move(this->width() / 2 - question_widget->geometry().width() / 2, this->height() / 2 - question_widget->geometry().height() / 2);
-	question_widget->setStyleSheet("border-image: url(:/Triviadorclient/images/blankWhiteImage.jpg);");
+	question_widget->setStyleSheet("border-image: url(:/Triviadorclient/images/blankWhiteImage.jpg); border-radius: 10px;");
 
 	question_label = new QLabel(question_widget);
 	question_label->move(question_widget->width() / 2 - question_label->geometry().width() * 3, question_widget->height() / 5 - question_label->geometry().height() * 1.5);
@@ -272,6 +268,8 @@ void MapWindow::ShowMultipleChoiceQuestions()
 	fourthChoice_pushButton->resize(question_widget->width(), 30);
 	fourthChoice_pushButton->move(question_widget->width() / 2 - fourthChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height() + thirdChoice_pushButton->geometry().height() + fourthChoice_pushButton->geometry().height());
 	//fourthChoice_pushButton->hide();
+	m_ShowQuestionsTimer->start(30000);
+
 }
 
 void MapWindow::UpdateMap()
@@ -282,4 +280,30 @@ void MapWindow::UpdateMap()
 void MapWindow::SetUsername(std::string playerUsername)
 {
 	m_playerUsername = playerUsername;
+}
+
+void MapWindow::HideWidget(QWidget*& widget)
+{
+	//m_ShowQuestionsTimer->stop();
+	widget->hide();
+}
+void MapWindow::ShowLeaderboard()
+{
+	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getleaderboard" });
+	crow::json::rvalue resBody;
+	resBody = crow::json::load(response.text);
+	for (int i = 1; i < resBody.size() ; i++)
+	{
+		std::string stringUsername = resBody["place"+std::to_string(i)].s();
+		std::string stringPlace = "place" + std::to_string(i);
+		QString username = QString::fromUtf8(stringUsername.c_str());
+		QString place = QString::fromUtf8(stringPlace.c_str());
+		m_leaderboard->addItem(place + "is" + username);
+
+	}
+}
+void MapWindow::StopTimer()
+{
+	m_ShowQuestionsTimer->stop();
+	HideWidget(question_widget);
 }
