@@ -88,17 +88,14 @@ void MapWindow::UpdateStatus()
 		m_currentQuestion = GetMultipleChoiceQuestion();
 	}
 	else if (status == ServerStatus::GET_NUMBER_QUESTION) {
-		/*questionIsMultipleChoice = false;
+		questionIsMultipleChoice = false;
 		auto numberQuestion = GetNumberQuestion();
 		if (std::holds_alternative<NumberQuestion<int>>(numberQuestion)) {
 			m_currentQuestion = std::get<NumberQuestion<int>>(numberQuestion);
 		}
 		else {
 			m_currentQuestion = std::get<NumberQuestion<float>>(numberQuestion);
-		}*/
-		questionIsMultipleChoice = true;
-		m_currentQuestion = GetMultipleChoiceQuestion();
-		
+		}
 	}
 	else if (status == ServerStatus::DISPLAY_QUESTION && !alreadyDisplayed) {
 		alreadyDisplayed = true;
