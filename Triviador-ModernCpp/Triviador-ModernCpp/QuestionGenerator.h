@@ -5,8 +5,8 @@
 #include <cpr/cpr.h>
 #include <variant>
 
-#include "MultipleChoiceQuestion.h"
-#include "NumberQuestion.h"
+#include "..\Triviador-DLL\MultipleChoiceQuestion.h"
+#include "..\Triviador-DLL\NumberQuestion.h"
 #include "json.hpp"
 
 using json = nlohmann::json;

@@ -7,8 +7,8 @@
 #include <unordered_set>
 
 #include "Player.h"
-#include "MultipleChoiceQuestion.h"
-#include "NumberQuestion.h"
+#include "..\Triviador-DLL\MultipleChoiceQuestion.h"
+#include "..\Triviador-DLL\NumberQuestion.h"
 
 namespace sql = sqlite_orm;
 

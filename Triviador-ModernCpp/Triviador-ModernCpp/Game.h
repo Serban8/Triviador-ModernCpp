@@ -3,8 +3,8 @@
 #include <vector>
 #include <variant>
 
-#include "MultipleChoiceQuestion.h"
-#include "NumberQuestion.h"
+#include "..\Triviador-DLL\MultipleChoiceQuestion.h"
+#include "..\Triviador-DLL\NumberQuestion.h"
 #include "Player.h"
 #include "Map.h"
 

@@ -1,0 +1,27 @@
+#pragma once
+#ifndef TRIVIADOR_EXPORTS
+#define TRIVIADOR_API __declspec(dllexport)
+#else
+#define TRIVIADOR_API __declspec(dllimport)
+#endif
+
+#include <cstdint>
+
+enum class TRIVIADOR_API ServerStatus : uint8_t {
+	WAIT_TO_START,
+	START_ROUND,
+	START_CHOOSING_REGIONS,
+	CHOSE_BASE,
+	CHOSE_REGION,
+	DISPLAY_QUESTION,
+	DISPLAY_LEADERBOARD,
+	WAIT,
+	CHOOSE_REGION,
+	ATTACKER_CHOSE_REGION,
+	GET_MULTIPLE_CHOICE_QUESTION,
+	GET_NUMBER_QUESTION,
+	UPDATE_MAP,
+	END_ROUND,
+	GAME_FINISHED,
+	NONE
+};

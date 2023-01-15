@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <random>
 
-#include "ServerStatus.h"
+#include "..\Triviador-DLL\ServerStatus.h"
 
 //Maybe use unnamed namespace (https://stackoverflow.com/questions/357404/why-are-unnamed-namespaces-used-and-what-are-their-benefits)
 //Basically this means that if another symbol with the same name is defined elsewhere there will not be a violation of the One Definition Rule (ODR) -> does not thow compilation error.

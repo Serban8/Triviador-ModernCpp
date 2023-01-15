@@ -10,7 +10,7 @@
 #include "GameRoutes.h"
 
 #include "utils.h"
-#include "ServerStatus.h"
+#include "..\Triviador-DLL\ServerStatus.h"
 /*
 Game flow:
 	when we enter the game we call /startgame

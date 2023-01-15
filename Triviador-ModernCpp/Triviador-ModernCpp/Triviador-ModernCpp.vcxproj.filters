@@ -36,13 +36,7 @@
     <ClCompile Include="TriviadorServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MultipleChoiceQuestion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QuestionGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Question.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -74,16 +68,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MultipleChoiceQuestion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="QuestionGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Question.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NumberQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
@@ -129,9 +114,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="GameRoutes.h">
-      <Filter>App Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerStatus.h">
       <Filter>App Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

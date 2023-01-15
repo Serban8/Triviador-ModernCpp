@@ -6,7 +6,7 @@
 #include "Database.h"
 #include "QuestionDatabase.h"
 #include "utils.h"
-#include "ServerStatus.h"
+#include "..\Triviador-DLL\ServerStatus.h"
 
 using numberQuestionResponse = std::pair<float, float>;
 

@@ -7,10 +7,10 @@
 
 #include "utils.h"
 
-#include "MultipleChoiceQuestion.h"
+#include "..\Triviador-DLL\MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"
 #include "QuestionDatabase.h"
-#include "NumberQuestion.h"
+#include "..\Triviador-DLL\NumberQuestion.h"
 
 #include "Game.h"
 #include "Player.h"
