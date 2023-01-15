@@ -44,5 +44,8 @@
     <ClCompile Include="utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="NumberQuestion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
