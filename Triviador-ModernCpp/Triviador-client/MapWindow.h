@@ -6,6 +6,7 @@
 #include <qgraphicseffect.h>
 #include <qtimer.h>
 #include <QListWidget>
+#include <qmessagebox.h>
 
 #include "ui_TwoPlayersMap.h"
 #include "ui_ThreePlayersMap.h"
@@ -44,6 +45,8 @@ public:
 	void selectTwoPlayersRegion();
 	void selectThreePlayersRegion();
 	void selectFourPlayersRegion();
+	void SelectAnswerButton();
+
 	//functions for different actions
 	std::variant<NumberQuestion<int>, NumberQuestion<float>> GetNumberQuestion();
 	MultipleChoiceQuestion GetMultipleChoiceQuestion();
@@ -62,6 +65,7 @@ private slots:
 	void SetTwoPlayersRegion();
 	void SetThreePlayersRegion();
 	void SetFourPlayersRegion();
+	void SetAnswerButton();
 
 	void UpdateStatus();
 
@@ -77,6 +81,8 @@ private:
 	std::vector<QGroupBox*> m_regions;
 	std::unordered_map<QGroupBox*, std::vector<QGroupBox*>> m_regionNeighbors;
 
+	std::vector<QPushButton*> m_multipleChoiceButtons;
+
 	//different uis according to the number of players
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
 	Ui::ThreePlayersMapClass threePlayersMap_ui;
@@ -91,4 +97,7 @@ private:
 	QPushButton* thirdChoice_pushButton;
 	QPushButton* fourthChoice_pushButton;
 	QPushButton* numericAnswer_pushButton;
+	QMessageBox m_WarningMsgBox;
+	QMessageBox m_InformationMsgBox;
+	QPixmap pixmap = QPixmap(":/Triviadorclient/images/triv.png");
 };
