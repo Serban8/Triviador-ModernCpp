@@ -1,4 +1,5 @@
 #include "MapWindow.h"
+#include <qmessagebox.h>
 
 MapWindow::MapWindow(QWidget* parent)
 	: QMainWindow(parent)
@@ -201,7 +202,8 @@ void MapWindow::ShowNumberQuestions() {
 	numericAnswer_pushButton->resize(question_widget->width() / 2, 30);
 	numericAnswer_pushButton->move(question_widget->width() / 2 - numericAnswer_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() + numericAnswer_pushButton->geometry().height() /2);
 	numericAnswer_pushButton->setStyleSheet("font-size : 10pt; border-image: white; border: 1px solid black; background-color: darkGray; ");
-
+	
+	connect(numericAnswer_pushButton, SIGNAL(clicked()), this, SLOT(on_numericAnswer_pushButton_clicked()));
 	m_ShowQuestionsTimer->start(30000);
 }
 
@@ -300,6 +302,31 @@ void MapWindow::ShowLeaderboard()
 		QString place = QString::fromUtf8(stringPlace.c_str());
 		m_leaderboard->addItem(place + "is" + username);
 
+	}
+}
+void MapWindow::on_numericAnswer_pushButton_clicked()
+{
+	if (answer_lineEdit->text() == "")
+	{
+		QMessageBox::warning(this, "", "Please enter a number");
+	}
+	else
+	{
+		cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getnumberquestion" });
+		auto numberQuestion = crow::json::load(response.text);
+		double correctAnswer = numberQuestion["correctAnswer"].d();
+		auto res = answer_lineEdit->text().toDouble();
+		auto dif = abs(res -correctAnswer);
+		double time = 1.2;
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/addresponse" },
+			cpr::Payload{
+				{ "username", m_playerUsername},
+				{ "response", std::to_string(dif) },
+				{ "time", std::to_string(time) }
+			}
+		);
+		QMessageBox::information(this, "", "Please wait for the rest to respond");
 	}
 }
 void MapWindow::StopTimer()

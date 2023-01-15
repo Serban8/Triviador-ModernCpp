@@ -36,7 +36,7 @@ public:
 
 private slots:
 	void StopTimer();
-
+	void on_numericAnswer_pushButton_clicked();
 private:
 	Ui::TwoPlayersMapClass twoPlayersMap_ui;
 	Ui::ThreePlayersMapClass threePlayersMap_ui;
