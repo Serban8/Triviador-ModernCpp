@@ -4,7 +4,8 @@
 #include "Game.h"
 #include "utils.h"
 
-#include "ServerStatus.h"
+#include "..\Triviador-DLL\ServerStatus.h"
+//#include "ServerStatus.h"
 
 //GetMapHandler
 class GetMapHandler {
