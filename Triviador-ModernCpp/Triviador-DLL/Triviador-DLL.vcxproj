@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
-    <ClCompile Include="NumberQuestion.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
