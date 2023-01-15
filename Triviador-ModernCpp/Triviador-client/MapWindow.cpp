@@ -9,7 +9,6 @@ MapWindow::MapWindow(QWidget* parent)
 
 	m_showQuestionsTimer = new QTimer(this);
 	m_updateStatusTimer = new QTimer(this);
-	m_leaderboard = new QListWidget(this);
 
 	m_InformationMsgBox.setStyleSheet("border-image: white;");
 	m_InformationMsgBox.setIcon(QMessageBox::Information);
@@ -123,10 +122,11 @@ void MapWindow::UpdateStatus()
 	}
 	else if (status == ServerStatus::DISPLAY_LEADERBOARD) {
 		question_widget->hide();
-		//alreadyDisplayed = false;
+		alreadyDisplayed = false;
 		//auto response = cpr::Get(cpr::Url{ "http://localhost:18080/getleaderboard" });
 		//std::cout << std::endl << "---LEADERBOARD---" << std::endl;
 		//std::cout << std::endl << response.text << std::endl;
+		ShowLeaderboard();
 	}
 	else if (status == ServerStatus::CHOOSE_REGION) {
 	//	std::cout << "Chose region 1,1 " << std::endl;
@@ -150,18 +150,45 @@ void MapWindow::UpdateStatus()
 
 void MapWindow::ShowLeaderboard()
 {
+	m_leaderboardBase = new QWidget(this);
+	m_leaderboardList = new QListWidget(m_leaderboardBase);
+	m_correctAnswerShown = new QLabel(m_leaderboardBase);
+	m_leaderboardBase->resize(this->width() / 2, this->height() / 2);
+	m_leaderboardList->resize(m_leaderboardBase->width()/2, m_leaderboardBase->height()/3);
+	m_leaderboardBase->move(this->width() / 2 - m_leaderboardBase->geometry().width() / 2, this->height() / 2 - m_leaderboardBase->geometry().height() / 3);
+	m_leaderboardBase->setStyleSheet("border-image: url(:/Triviadorclient/images/blankWhiteImage.jpg); border-radius: 10px;");
+	m_leaderboardList->move(m_leaderboardBase->width() / 2 - m_leaderboardList->geometry().width(), m_leaderboardBase->height() / 2 - m_leaderboardList->geometry().height()/2);
+	m_leaderboardList->setStyleSheet("font-size: 15pt;");
 	cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:18080/getleaderboard" });
-	crow::json::rvalue resBody;
-	resBody = crow::json::load(response.text);
-	for (int i = 1; i < resBody.size(); i++)
+	qDebug() << m_leaderboardBase->width() / 2 << m_leaderboardBase->height() / 3;
+	qDebug() << this->width() / 2 - m_leaderboardBase->geometry().width() / 2 << this->height() / 2 - m_leaderboardBase->geometry().height() / 3;
+	qDebug() << m_leaderboardBase->width() / 2 - m_leaderboardList->geometry().width() * 3 << m_leaderboardBase->height() / 5 - m_leaderboardList->geometry().height() * 1.5;
+	auto resBody = crow::json::load(response.text);
+	for (int i = 0; i < resBody.size(); i++)
 	{
-		std::string stringUsername = resBody["place" + std::to_string(i)].s();
-		std::string stringPlace = "place" + std::to_string(i);
+		std::string stringUsername = resBody[i]["place" + std::to_string(i+1)].s();
+		std::string stringPlace = "place" + std::to_string(i+1);
 		QString username = QString::fromUtf8(stringUsername.c_str());
 		QString place = QString::fromUtf8(stringPlace.c_str());
-		m_leaderboard->addItem(place + "is" + username);
-
+		m_leaderboardList->addItem(username+ " is "+place);
 	}
+	m_leaderboardList->update();
+	if (std::holds_alternative<MultipleChoiceQuestion>(m_currentQuestion))
+	{
+		m_correctAnswerShown->setText("Correct answer was:" + QString::fromUtf8(std::get<MultipleChoiceQuestion>(m_currentQuestion).GetCorrectAnswer().c_str()));
+	}
+	else if (std::holds_alternative<NumberQuestion<int>>(m_currentQuestion))
+	{
+		m_correctAnswerShown->setText("Correct answer was:" + QString::fromUtf8(std::to_string(std::get<NumberQuestion<int>>(m_currentQuestion).GetCorrectAnswer()).c_str()));
+	}
+	else if (std::holds_alternative<NumberQuestion<float>>(m_currentQuestion)) {
+		m_correctAnswerShown->setText("Correct answer was:" + QString::fromUtf8(std::to_string(std::get<NumberQuestion<float>>(m_currentQuestion).GetCorrectAnswer()).c_str()));
+	}
+	m_correctAnswerShown->resize(m_leaderboardBase->width(), 30);
+	m_correctAnswerShown->setStyleSheet("font-size : 15pt; border-image: white; border: 1px solid black; background-color: darkGray;qproperty-aligment: AlignCenter");
+	m_correctAnswerShown->move(m_leaderboardBase->width()/2 - m_correctAnswerShown->geometry().width()/2,m_leaderboardBase->height()/2+m_leaderboardList->geometry().height()/2);
+	m_leaderboardBase->show();
+	m_leaderboardList->show();
 }
 void MapWindow::StopTimer()
 {
@@ -179,9 +206,7 @@ void MapWindow::ShowNumberQuestion() {
 	}
 
 	question_widget = new QWidget(this);
-	qDebug() << this->width() << this->height();
 	question_widget->resize(this->width() / 2, this->height() / 2);
-	qDebug() << this->geometry().width() << this->geometry().height();
 	question_widget->move(this->width() / 2 - question_widget->geometry().width() / 2, this->height() / 2 - question_widget->geometry().height() / 2);
 	question_widget->setStyleSheet("border-image: url(:/Triviadorclient/images/blankWhiteImage.jpg); border-radius: 10px;");
 
@@ -189,7 +214,7 @@ void MapWindow::ShowNumberQuestion() {
 	question_label->move(question_widget->width() / 2 - question_label->geometry().width() * 3, question_widget->height() / 5 - question_label->geometry().height() * 1.5);
 	question_label->setText(questionText);
 	question_label->resize(500, 100);
-	//question_label->setScaledContents(true);
+	question_label->setScaledContents(true);
 	question_label->setWordWrap(true);
 	question_label->setStyleSheet("font-size : 25pt; border-image: white; border: none ; qproperty-alignment: AlignCenter;");
 

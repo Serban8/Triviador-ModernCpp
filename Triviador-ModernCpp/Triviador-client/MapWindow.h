@@ -70,7 +70,6 @@ private slots:
 	void UpdateStatus();
 
 private:
-	QListWidget* m_leaderboard;
 	std::string m_playerUsername;
 	AnyQuestion m_currentQuestion;
 	
@@ -100,4 +99,7 @@ private:
 	QMessageBox m_WarningMsgBox;
 	QMessageBox m_InformationMsgBox;
 	QPixmap pixmap = QPixmap(":/Triviadorclient/images/triv.png");
+	QWidget* m_leaderboardBase;
+	QListWidget* m_leaderboardList;
+	QLabel* m_correctAnswerShown;
 };
