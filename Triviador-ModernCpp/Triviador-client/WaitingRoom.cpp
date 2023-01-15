@@ -76,5 +76,7 @@ void WaitingRoom::on_vote_pushButton_clicked() {
 			{ "username", m_playerUsername }
 		});
 
+	ui.vote_pushButton->setEnabled(false);
+
 	UpdateWaitingRoom();
 }

@@ -11,6 +11,14 @@ MapWindow::MapWindow(QWidget* parent)
 	m_updateStatusTimer = new QTimer(this);
 	m_leaderboard = new QListWidget(this);
 
+	m_InformationMsgBox.setStyleSheet("border-image: white;");
+	m_InformationMsgBox.setIcon(QMessageBox::Information);
+	m_InformationMsgBox.setWindowIcon(QIcon(pixmap));
+
+	m_WarningMsgBox.setStyleSheet("border-image: white;");
+	m_WarningMsgBox.setIcon(QMessageBox::Warning);
+	m_WarningMsgBox.setWindowIcon(QIcon(pixmap));
+
 	connect(m_showQuestionsTimer, SIGNAL(timeout()), this, SLOT(StopTimer()));
 	connect(m_updateStatusTimer, SIGNAL(timeout()), this, SLOT(UpdateStatus()));
 }
@@ -80,14 +88,17 @@ void MapWindow::UpdateStatus()
 		m_currentQuestion = GetMultipleChoiceQuestion();
 	}
 	else if (status == ServerStatus::GET_NUMBER_QUESTION) {
-		questionIsMultipleChoice = false;
+		/*questionIsMultipleChoice = false;
 		auto numberQuestion = GetNumberQuestion();
 		if (std::holds_alternative<NumberQuestion<int>>(numberQuestion)) {
 			m_currentQuestion = std::get<NumberQuestion<int>>(numberQuestion);
 		}
 		else {
 			m_currentQuestion = std::get<NumberQuestion<float>>(numberQuestion);
-		}
+		}*/
+		questionIsMultipleChoice = true;
+		m_currentQuestion = GetMultipleChoiceQuestion();
+		
 	}
 	else if (status == ServerStatus::DISPLAY_QUESTION && !alreadyDisplayed) {
 		alreadyDisplayed = true;
@@ -208,6 +219,7 @@ void MapWindow::ShowNumberQuestion() {
 
 void MapWindow::ShowMultipleChoiceQuestion()
 {
+	
 	const auto& crtQuestion = std::get<MultipleChoiceQuestion>(m_currentQuestion);
 	QString questionText = crtQuestion.GetQuestion().c_str();
 
@@ -225,40 +237,49 @@ void MapWindow::ShowMultipleChoiceQuestion()
 	question_label->move(question_widget->width() / 2 - question_label->geometry().width() * 3, question_widget->height() / 5 - question_label->geometry().height() * 1.5);
 	question_label->setText(questionText);
 	question_label->resize(500, 100);
-	question_label->setStyleSheet("font-size : 25pt; border-image: white;");
+	question_label->setStyleSheet("font-size : 25pt; border-image: white; border: none ; qproperty-alignment: AlignCenter;");
 
 	firstChoice_pushButton = new QPushButton(question_widget);
+	firstChoice_pushButton->setEnabled(true);
 	firstChoice_pushButton->setText(correctAnswer);
-	firstChoice_pushButton->setStyleSheet("border-image: white;");
+	firstChoice_pushButton->setStyleSheet("font-size : 10pt; border-image: white; border: 1px solid black; background-color: darkGray;");
 	//firstChoice_pushButton->move(question_widget->width() / 2  - firstChoice_pushButton->geometry().width() * 3, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	firstChoice_pushButton->resize(question_widget->width(), 30);
 	firstChoice_pushButton->move(question_widget->width() / 2 - firstChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	//firstChoice_pushButton->hide();
 
 	secondChoice_pushButton = new QPushButton(question_widget);
+	secondChoice_pushButton->setEnabled(true);
 	secondChoice_pushButton->setText(incorrectAnswer1);
-	secondChoice_pushButton->setStyleSheet("border-image: white;");
+	secondChoice_pushButton->setStyleSheet("font-size : 10pt; border-image: white; border: 1px solid black; background-color: darkGray;");
 	//secondChoice_pushButton->move(question_widget->width() / 2 - secondChoice_pushButton->geometry().width() * 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	secondChoice_pushButton->resize(question_widget->width(), 30);
 	secondChoice_pushButton->move(question_widget->width() / 2 - secondChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height());
 	//secondChoice_pushButton->hide();
 
 	thirdChoice_pushButton = new QPushButton(question_widget);
+	thirdChoice_pushButton->setEnabled(true);
 	thirdChoice_pushButton->setText(incorrectAnswer2);
-	thirdChoice_pushButton->setStyleSheet("border-image: white;");
+	thirdChoice_pushButton->setStyleSheet("font-size : 10pt; border-image: white; border: 1px solid black; background-color: darkGray;");
 	//thirdChoice_pushButton->move(question_widget->width() / 2 + thirdChoice_pushButton->geometry().width(), question_widget->height() / 2 + question_label->geometry().height() / 2);
 	thirdChoice_pushButton->resize(question_widget->width(), 30);
 	thirdChoice_pushButton->move(question_widget->width() / 2 - thirdChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height() + thirdChoice_pushButton->geometry().height());
 	//thirdChoice_pushButton->hide();
 
 	fourthChoice_pushButton = new QPushButton(question_widget);
+	fourthChoice_pushButton->setEnabled(true);
 	fourthChoice_pushButton->setText(incorrectAnswer3);
-	fourthChoice_pushButton->setStyleSheet("border-image: white;");
+	fourthChoice_pushButton->setStyleSheet("font-size : 10pt; border-image: white; border: 1px solid black; background-color: darkGray;");
 	fourthChoice_pushButton->move(question_widget->width() / 2 + fourthChoice_pushButton->geometry().width() * 2, question_widget->height() / 2 + question_label->geometry().height() / 2);
 	fourthChoice_pushButton->resize(question_widget->width(), 30);
 	fourthChoice_pushButton->move(question_widget->width() / 2 - fourthChoice_pushButton->geometry().width() / 2, question_widget->height() / 2 + question_label->geometry().height() / 2 + secondChoice_pushButton->geometry().height() + thirdChoice_pushButton->geometry().height() + fourthChoice_pushButton->geometry().height());
 	//fourthChoice_pushButton->hide();
+
+	m_multipleChoiceButtons = { firstChoice_pushButton, secondChoice_pushButton, thirdChoice_pushButton, fourthChoice_pushButton };
+
+	question_widget->show();
 	m_showQuestionsTimer->start(30000);
+	SelectAnswerButton();
 }
 
 std::variant<NumberQuestion<int>, NumberQuestion<float>> MapWindow::GetNumberQuestion()
@@ -391,7 +412,10 @@ void MapWindow::on_numericAnswer_pushButton_clicked()
 {
 	if (answer_lineEdit->text() == "")
 	{
-		QMessageBox::warning(this, "", "Please enter a number");
+		m_WarningMsgBox.setText("Please enter a number!");
+		m_WarningMsgBox.exec();
+
+		//QMessageBox::warning(this, "", "Please enter a number");
 	}
 	else
 	{
@@ -409,7 +433,11 @@ void MapWindow::on_numericAnswer_pushButton_clicked()
 				{ "time", std::to_string(time) }
 			}
 		);
-		QMessageBox::information(this, "", "Please wait for the rest to respond");
+
+		m_InformationMsgBox.setText("Please wait for the rest to respond!");
+		m_InformationMsgBox.exec();
+
+		//QMessageBox::information(this, "", "Please wait for the rest to respond");
 	}
 }
 
@@ -971,4 +999,51 @@ void MapWindow::selectFourPlayersRegion()
 			}
 		}
 	}
+}
+
+void MapWindow::SelectAnswerButton() {
+
+	for (auto& button : m_multipleChoiceButtons) {
+
+		connect(button, SIGNAL(clicked()), this, SLOT(SetAnswerButton()));
+		
+	}
+
+}
+
+void MapWindow::SetAnswerButton() {
+
+	QPushButton* b = qobject_cast<QPushButton*>(sender());
+	
+	auto multipleChoiceQuestion = std::get<MultipleChoiceQuestion>(m_currentQuestion);
+	auto correctAnswer = multipleChoiceQuestion.GetCorrectAnswer();
+	auto res = b->text().toUtf8().constData();
+	double time = 1.2;
+	if (res == correctAnswer) {
+
+
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/addresponse" },
+			cpr::Payload{
+				{"username", m_playerUsername},
+				{"response", "0"},
+				{"time", std::to_string(time)}
+			}
+		);
+	}
+	else {
+		cpr::Put(
+			cpr::Url{ "http://localhost:18080/addresponse" },
+			cpr::Payload{
+				{"username", m_playerUsername},
+				{"response", "1"},
+				{"time", std::to_string(time)}
+			}
+		);
+	}
+
+	for (auto& button : m_multipleChoiceButtons) {
+		button->setEnabled(false);
+	}
+
 }
