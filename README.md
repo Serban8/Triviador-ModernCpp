@@ -11,4 +11,4 @@ Useful links for libraries and helper headers:
 
 # ER Diagram for Data Base
 
-![Triviador_DataBase_ER_Diagram_V2](https://user-images.githubusercontent.com/77741850/212502582-ccd745c4-99df-4402-992e-47627702ea86.jpg)
+![Triviador_DataBase_ER_Diagram](https://user-images.githubusercontent.com/77741850/212502683-af98e51e-7491-4590-8024-082d3b6ce398.jpg)
