@@ -38,27 +38,32 @@ void WaitingRoom::UpdateWaitingRoom()
 	resBody = crow::json::load(response.text);
 	if (resBody[resBody.size() - 1]["startGame"] == "true")
 	{
-		m_InformationMsgBox.setText("The game will start soon!");
-		m_InformationMsgBox.exec();
+		//m_InformationMsgBox.setText("The game will start soon!");
+		/*if (!m_InformationMsgBox.isVisible()) {
+			m_InformationMsgBox.exec();
+		}*/
 
 		//QMessageBox::information(this,"information", "The game will start soon!");
 		m_waitingRoomTimer->stop();
 		cpr::Response response1 = cpr::Get(cpr::Url{ "http://localhost:18080/startgame" });
 		map.SetUsername(m_playerUsername);
+		map.setTimer();
 		map.SetUI(resBody.size() - 1);
 		ui.stackedWidget->setCurrentIndex(1);
 	}
-	for (int i = 0; i < resBody.size() - 1; i++)
-	{
-		std::string stringUsername = resBody[i]["username"].s();
-		QString username = QString::fromUtf8(stringUsername.c_str());
-		if (resBody[i]["votedToStart"] == "true")
+	else {
+		for (int i = 0; i < resBody.size() - 1; i++)
 		{
-			ui.listWidget->addItem(username + "                                 - voted to start");
-		}
-		else
-		{
-			ui.listWidget->addItem(username + "                                 - did not vote");
+			std::string stringUsername = resBody[i]["username"].s();
+			QString username = QString::fromUtf8(stringUsername.c_str());
+			if (resBody[i]["votedToStart"] == "true")
+			{
+				ui.listWidget->addItem(username + "                                 - voted to start");
+			}
+			else
+			{
+				ui.listWidget->addItem(username + "                                 - did not vote");
+			}
 		}
 	}
 }

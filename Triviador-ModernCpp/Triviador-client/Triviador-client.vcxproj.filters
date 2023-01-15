@@ -23,22 +23,22 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameHistory.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
+      <Filter>Qt Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Homescreen.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
+      <Filter>Qt Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RegisterForm.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
+      <Filter>Qt Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MapWindow.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
+      <Filter>Qt Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WaitingRoom.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
+      <Filter>Qt Files\Qt Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TriviadorClient.cpp">
-      <Filter>Source Files\Qt Source Files</Filter>
+      <Filter>Qt Files\Qt Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,31 +51,31 @@
     <Filter Include="Qt Files">
       <UniqueIdentifier>{5056826d-bfbd-4d03-8f04-deae579c2454}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Qt Headers">
-      <UniqueIdentifier>{e284b374-fc96-419d-b4a9-17fb71fc32e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Qt Source Files">
+    <Filter Include="Qt Files\Qt Source Files">
       <UniqueIdentifier>{e291a77a-8379-4a2f-a7db-d13bdaf6dead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt Files\Qt Headers">
+      <UniqueIdentifier>{e284b374-fc96-419d-b4a9-17fb71fc32e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GameHistory.h">
-      <Filter>Header Files\Qt Headers</Filter>
+      <Filter>Qt Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="Homescreen.h">
-      <Filter>Header Files\Qt Headers</Filter>
+      <Filter>Qt Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="WaitingRoom.h">
-      <Filter>Header Files\Qt Headers</Filter>
+      <Filter>Qt Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="MapWindow.h">
-      <Filter>Header Files\Qt Headers</Filter>
+      <Filter>Qt Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="TriviadorClient.h">
-      <Filter>Header Files\Qt Headers</Filter>
+      <Filter>Qt Files\Qt Headers</Filter>
     </QtMoc>
     <QtMoc Include="RegisterForm.h">
-      <Filter>Header Files\Qt Headers</Filter>
+      <Filter>Qt Files\Qt Headers</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

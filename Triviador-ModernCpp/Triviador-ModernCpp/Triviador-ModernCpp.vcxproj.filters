@@ -60,9 +60,6 @@
     <ClCompile Include="MapRoutes.cpp">
       <Filter>App Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="GameRoutes.cpp">
       <Filter>App Files\Source Files</Filter>
     </ClCompile>
@@ -109,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="PregameRoutes.h">
       <Filter>App Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="GameRoutes.h">
       <Filter>App Files\Header Files</Filter>

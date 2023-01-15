@@ -2,10 +2,9 @@
 #include <crow.h>
 
 #include "Game.h"
-#include "utils.h"
+#include "..\Triviador-DLL\utils.h"
 
 #include "..\Triviador-DLL\ServerStatus.h"
-//#include "ServerStatus.h"
 
 //GetMapHandler
 class GetMapHandler {

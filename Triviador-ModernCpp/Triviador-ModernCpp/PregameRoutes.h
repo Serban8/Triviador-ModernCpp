@@ -3,7 +3,7 @@
 
 #include "Game.h"
 #include "Database.h"
-#include "utils.h"
+#include "..\Triviador-DLL\utils.h"
 
 const uint8_t maxPlayersPerGame = 4;
 

@@ -123,6 +123,11 @@
     <QtMoc Include="MapWindow.h" />
     <QtMoc Include="RegisterForm.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Triviador-DLL\Triviador-DLL.vcxproj">
+      <Project>{2a32790e-45a7-475d-9d39-1fe62e8db9c5}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

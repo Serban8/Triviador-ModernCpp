@@ -158,7 +158,6 @@
     <ClCompile Include="QuestionGenerator.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="TriviadorServer.cpp" />
-    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.h" />
@@ -176,7 +175,6 @@
     <ClInclude Include="QuestionDatabase.h" />
     <ClInclude Include="QuestionGenerator.h" />
     <ClInclude Include="Region.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Triviador-DLL\Triviador-DLL.vcxproj">

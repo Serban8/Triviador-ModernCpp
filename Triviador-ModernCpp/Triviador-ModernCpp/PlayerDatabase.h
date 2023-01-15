@@ -3,7 +3,7 @@
 #include <sqlite_orm/sqlite_orm.h>
 
 #include "Player.h"
-#include "utils.h"
+#include "..\Triviador-DLL\utils.h"
 
 #include "Database.h"
 

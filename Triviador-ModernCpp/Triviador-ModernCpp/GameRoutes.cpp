@@ -149,6 +149,7 @@ crow::json::wvalue GetNumberQuestionHandler::operator() () const
 			{"incorrectAnswer1", qInt.GetIncorrectAnswers()[0]},
 			{"incorrectAnswer2", qInt.GetIncorrectAnswers()[1]},
 			{"incorrectAnswer3", qInt.GetIncorrectAnswers()[2]},
+			{"type", "int"}
 		};
 	}
 	else {
@@ -160,6 +161,7 @@ crow::json::wvalue GetNumberQuestionHandler::operator() () const
 			{"incorrectAnswer1", qFloat.GetIncorrectAnswers()[0]},
 			{"incorrectAnswer2", qFloat.GetIncorrectAnswers()[1]},
 			{"incorrectAnswer3", qFloat.GetIncorrectAnswers()[2]},
+			{"type", "float"}
 		};
 	}
 

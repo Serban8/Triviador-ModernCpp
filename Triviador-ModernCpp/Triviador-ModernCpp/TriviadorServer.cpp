@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#include "utils.h"
+#include "..\Triviador-DLL\utils.h"
 
 #include "..\Triviador-DLL\MultipleChoiceQuestion.h"
 #include "QuestionGenerator.h"

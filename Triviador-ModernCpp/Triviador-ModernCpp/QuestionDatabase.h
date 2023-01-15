@@ -5,7 +5,7 @@
 
 #include "Database.h"
 
-#include "utils.h"
+#include "..\Triviador-DLL\utils.h"
 
 #include "QuestionGenerator.h"
 
