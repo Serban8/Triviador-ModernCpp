@@ -1,7 +1,10 @@
 # Triviador-ProjectModernCpp
 
 Video presentation:
+
 https://we.tl/t-erTWpj5JDx
+
+https://youtu.be/y8eD95iPXzg
 
 Useful links for question databases:
 - OpenTDB: https://opentdb.com
